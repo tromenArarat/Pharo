@@ -21,6 +21,14 @@ Fabrica >> crearAuto [
 	^ Auto new
 ]
 
+{ #category : #'referencing methods' }
+Fabrica >> ensureClassIsReferenced [
+
+	"Dummy method to prevent removal warning"
+
+	^ self
+]
+
 { #category : #accessing }
 Fabrica >> nombre [
 
