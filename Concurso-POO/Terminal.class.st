@@ -63,13 +63,14 @@ Terminal >> buscarViajeEnTerminal: unNumeroViaje [
 
 { #category : #searching }
 Terminal >> datosViaje: unDestino [
-    | resultados |
-    resultados := OrderedCollection new.
-    
-    self empresas do: [:empresa |
-        resultados addAll: (empresa viajesConDestino: unDestino)].
-    
-    ^ resultados
+
+	| pares |
+	pares := OrderedCollection new.
+
+	self empresas do: [ :empresa | 
+		pares addAll: (empresa viajesConDestino: unDestino) ].
+
+	^ pares
 ]
 
 { #category : #accessing }
