@@ -57,6 +57,18 @@ Persona >> apellido: anObject [
 	apellido := anObject
 ]
 
+{ #category : #'instance creation' }
+Persona >> creaChoferConNombre: unNombre apellido: unApellido [
+
+	| chofer |
+	chofer := self class new.
+
+	chofer nombre: unNombre.
+	chofer apellido: unApellido.
+
+	^ chofer
+]
+
 { #category : #accessing }
 Persona >> mail [
 

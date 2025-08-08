@@ -49,6 +49,17 @@ Class {
 	#category : #'Concurso-POO'
 }
 
+{ #category : #constructor }
+Viaje class >> conNumeroDestino: unNroViaje destino: unDestino [
+
+	"Crea un viaje con nroViaje y destino"
+
+	^ self new
+		  nroViaje: unNroViaje;
+		  destino: unDestino;
+		  yourself
+]
+
 { #category : #accessing }
 Viaje >> chofer [
 
@@ -112,9 +123,9 @@ Viaje >> horaSalida: anObject [
 { #category : #initialization }
 Viaje >> initialize [
 
-	"Inicializa los atributos con valores nil"
+	"Inicializa los atributos con valores nil y un objeto Persona para el chofer"
 
-	super initialize .
+	super initialize.
 	chofer := Persona new
 ]
 

@@ -63,19 +63,13 @@ Terminal >> buscarViajeEnTerminal: unNumeroViaje [
 
 { #category : #searching }
 Terminal >> datosViaje: unDestino [
-
-	"Retorna un conjunto de pares {nombreEmpresa. nroViaje} para el destino solicitado"
-
-	| pares |
-	pares := OrderedCollection new.
-
-	self empresas do: [ :empresa | 
-		(empresa viajesConDestino: unDestino) collect: [ :nroViaje | 
-			pares add: { 
-					empresa nombre.
-					nroViaje } ] ].
-
-	^ pares
+    | resultados |
+    resultados := OrderedCollection new.
+    
+    self empresas do: [:empresa |
+        resultados addAll: (empresa viajesConDestino: unDestino)].
+    
+    ^ resultados
 ]
 
 { #category : #accessing }

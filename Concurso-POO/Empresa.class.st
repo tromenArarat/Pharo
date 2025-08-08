@@ -125,7 +125,7 @@ Empresa >> viajes: anObject [
 Empresa >> viajesConDestino: unDestino [
 
 	"Retorna colección con número de viajes de la empresa que coinciden con el destino"
-
 	 ^ (self viajes select: [:viaje | viaje tieneDestino: unDestino])
-        collect: [:viaje | viaje nroViaje]
+        collect: [:viaje |
+            {self nombre. viaje nroViaje}]
 ]
