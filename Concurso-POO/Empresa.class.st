@@ -6,18 +6,25 @@ Responsabilidades de conocimiento:
 	- Relaciones: crea viajes y forma parte de al menos una terminal.
 
 Responsabilidades de acción:
-	- Por sí misma no hace nada, por el momento
 	- Puede instanciar Viaje cada vez que agrega un viaje a su lista de viajes.
 	- ¿Controla y coordina actividades en otros objetos? Sí, crea una instancia de viaje y con ella al chofer (Persona) del viaje.
 	
 Fuente: Ejercicio Concurso AYP 3 Programación Orientada a Objetos - FAI-UNCOMA - 2025.
 
-Public API and Key Messages
-
-- message one: buscarViaje(nroViaje)   
-- message two:  darDatosViaje(cadenaDestino) retorna <nombreEmpresa, nroDeViaje>
-- how to create instances: '' unaEmpresa := Empresa new . ''
+API pública y mensajes clave
+- Mensaje uno: buscarViaje(nroViaje)   
+- Mensaje dos:  darDatosViaje(cadenaDestino) retorna <nombreEmpresa, nroDeViaje>
  
+Ejemplo: 
+
+' | e | '
+' e := Empresa new . '
+' e agregarViajes: Viaje conNumeroDestino: 1 destino: 'Las Lajas' . '
+
+
+
+
+
 Internal Representation and Key Implementation Points.
 
     Instance Variables
@@ -76,6 +83,18 @@ Empresa >> buscarViaje: unNroViaje [
 	^ viajes detect: [ :viaje | viaje nroViaje = unNroViaje ] ifNone: [ nil ]
 ]
 
+{ #category : #searching }
+Empresa >> darViajesDestino: unDestino [
+
+	"Retorna colección de pares <nombreEmpresa,nroViaje> que coinciden con el destino"
+
+	^ (self viajes select: [ :viaje | viaje tieneDestino: unDestino ]) 
+		  collect: [ :v | 
+			  { 
+				  self nombre.
+				  v nroViaje } ]
+]
+
 { #category : #accessing }
 Empresa >> identificacion [
 
@@ -119,16 +138,4 @@ Empresa >> viajes [
 Empresa >> viajes: anObject [
 
 	viajes := anObject
-]
-
-{ #category : #searching }
-Empresa >> viajesConDestino: unDestino [
-
-	"Retorna colección de pares <nombreEmpresa,nroViaje> que coinciden con el destino"
-
-	^ (self viajes select: [ :viaje | 
-		   viaje tieneDestino: unDestino ]) collect: [ :v | 
-		  { 
-			  self nombre.
-			  v nroViaje } ]
 ]

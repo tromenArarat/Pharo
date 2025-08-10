@@ -41,9 +41,11 @@ Class {
 { #category : #adding }
 Terminal >> agregarEmpresa: unaEmpresa [
 
-	"Agrega una empresa a la colección de empresas de la terminal"
-
 	empresas add: unaEmpresa
+	
+
+
+
 ]
 
 { #category : #searching }
@@ -62,13 +64,13 @@ Terminal >> buscarViajeEnTerminal: unNumeroViaje [
 ]
 
 { #category : #searching }
-Terminal >> datosViaje: unDestino [
+Terminal >> darDatosViaje: cadenaDestino [
 
 	| pares |
 	pares := OrderedCollection new.
 
 	self empresas do: [ :empresa | 
-		pares addAll: (empresa viajesConDestino: unDestino) ].
+		pares addAll: (empresa darViajesDestino: cadenaDestino) ].
 
 	^ pares
 ]
@@ -107,16 +109,18 @@ Terminal >> empresas [
 Terminal >> empresas: anObject [
 
 	empresas := anObject
+	
+
 ]
 
 { #category : #initialization }
 Terminal >> initialize [
 
-	"Inicializa los atributos con valores por defecto"
-
 	super initialize.
 	denominacion := ''.
 	direccion := ''.
-	empresas := OrderedCollection new "Colección para almacenar las empresas que operan en la terminal"
-	"Probar con OrderedCollection of: Empresa para solo aceptar Empresas"
+	empresas := OrderedCollection new
+	
+
+
 ]

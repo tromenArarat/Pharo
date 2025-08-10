@@ -25,6 +25,23 @@ TerminalTest >> testAgregarViaje [
 	self assert: (e viajes at: 1) destino equals: 'Zapala'
 ]
 
+{ #category : #'test methods' }
+TerminalTest >> testDarDatosViaje [
+
+	| t e v d |
+	t := Terminal new.
+	e := Empresa new nombre: 'Transportes Rincón'.
+	d := 'Zapala'.
+	v := Viaje conNumeroDestino: 1 destino: d.
+
+	e agregarViaje: v.
+	t agregarEmpresa: e.
+
+	self
+		assert: ((t darDatosViaje: 'Zapala') at: 1) first asString
+		equals: 'Transportes Rincón'
+]
+
 { #category : #tests }
 TerminalTest >> testEmpresaIsSetAndRead [
 
