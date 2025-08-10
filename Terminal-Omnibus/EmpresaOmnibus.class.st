@@ -38,6 +38,15 @@ EmpresaOmnibus >> agregarViajeMicro: unViaje [
 	viajes add: unViaje .
 ]
 
+{ #category : #initialization }
+EmpresaOmnibus >> initialize [
+
+	super initialize.
+
+	self nombre: ''.
+	self viajes: OrderedCollection new
+]
+
 { #category : #accessing }
 EmpresaOmnibus >> nombre [
 
