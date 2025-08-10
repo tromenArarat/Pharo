@@ -124,8 +124,11 @@ Empresa >> viajes: anObject [
 { #category : #searching }
 Empresa >> viajesConDestino: unDestino [
 
-	"Retorna colección con número de viajes de la empresa que coinciden con el destino"
-	 ^ (self viajes select: [:viaje | viaje tieneDestino: unDestino])
-        collect: [:viaje |
-            {self nombre. viaje nroViaje}]
+	"Retorna colección de pares <nombreEmpresa,nroViaje> que coinciden con el destino"
+
+	^ (self viajes select: [ :viaje | 
+		   viaje tieneDestino: unDestino ]) collect: [ :v | 
+		  { 
+			  self nombre.
+			  v nroViaje } ]
 ]
