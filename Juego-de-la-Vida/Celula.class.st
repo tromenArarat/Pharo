@@ -1,3 +1,6 @@
+"
+Juego de la vida es un código provisto por la cátedra Programación Orientada a Objetos - Facultad de Informática - Universidad Nacional del Comahue.
+"
 Class {
 	#name : #Celula,
 	#superclass : #Object,

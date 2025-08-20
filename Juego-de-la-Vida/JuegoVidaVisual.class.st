@@ -1,3 +1,6 @@
+"
+Juego de la vida es un código provisto por la cátedra Programación Orientada a Objetos - Facultad de Informática - Universidad Nacional del Comahue.
+"
 Class {
 	#name : #JuegoVidaVisual,
 	#superclass : #BorderedMorph,
@@ -27,13 +30,13 @@ JuegoVidaVisual >> ejecutarUnTurno [
 miJuego ejecutarTurno.
 ]
 
-{ #category : #methods }
+{ #category : #initialization }
 JuegoVidaVisual >> initialize [
 
-	"este método se ejecutará inmediatamente después del new"
+	"Este método se ejecutará inmediatamente después del new"
 
 	| origen filas columnas regla ancho alto |
-	"dado que JuegoVidaVisual es subclase de BorderedMorph, es necesario asegurar que se realizarón todas las inicializaciones necesarias relacionadas a variables y comportamiento heredado"
+	"Dado que JuegoVidaVisual es subclase de BorderedMorph, es necesario asegurar que se realizarón todas las inicializaciones necesarias relacionadas a variables y comportamiento heredado"
 	super initialize.
 
 	"Se establece el color del elemento gráfico, y su posición en la pantalla, o sea el WORLD (mundo). La posición para este morph es la esquina superior izquierda del recuadro."

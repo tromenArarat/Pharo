@@ -1,3 +1,6 @@
+"
+Juego de la vida es un código provisto por la cátedra Programación Orientada a Objetos - Facultad de Informática - Universidad Nacional del Comahue.
+"
 Class {
 	#name : #JuegoVida,
 	#superclass : #Object,
@@ -22,20 +25,19 @@ JuegoVida >> buscarVecinasVivas: fil y: col [
 		- colIni y colFin marcan los límites verticales de la búsqueda "
 
 	| vivas filaIni filaFin colIni colFin |
-	
 	vivas := 0.
-	fil > 1
-		ifTrue: [ filaIni := fil - 1 ]
-		ifFalse: [ filaIni := fil ].
-	col > 1
-		ifTrue: [ colIni := col - 1 ]
-		ifFalse: [ colIni := col ].
-	fil < mundo rowCount
-		ifTrue: [ filaFin := fil + 1 ]
-		ifFalse: [ filaFin := fil ].
-	col < mundo columnCount
-		ifTrue: [ colFin := col + 1 ]
-		ifFalse: [ colFin := col ].
+	filaIni := fil > 1
+		           ifTrue: [ fil - 1 ]
+		           ifFalse: [ fil ].
+	colIni := col > 1
+		          ifTrue: [ col - 1 ]
+		          ifFalse: [ col ].
+	filaFin := fil < mundo rowCount
+		           ifTrue: [ fil + 1 ]
+		           ifFalse: [ fil ].
+	colFin := col < mundo columnCount
+		          ifTrue: [ col + 1 ]
+		          ifFalse: [ col ].
 	filaIni to: filaFin do: [ :i | 
 		colIni to: colFin do: [ :j | 
 			(mundo at: i at: j) verificarVida ifTrue: [ vivas := vivas + 1 ] ] ].
@@ -81,6 +83,7 @@ JuegoVida >> fila: f columna: c estado: e [
 
 { #category : #search }
 JuegoVida >> inicializar: cadReglas conFilas: dimFil conColumnas: dimCol [
+^self
 
 	
 ]
