@@ -12,6 +12,27 @@ QuintoGame >> cellsPerSide [
 	^10
 ]
 
+{ #category : #initialization }
+QuintoGame >> initialize [
+
+	| sampleCell width height n |
+	super initialize.
+
+	sampleCell := QuintoCell new.
+	width := sampleCell width.
+	height := sampleCell height.
+
+	n := self cellsPerSide.
+	self bounds:
+		(100 @ 100 extent: width * n @ (height * n) + (2 * self borderWidth)).
+
+	cells := Array new: n.
+	1 to: n do: [ :i | 
+		cells at: i put: (Array new: n).
+		1 to: n do: [ :j | 
+		(cells at: i) at: j put: (self newCellAt: i at: j) ] ]
+]
+
 { #category : #accessing }
 QuintoGame >> newCellAt: i at: j [
 
