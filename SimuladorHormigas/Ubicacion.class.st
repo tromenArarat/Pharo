@@ -3,7 +3,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'x',
-		'y'
+		'y',
+		'contenido'
 	],
 	#category : #SimuladorHormigas
 }
@@ -14,6 +15,29 @@ Ubicacion class >> x: xValue y: yValue [
         x: xValue;
         y: yValue;
         yourself
+]
+
+{ #category : #'instance creation' }
+Ubicacion class >> x: coordX y: coordY contenido: unContenido [
+    "Crea una nueva instancia de Ubicacion con las coordenadas y contenido especificados"
+    
+    ^ self new
+        x: coordX;
+        y: coordY;
+        contenido: unContenido;
+        yourself
+]
+
+{ #category : #accessing }
+Ubicacion >> contenido [
+
+	^ contenido
+]
+
+{ #category : #accessing }
+Ubicacion >> contenido: anObject [
+
+	contenido := anObject
 ]
 
 { #category : #accessing }
