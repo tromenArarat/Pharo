@@ -1,5 +1,5 @@
 Class {
-	#name : #Ubicacion,
+	#name : #Celda,
 	#superclass : #Object,
 	#instVars : [
 		'x',
@@ -10,7 +10,7 @@ Class {
 }
 
 { #category : #'instance creation' }
-Ubicacion class >> x: xValue y: yValue [
+Celda class >> x: xValue y: yValue [
     ^ self new
         x: xValue;
         y: yValue;
@@ -18,7 +18,7 @@ Ubicacion class >> x: xValue y: yValue [
 ]
 
 { #category : #'instance creation' }
-Ubicacion class >> x: coordX y: coordY contenido: unContenido [
+Celda class >> x: coordX y: coordY contenido: unContenido [
     "Crea una nueva instancia de Ubicacion con las coordenadas y contenido especificados"
     
     ^ self new
@@ -29,37 +29,37 @@ Ubicacion class >> x: coordX y: coordY contenido: unContenido [
 ]
 
 { #category : #accessing }
-Ubicacion >> contenido [
+Celda >> contenido [
 
 	^ contenido
 ]
 
 { #category : #accessing }
-Ubicacion >> contenido: anObject [
+Celda >> contenido: anObject [
 
 	contenido := anObject
 ]
 
 { #category : #accessing }
-Ubicacion >> x [
+Celda >> x [
 
 	^ x
 ]
 
 { #category : #accessing }
-Ubicacion >> x: anObject [
+Celda >> x: anObject [
 
 	x := anObject
 ]
 
 { #category : #accessing }
-Ubicacion >> y [
+Celda >> y [
 
 	^ y
 ]
 
 { #category : #accessing }
-Ubicacion >> y: anObject [
+Celda >> y: anObject [
 
 	y := anObject
 ]

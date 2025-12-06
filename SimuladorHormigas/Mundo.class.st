@@ -2,38 +2,11 @@ Class {
 	#name : #Mundo,
 	#superclass : #Object,
 	#instVars : [
-		'colHormigueros',
-		'hormigas',
-		'colFuentesAlimento',
-		'm',
-		'n'
+		'hormigueros',
+		'mapa'
 	],
 	#category : #SimuladorHormigas
 }
-
-{ #category : #accessing }
-Mundo >> colFuentesAlimento [
-
-	^ colFuentesAlimento
-]
-
-{ #category : #accessing }
-Mundo >> colFuentesAlimento: anObject [
-
-	colFuentesAlimento := anObject
-]
-
-{ #category : #accessing }
-Mundo >> colHormigueros [
-
-	^ colHormigueros
-]
-
-{ #category : #accessing }
-Mundo >> colHormigueros: anObject [
-
-	colHormigueros := anObject
-]
 
 { #category : #'game logic' }
 Mundo >> encontrarReinaEn: unaUbicacion [
@@ -42,49 +15,53 @@ Mundo >> encontrarReinaEn: unaUbicacion [
 
 	^ self hormigas
 		  detect: [ :hormiga | 
-			  (hormiga isKindOf: Reina) and: [ hormiga ubicacion = unaUbicacion ] ]
+			  (hormiga class: Hormiga) and: [ 
+				  hormiga ubicacion = unaUbicacion ] ]
 		  ifNone: [ nil ]
 ]
 
 { #category : #accessing }
-Mundo >> hormigas [
+Mundo >> hormigueros [
 
-	^ hormigas
+	^ hormigueros
 ]
 
 { #category : #accessing }
-Mundo >> hormigas: anObject [
+Mundo >> hormigueros: anObject [
 
-	hormigas := anObject
+	hormigueros := anObject
 ]
 
-{ #category : #initialization }
-Mundo >> initialize [ 
-n:= 10 .
-m:= 10
+{ #category : #initalize }
+Mundo >> inicializarMundoConFilas: n columnas: m [
 
-]
+	| tablero |
+	tablero := OrderedCollection new.
 
-{ #category : #accessing }
-Mundo >> m [
+	1 to: n do: [ :fila | 
+		| filaCeldas |
+		filaCeldas := OrderedCollection new.
 
-	^ m
-]
+		1 to: m do: [ :columna | 
+			filaCeldas add: (Celda new
+					 x: fila;
+					 y: columna;
+					 contenido: 'vacío';
+					 yourself) ].
 
-{ #category : #accessing }
-Mundo >> m: anObject [
+		tablero add: filaCeldas ].
 
-	m := anObject
-]
-
-{ #category : #accessing }
-Mundo >> n [
-
-	^ n
+	self mapa: tablero
 ]
 
 { #category : #accessing }
-Mundo >> n: anObject [
+Mundo >> mapa [
 
-	n := anObject
+	^ mapa
+]
+
+{ #category : #accessing }
+Mundo >> mapa: anObject [
+
+	mapa := anObject
 ]

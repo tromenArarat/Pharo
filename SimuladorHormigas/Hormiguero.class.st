@@ -3,24 +3,10 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'color',
-		'mundo',
-		'ubicacion',
-		'cantAlimento'
+		'hormiga'
 	],
 	#category : #SimuladorHormigas
 }
-
-{ #category : #accessing }
-Hormiguero >> cantAlimento [
-
-	^ cantAlimento
-]
-
-{ #category : #accessing }
-Hormiguero >> cantAlimento: anObject [
-
-	cantAlimento := anObject
-]
 
 { #category : #accessing }
 Hormiguero >> color [
@@ -35,25 +21,13 @@ Hormiguero >> color: anObject [
 ]
 
 { #category : #accessing }
-Hormiguero >> mundo [
+Hormiguero >> hormiga [
 
-	^ mundo
+	^ hormiga
 ]
 
 { #category : #accessing }
-Hormiguero >> mundo: anObject [
+Hormiguero >> hormiga: anObject [
 
-	mundo := anObject
-]
-
-{ #category : #accessing }
-Hormiguero >> ubicacion [
-
-	^ ubicacion
-]
-
-{ #category : #accessing }
-Hormiguero >> ubicacion: anObject [
-
-	ubicacion := anObject
+	hormiga := anObject
 ]
