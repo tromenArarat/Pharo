@@ -2,23 +2,10 @@ Class {
 	#name : #Hormiga,
 	#superclass : #Object,
 	#instVars : [
-		'ubicacion',
-		'colRecorridas'
+		'ubicacion'
 	],
 	#category : #SimuladorHormigas
 }
-
-{ #category : #accessing }
-Hormiga >> colRecorridas [
-
-	^ colRecorridas
-]
-
-{ #category : #accessing }
-Hormiga >> colRecorridas: anObject [
-
-	colRecorridas := anObject
-]
 
 { #category : #accessing }
 Hormiga >> ubicacion [
