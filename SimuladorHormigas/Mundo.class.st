@@ -99,15 +99,18 @@ Class {
 }
 
 { #category : #accessing }
-Mundo class >> posRandom: unaUbicacion [
+Mundo class >> posRandom: unaUbicacion enMapa: unMapa [
 
-	| x y ejeRandom movimientoRandom |
+	| x y ejeRandom movimientoRandom nuevaUbicacion mundo |
 	x := unaUbicacion x.
 	y := unaUbicacion y.
 
 	ejeRandom := Random new nextInteger: 2.
 
 	movimientoRandom := Random new nextInteger: 2.
+	nuevaUbicacion := Celda new.
+
+	mundo := self.
 
 	ejeRandom = 1
 		ifTrue: [ 
@@ -119,9 +122,18 @@ Mundo class >> posRandom: unaUbicacion [
 				     ifTrue: [ y - 1 ]
 				     ifFalse: [ y + 1 ] ].
 
-	^ unaUbicacion
-		  x: x;
-		  y: y
+
+	nuevaUbicacion
+		x: x;
+		y: y.
+
+	(mundo estaEnMapa: nuevaUbicacion)
+		ifTrue: [ 
+		nuevaUbicacion contenido: ((unMapa at: x) at: y) contenido ]
+		ifFalse: [ self class posRandom: unaUbicacion enMapa: unMapa ].
+
+
+	^ nuevaUbicacion
 ]
 
 { #category : #accessing }
@@ -170,9 +182,8 @@ Mundo >> estaEnMapa: celda [
 	n := (mapa at: 1) size.
 
 	^ celda x <= ((mapa at: m) at: n) x
-	  & (celda y <= ((mapa at: m) at: n) y)
-		& (celda x >= ((mapa at: 1) at: 1) x)
-	  & (celda y >= ((mapa at: 1) at: 1) y)
+	  & (celda y <= ((mapa at: m) at: n) y) & (celda x > 0)
+	  & (celda y > 0)
 ]
 
 { #category : #initalize }
@@ -234,26 +245,32 @@ Mundo >> mapa: anObject [
 ]
 
 { #category : #initalize }
-Mundo >> moverHormiga: hormiga [
+Mundo >> moverHormiga: hormiga contador: unNumero [
 
 	" Este método debe mover la hormiga en cualquier dirección distinta a la de su posición actual y evitar pasar por las posiciones ya transitadas (colRecorridas).
 
 - Que reciba la posicion actual y la colección de recorridas y elija una opción al azar.
 - Chequear si la posición está en el mapa. (estaEnMapa: unaCelda)
-- Actualizar colRecorridas "
+- Actualizar colRecorridas. Se debe resetear cuano la hormiga encuentra alimento"
 
 	| posActual recorridas posAleatoria contador |
 	posActual := hormiga ubicacion.
 	recorridas := hormiga colRecorridas.
-	posAleatoria := mapa posRandom: posActual.
-	contador := 0 .
+	posAleatoria := self class posRandom: posActual enMapa: self mapa.
+	contador := unNumero.
 
-	(self mapa estaEnMapa: posAleatoria) 
+	"Actualiza colRecorridas con posición actual en el primer lugar "
+	hormiga actualizarRecorridas.
+
+	(self estaEnMapa: posAleatoria)
 		ifTrue: [ 
-			(hormiga estaEnRecorridas: posAleatoria & contador<4)
-				ifTrue: [ contador +=1 .
-					self moverHormiga: hormiga ]
-				ifFalse: [ hormiga ubicacion: posAleatoria.
-					hormiga colRecorridas add: posAleatoria ] ]
-			ifFalse: [self moverHormiga: hormiga]
+			(hormiga estaEnRecorridas: posAleatoria) & (contador < 7)
+				ifTrue: [ 
+					contador = contador + 1.
+					self moverHormiga: hormiga contador: contador ]
+				ifFalse: [ 
+					hormiga ubicacion: posAleatoria.
+					"Actualiza colRecorridas con posición aleatoria en el siguiente lugar "
+					hormiga actualizarRecorridas ] ]
+		ifFalse: [ self moverHormiga: hormiga contador: contador ]
 ]

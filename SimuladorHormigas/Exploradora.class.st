@@ -8,6 +8,12 @@ Class {
 	#category : #SimuladorHormigas
 }
 
+{ #category : #updating }
+Exploradora >> actualizarRecorridas [
+
+	colRecorridas add: self ubicacion
+]
+
 { #category : #accessing }
 Exploradora >> colMensajes [
 
