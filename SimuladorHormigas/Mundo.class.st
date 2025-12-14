@@ -126,13 +126,13 @@ Mundo class >> posRandom: unaUbicacion enMapa: unMapa [
 	nuevaUbicacion
 		x: x;
 		y: y.
-
-	(mundo estaEnMapa: nuevaUbicacion)
+		
+"(mundo estaEnMapa: nuevaUbicacion)
 		ifTrue: [ 
 		nuevaUbicacion contenido: ((unMapa at: x) at: y) contenido ]
 		ifFalse: [ self class posRandom: unaUbicacion enMapa: unMapa ].
-
-
+"
+	
 	^ nuevaUbicacion
 ]
 
@@ -260,7 +260,7 @@ Mundo >> moverHormiga: hormiga contador: unNumero [
 	contador := unNumero.
 
 	"Actualiza colRecorridas con posición actual en el primer lugar "
-	hormiga actualizarRecorridas.
+	"hormiga actualizarRecorridas."
 
 	(self estaEnMapa: posAleatoria)
 		ifTrue: [ 
@@ -269,6 +269,8 @@ Mundo >> moverHormiga: hormiga contador: unNumero [
 					contador = contador + 1.
 					self moverHormiga: hormiga contador: contador ]
 				ifFalse: [ 
+					posAleatoria contenido:
+						((self mapa at: posAleatoria x) at: posAleatoria y) contenido.
 					hormiga ubicacion: posAleatoria.
 					"Actualiza colRecorridas con posición aleatoria en el siguiente lugar "
 					hormiga actualizarRecorridas ] ]
