@@ -51,7 +51,40 @@ robinson := reinaRoja colExploradoras at: 1 .
 
 robinson ubicacion: reinaRoja ubicacion .
 
+robinson ubicacion .
+
+hormiguero ubicacion .
+
+reinaRoja ubicacion .
+
+mundo moverHormiga: robinson .
+
+fuenteAlimentos := mundo colAlimentos: OrderedCollection new .
+
+mundo colAlimentos add: Alimento new .
+
+(mundo colAlimentos at: 1) cantidad: 15 .
+
+(mundo colAlimentos at: 1) ubicacion: ((mundo mapa at:1) at:3) .
+
+((mundo mapa at:1) at:3) contenido: 'alimento' .
+
 Transcript clear .
+
+celdaIzqInf := ((mundo mapa at:1) at:1) .
+
+celdaFueraDelMapa := Celda new .
+celdaFueraDelMapa x:11 ; y:1 .
+
+mundo estaEnMapa: celdaIzqInf .
+
+celdaFueraDelMapa .
+
+mundo estaEnMapa: celda .
+
+celdaFueraDelMapa x <= ((mundo mapa at: 10) at: 10) x . 
+
+(mundo mapa at:1) size .
 "
 Class {
 	#name : #Mundo,
@@ -101,10 +134,47 @@ Mundo >> encontrarReinaEn: unaUbicacion [
 ]
 
 { #category : #initalize }
+Mundo >> estaEnMapa: celda [
+
+	| x y m n |
+	x := celda x.
+	y := celda y.
+	m := mapa size.
+	n := (mapa at: 1) size.
+
+	^ (celda x <= ((mapa at: m) at: n) x) & (celda y
+	  <= ((mapa at: m) at: n) y)
+]
+
+{ #category : #initalize }
 Mundo >> inicializarMundoConFilas: n columnas: m [
 
 	| tablero |
 	tablero := OrderedCollection new.
+
+	1 to: n do: [ :fila | 
+		| filaCeldas |
+		filaCeldas := OrderedCollection new.
+
+		1 to: m do: [ :columna | 
+			filaCeldas add: (Celda new
+					 x: fila;
+					 y: columna;
+					 contenido: 'vacío';
+					 yourself) ].
+
+		tablero add: filaCeldas ].
+
+	self mapa: tablero
+]
+
+{ #category : #initalize }
+Mundo >> initialize [
+
+	| tablero m n|
+	tablero := OrderedCollection new.
+	m := 10 .
+	n := 10 .
 
 	1 to: n do: [ :fila | 
 		| filaCeldas |
@@ -132,4 +202,35 @@ Mundo >> mapa [
 Mundo >> mapa: anObject [
 
 	mapa := anObject
+]
+
+{ #category : #initalize }
+Mundo >> moverHormiga: hormiga [
+
+	" Este método debe mover la hormiga en cualquier dirección distinta a la de su posición actual y evitar pasar por las posiciones ya transitadas (colRecorridas).
+
+- Que reciba la posicion actual y la colección de recorridas y elija una opción al azar.
+- Chequear si la posición está en el mapa. (estaEnMapa: unaCelda)
+- Actualizar colRecorridas "
+
+| posActual recorridas posAleatoria|
+
+posActual := hormiga ubicacion .
+recorridas := hormiga colRecorridas .
+posAleatoria := mapa posRandom: posActual .
+
+	hormiga ubicacion: ((self mapa at: 1) at: 2)
+]
+
+{ #category : #accessing }
+Mundo >> posRandom: unaUbicacion [
+
+	| x y randomAxis |
+	x := unaUbicacion x.
+	y := unaUbicacion y.
+
+randomAxis := Random new nextInt: 2.
+
+
+	^ unaUbicacion
 ]

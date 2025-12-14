@@ -5,7 +5,32 @@ Class {
 	#name : #Alimento,
 	#superclass : #Object,
 	#instVars : [
+		'ubicacion',
 		'cantidad'
 	],
 	#category : #SimuladorHormigas
 }
+
+{ #category : #accessing }
+Alimento >> cantidad [
+
+	^ cantidad
+]
+
+{ #category : #accessing }
+Alimento >> cantidad: anObject [
+
+	cantidad := anObject
+]
+
+{ #category : #accessing }
+Alimento >> ubicacion [
+
+	^ ubicacion
+]
+
+{ #category : #accessing }
+Alimento >> ubicacion: anObject [
+
+	ubicacion := anObject
+]
