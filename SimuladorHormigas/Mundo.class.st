@@ -98,6 +98,32 @@ Class {
 }
 
 { #category : #accessing }
+Mundo class >> posRandom: unaUbicacion [
+
+	| x y ejeRandom movimientoRandom |
+	x := unaUbicacion x.
+	y := unaUbicacion y.
+
+	ejeRandom := Random new nextInteger: 2.
+
+	movimientoRandom := Random new nextInteger: 2.
+
+	ejeRandom = 1
+		ifTrue: [ 
+			x := movimientoRandom = 1
+				     ifTrue: [ x - 1 ]
+				     ifFalse: [ x + 1 ] ]
+		ifFalse: [ 
+			y := movimientoRandom = 1
+				     ifTrue: [ y - 1 ]
+				     ifFalse: [ y + 1 ] ].
+
+	^ unaUbicacion
+		  x: x;
+		  y: y
+]
+
+{ #category : #accessing }
 Mundo >> colAlimentos [
 
 	^ colAlimentos
@@ -142,8 +168,10 @@ Mundo >> estaEnMapa: celda [
 	m := mapa size.
 	n := (mapa at: 1) size.
 
-	^ (celda x <= ((mapa at: m) at: n) x) & (celda y
-	  <= ((mapa at: m) at: n) y)
+	^ celda x <= ((mapa at: m) at: n) x
+	  & (celda y <= ((mapa at: m) at: n) y)
+		& (celda x >= ((mapa at: 1) at: 1) x)
+	  & (celda y >= ((mapa at: 1) at: 1) y)
 ]
 
 { #category : #initalize }
@@ -213,24 +241,18 @@ Mundo >> moverHormiga: hormiga [
 - Chequear si la posición está en el mapa. (estaEnMapa: unaCelda)
 - Actualizar colRecorridas "
 
-| posActual recorridas posAleatoria|
+	| posActual recorridas posAleatoria contador |
+	posActual := hormiga ubicacion.
+	recorridas := hormiga colRecorridas.
+	posAleatoria := mapa posRandom: posActual.
+	contador := 0 .
 
-posActual := hormiga ubicacion .
-recorridas := hormiga colRecorridas .
-posAleatoria := mapa posRandom: posActual .
-
-	hormiga ubicacion: ((self mapa at: 1) at: 2)
-]
-
-{ #category : #accessing }
-Mundo >> posRandom: unaUbicacion [
-
-	| x y randomAxis |
-	x := unaUbicacion x.
-	y := unaUbicacion y.
-
-randomAxis := Random new nextInt: 2.
-
-
-	^ unaUbicacion
+	(self mapa estaEnMapa: posAleatoria) 
+		ifTrue: [ 
+			(hormiga estaEnRecorridas: posAleatoria & contador<4)
+				ifTrue: [ contador +=1 .
+					self moverHormiga: hormiga ]
+				ifFalse: [ hormiga ubicacion: posAleatoria.
+					hormiga colRecorridas add: posAleatoria ] ]
+			ifFalse: [self moverHormiga: hormiga]
 ]

@@ -31,3 +31,9 @@ Exploradora >> colRecorridas: anObject [
 
 	colRecorridas := anObject
 ]
+
+{ #category : #checking }
+Exploradora >> estaEnRecorridas: unaCelda [
+
+^ self colRecorridas includes: unaCelda .
+]
