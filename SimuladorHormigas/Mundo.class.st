@@ -7,7 +7,11 @@ mundo := Mundo new .
 
 mundo inicializarMundoConFilas: 10 columnas: 10 .
 
-hormiguero := mundo colHormigueros at:1 .
+hormiguero := Hormiguero new .
+
+mundo colHormigueros: OrderedCollection new.
+
+mundo colHormigueros add: hormiguero .
 
 hormiguero mundo: mundo.
 
@@ -25,11 +29,8 @@ mundo mapa .
 
 hormiguero ubicacion: ((mundo mapa at:1 ) at:1).
 
-mundo colHormigueros: OrderedCollection new.
 
-mundo colHormigueros add: hormiguero .
-
-OrderedCollection selectors . 
+OrderedCollection selectors .
 
 (mundo colHormigueros removeAt: 2) .
 
@@ -57,8 +58,6 @@ hormiguero ubicacion .
 
 reinaRoja ubicacion .
 
-mundo moverHormiga: robinson .
-
 fuenteAlimentos := mundo colAlimentos: OrderedCollection new .
 
 mundo colAlimentos add: Alimento new .
@@ -80,11 +79,13 @@ mundo estaEnMapa: celdaIzqInf .
 
 celdaFueraDelMapa .
 
-mundo estaEnMapa: celda .
+mundo estaEnMapa: celdaFueraDelMapa .
 
-celdaFueraDelMapa x <= ((mundo mapa at: 10) at: 10) x . 
+celdaFueraDelMapa x <= ((mundo mapa at: 10) at: 10) x .
 
 (mundo mapa at:1) size .
+
+
 "
 Class {
 	#name : #Mundo,
