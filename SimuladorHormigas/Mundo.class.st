@@ -172,7 +172,7 @@ Mundo >> encontrarReinaEn: unaUbicacion [
 		  ifNone: [ nil ]
 ]
 
-{ #category : #initalize }
+{ #category : #checking }
 Mundo >> estaEnMapa: celda [
 
 	| x y m n |
@@ -198,28 +198,20 @@ Mundo >> inicializarMundoConFilas: n columnas: m [
 	self mapa: tablero
 ]
 
-{ #category : #initalize }
+{ #category : #initialization }
 Mundo >> initialize [
 
-	| tablero m n|
-	tablero := OrderedCollection new.
-	m := 10 .
-	n := 10 .
+	| tablero m n |
+	m := 10.
+	n := 10.
 
-	1 to: n do: [ :fila | 
-		| filaCeldas |
-		filaCeldas := OrderedCollection new.
+	tablero := (1 to: n) collect: [ :fila | 
+		           (1 to: m) collect: [ :columna | 
+			           Celda punto: fila @ columna contenido: 'vacio' ] ].
 
-		1 to: m do: [ :columna | 
-			filaCeldas add: (Celda new
-					 x: fila;
-					 y: columna;
-					 contenido: 'vacío';
-					 yourself) ].
-
-		tablero add: filaCeldas ].
-
-	self mapa: tablero
+	self mapa: tablero.
+	self colAlimentos: OrderedCollection new.
+	self colHormigueros: OrderedCollection new
 ]
 
 { #category : #accessing }
@@ -234,14 +226,14 @@ Mundo >> mapa: anObject [
 	mapa := anObject
 ]
 
-{ #category : #initalize }
+{ #category : #'game logic' }
 Mundo >> moverHormiga: hormiga contador: unNumero [
 
-	" Este método debe mover la hormiga en cualquier dirección distinta a la de su posición actual y evitar pasar por las posiciones ya transitadas (colRecorridas).
+	" Este método debe mover la hormiga en cualquier dirección distinta a la de su posición actual y evitar pasar por las 	posiciones ya transitadas (colRecorridas).
 
-- Que reciba la posicion actual y la colección de recorridas y elija una opción al azar.
-- Chequear si la posición está en el mapa. (estaEnMapa: unaCelda)
-- Actualizar colRecorridas. Se debe resetear cuano la hormiga encuentra alimento"
+	- Que reciba la posicion actual y la colección de recorridas y elija una opción al azar.
+	- Chequear si la posición está en el mapa. (estaEnMapa: unaCelda)
+	- Actualizar colRecorridas. Se debe resetear cuano la hormiga encuentra alimento "
 
 	| posActual recorridas posAleatoria contador |
 	posActual := hormiga ubicacion.
@@ -262,7 +254,6 @@ Mundo >> moverHormiga: hormiga contador: unNumero [
 					posAleatoria contenido:
 						((self mapa at: posAleatoria x) at: posAleatoria y) contenido.
 					hormiga ubicacion: posAleatoria.
-					"Actualiza colRecorridas con posición aleatoria en el siguiente lugar "
 					hormiga actualizarRecorridas ] ]
 		ifFalse: [ self moverHormiga: hormiga contador: contador ]
 ]
