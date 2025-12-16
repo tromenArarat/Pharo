@@ -1,30 +1,21 @@
+"
+Cada unidad del mapa, definida con un objeto de la clase Point y una descripción
+"
 Class {
 	#name : #Celda,
 	#superclass : #Object,
 	#instVars : [
-		'x',
-		'y',
+		'punto',
 		'contenido'
 	],
 	#category : #SimuladorHormigas
 }
 
-{ #category : #'instance creation' }
-Celda class >> x: xValue y: yValue [
+{ #category : #initialization }
+Celda class >> punto: unPunto contenido: unaCadena [
     ^ self new
-        x: xValue;
-        y: yValue;
-        yourself
-]
-
-{ #category : #'instance creation' }
-Celda class >> x: coordX y: coordY contenido: unContenido [
-    "Crea una nueva instancia de Ubicacion con las coordenadas y contenido especificados"
-    
-    ^ self new
-        x: coordX;
-        y: coordY;
-        contenido: unContenido;
+        punto: unPunto;
+        contenido: unaCadena;
         yourself
 ]
 
@@ -35,31 +26,30 @@ Celda >> contenido [
 ]
 
 { #category : #accessing }
-Celda >> contenido: anObject [
+Celda >> contenido: unaCadena [
 
-	contenido := anObject
+	contenido := unaCadena
+]
+
+{ #category : #printing }
+Celda >> printOn: unaCadena [
+    super printOn: unaCadena.
+    unaCadena
+        nextPutAll: ' at: ';
+        nextPutAll: punto;
+        nextPutAll: ' (';
+        nextPutAll: contenido;
+        nextPutAll: ')'.
 ]
 
 { #category : #accessing }
-Celda >> x [
+Celda >> punto [
 
-	^ x
+	^ punto
 ]
 
 { #category : #accessing }
-Celda >> x: anObject [
+Celda >> punto: unPunto [
 
-	x := anObject
-]
-
-{ #category : #accessing }
-Celda >> y [
-
-	^ y
-]
-
-{ #category : #accessing }
-Celda >> y: anObject [
-
-	y := anObject
+	punto := unPunto
 ]

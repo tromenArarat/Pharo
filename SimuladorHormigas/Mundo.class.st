@@ -189,21 +189,11 @@ Mundo >> estaEnMapa: celda [
 { #category : #initalize }
 Mundo >> inicializarMundoConFilas: n columnas: m [
 
-	| tablero |
-	tablero := OrderedCollection new.
+	| tablero|
 
-	1 to: n do: [ :fila | 
-		| filaCeldas |
-		filaCeldas := OrderedCollection new.
-
-		1 to: m do: [ :columna | 
-			filaCeldas add: (Celda new
-					 x: fila;
-					 y: columna;
-					 contenido: 'vacío';
-					 yourself) ].
-
-		tablero add: filaCeldas ].
+	tablero := (1 to: n) collect: [ :fila | 
+		           (1 to: m) collect: [ :columna | 
+			           Celda punto: fila @ columna contenido: 'vacio' ] ].
 
 	self mapa: tablero
 ]
