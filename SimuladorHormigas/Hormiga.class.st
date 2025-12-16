@@ -1,11 +1,26 @@
+"
+Clase madre de todas las hormigas
+
+"
 Class {
 	#name : #Hormiga,
 	#superclass : #Object,
 	#instVars : [
-		'ubicacion'
+		'ubicacion',
+		'colMensajes'
 	],
-	#category : #SimuladorHormigas
+	#category : #'SimuladorHormigas-Base'
 }
+
+{ #category : #accessing }
+Hormiga >> colMensajes [
+	^ self subclassResponsibility
+]
+
+{ #category : #accessing }
+Hormiga >> colMensajes: arg1 [ 
+	^ self subclassResponsibility
+]
 
 { #category : #accessing }
 Hormiga >> ubicacion [

@@ -1,11 +1,13 @@
+"
+Las exploradoras se mueven de 3 celdas en cada turno.
+"
 Class {
 	#name : #Exploradora,
 	#superclass : #Hormiga,
 	#instVars : [
-		'colMensajes',
 		'colRecorridas'
 	],
-	#category : #SimuladorHormigas
+	#category : #'SimuladorHormigas-Base'
 }
 
 { #category : #updating }

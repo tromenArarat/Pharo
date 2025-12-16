@@ -1,3 +1,6 @@
+"
+El hormiguero es el único lugar donde las hormigas comen una unidad de comida por turno.
+"
 Class {
 	#name : #Hormiguero,
 	#superclass : #Object,
@@ -7,7 +10,7 @@ Class {
 		'ubicacion',
 		'mundo'
 	],
-	#category : #SimuladorHormigas
+	#category : #'SimuladorHormigas-Base'
 }
 
 { #category : #accessing }

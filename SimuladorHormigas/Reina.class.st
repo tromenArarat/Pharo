@@ -1,13 +1,15 @@
+"
+Si la reina alcanza su punto de alimentación máxima, engendra una exploradora, una obrera o una guardiana, en proporción: 20, 50, 30 respectivamente.
+"
 Class {
 	#name : #Reina,
 	#superclass : #Hormiga,
 	#instVars : [
-		'colMensajes',
 		'colExploradoras',
 		'colGuardianas',
 		'colObreras'
 	],
-	#category : #SimuladorHormigas
+	#category : #'SimuladorHormigas-Base'
 }
 
 { #category : #accessing }
