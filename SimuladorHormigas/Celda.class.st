@@ -8,7 +8,7 @@ Class {
 		'punto',
 		'contenido'
 	],
-	#category : #SimuladorHormigas
+	#category : #'SimuladorHormigas-Base'
 }
 
 { #category : #initialization }
@@ -31,17 +31,6 @@ Celda >> contenido: unaCadena [
 	contenido := unaCadena
 ]
 
-{ #category : #printing }
-Celda >> printOn: unaCadena [
-    super printOn: unaCadena.
-    unaCadena
-        nextPutAll: ' at: ';
-        nextPutAll: punto;
-        nextPutAll: ' (';
-        nextPutAll: contenido;
-        nextPutAll: ')'.
-]
-
 { #category : #accessing }
 Celda >> punto [
 
@@ -52,4 +41,16 @@ Celda >> punto [
 Celda >> punto: unPunto [
 
 	punto := unPunto
+]
+
+{ #category : #accessing }
+Celda >> x [
+
+	^ punto x
+]
+
+{ #category : #accessing }
+Celda >> y [
+
+	^ punto y
 ]

@@ -8,7 +8,7 @@ Class {
 		'ubicacion',
 		'cantidad'
 	],
-	#category : #SimuladorHormigas
+	#category : #'SimuladorHormigas-Base'
 }
 
 { #category : #accessing }

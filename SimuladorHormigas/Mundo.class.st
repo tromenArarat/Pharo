@@ -95,7 +95,7 @@ Class {
 		'mapa',
 		'colAlimentos'
 	],
-	#category : #SimuladorHormigas
+	#category : #'SimuladorHormigas-Base'
 }
 
 { #category : #accessing }
@@ -189,21 +189,23 @@ Mundo >> estaEnMapa: celda [
 { #category : #initalize }
 Mundo >> inicializarMundoConFilas: n columnas: m [
 
-	| tablero|
-
+	| tablero |
 	tablero := (1 to: n) collect: [ :fila | 
 		           (1 to: m) collect: [ :columna | 
-			           Celda punto: fila @ columna contenido: 'vacio' ] ].
+			           Celda punto: fila @ columna contenido: 'vacio' asString ] ].
 
-	self mapa: tablero
+	self mapa: tablero .
+	self colHormigueros: OrderedCollection new .
+	self colAlimentos: OrderedCollection new .
 ]
 
 { #category : #initialization }
 Mundo >> initialize [
 
-	| tablero m n |
+	| m n tablero numAlimentos |
 	m := 10.
 	n := 10.
+	numAlimentos := 10.
 
 	tablero := (1 to: n) collect: [ :fila | 
 		           (1 to: m) collect: [ :columna | 
@@ -211,7 +213,23 @@ Mundo >> initialize [
 
 	self mapa: tablero.
 	self colAlimentos: OrderedCollection new.
-	self colHormigueros: OrderedCollection new
+	self colHormigueros: OrderedCollection new.
+
+	numAlimentos timesRepeat: [ 
+		| filaRandom columnaRandom posicion alimento |
+		 
+		filaRandom := (1 to: n) atRandom.
+		columnaRandom := (1 to: m) atRandom.
+		posicion := filaRandom @ columnaRandom .
+
+		alimento := Alimento new
+			            ubicacion: posicion;
+			            cantidad: (10 to: 20) atRandom;
+			            yourself.
+
+		colAlimentos add: alimento.
+
+		((mapa at: filaRandom) at: columnaRandom) contenido: 'alimento' ]
 ]
 
 { #category : #accessing }
