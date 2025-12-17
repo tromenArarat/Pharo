@@ -163,11 +163,15 @@ Mundo >> colHormigueros: anObject [
 { #category : #random }
 Mundo >> colorAleatorio [
 
-| colores indice|
-colores := #( 'rojo' 'negro' ).
-indice := (1 to: 2) atRandom .
+	| colores indice |
+	colores := #( 'rojo' 'negro' ).
+	indice := (1 to: 2) atRandom.
 
-^ colores at:indice
+	^ colores at: indice
+
+	"Más sencillo:
+		^ #('rojo' 'negro') atRandom
+	"
 ]
 
 { #category : #'game logic' }
@@ -251,11 +255,12 @@ Mundo >> inicializarHormigueros [
 		color := self colorAleatorio.
 
 		hormiguero := Hormiguero new
+			              ubicacion: posicion;
 			              color: color;
 			              colHormigas: OrderedCollection new;
-			              ubicacion: posicion;
 			              yourself.
 
+		
 		colHormigueros add: hormiguero.
 
 		((mapa at: filaRandom) at: columnaRandom) contenido: 'hormiguero' ]

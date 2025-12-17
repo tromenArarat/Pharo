@@ -36,6 +36,12 @@ Hormiguero >> color: anObject [
 	color := anObject
 ]
 
+{ #category : #random }
+Hormiguero >> colorAleatorio [
+
+	^ #('rojo' 'negro') atRandom
+]
+
 { #category : #accessing }
 Hormiguero >> ubicacion [
 
