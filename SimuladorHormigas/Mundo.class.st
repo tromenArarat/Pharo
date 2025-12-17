@@ -244,6 +244,7 @@ Mundo >> inicializarHormigueros [
 
 	numHormigueros timesRepeat: [ 
 		| filaRandom columnaRandom posicion hormiguero color |
+		"Si el bloque es verdadero se ejecuta de vuelta"
 		[ 
 		filaRandom := (1 to: n) atRandom.
 		columnaRandom := (1 to: m) atRandom.
@@ -255,13 +256,43 @@ Mundo >> inicializarHormigueros [
 		color := self colorAleatorio.
 
 		hormiguero := Hormiguero new
-			              ubicacion: posicion;
 			              color: color;
-			              colHormigas: OrderedCollection new;
-			              yourself.
-
-		
+			              ubicacion: posicion;
+			yourself.
+		hormiguero reina ubicacion: posicion.
 		colHormigueros add: hormiguero.
+
+		((mapa at: filaRandom) at: columnaRandom) contenido: 'hormiguero' ]
+]
+
+{ #category : #initalize }
+Mundo >> inicializarHormigueros2 [
+
+	| numHormigueros posicionesUsadas m n |
+	numHormigueros := 2.
+	posicionesUsadas := self posicionesUsadasConAlimentoHormiguero.
+
+	n := self mapa size.
+	m := (self mapa at: 1) size.
+
+	self colHormigueros: OrderedCollection new.
+
+	numHormigueros timesRepeat: [ 
+		| filaRandom columnaRandom posicion hormiguero color |
+		"Si el bloque es verdadero se ejecuta de vuelta"
+		[ 
+		filaRandom := (1 to: n) atRandom.
+		columnaRandom := (1 to: m) atRandom.
+		posicion := filaRandom @ columnaRandom.
+		posicionesUsadas includes: posicion ] whileTrue.
+
+		posicionesUsadas add: posicion.
+
+		color := self colorAleatorio.
+
+		hormiguero := Hormiguero new inicializarColor: color ubicacion: posicion.
+
+		self colHormigueros add: hormiguero.
 
 		((mapa at: filaRandom) at: columnaRandom) contenido: 'hormiguero' ]
 ]
@@ -292,9 +323,9 @@ Mundo >> initialize [
 
 	self mapa: tablero.
 
-	self inicializarFuenteAlimentos .
-	
-	self inicializarHormigueros 
+	self inicializarFuenteAlimentos.
+
+	self inicializarHormigueros2
 ]
 
 { #category : #accessing }

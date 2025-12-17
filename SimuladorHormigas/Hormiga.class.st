@@ -6,21 +6,10 @@ Class {
 	#name : #Hormiga,
 	#superclass : #Object,
 	#instVars : [
-		'ubicacion',
-		'colMensajes'
+		'ubicacion'
 	],
 	#category : #'SimuladorHormigas-Base'
 }
-
-{ #category : #accessing }
-Hormiga >> colMensajes [
-	^ self subclassResponsibility
-]
-
-{ #category : #accessing }
-Hormiga >> colMensajes: arg1 [ 
-	^ self subclassResponsibility
-]
 
 { #category : #accessing }
 Hormiga >> ubicacion [

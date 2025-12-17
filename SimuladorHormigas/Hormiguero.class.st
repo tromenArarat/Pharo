@@ -6,23 +6,11 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'color',
-		'colHormigas',
+		'reina',
 		'ubicacion'
 	],
 	#category : #'SimuladorHormigas-Base'
 }
-
-{ #category : #accessing }
-Hormiguero >> colHormigas [
-
-	^ colHormigas
-]
-
-{ #category : #accessing }
-Hormiguero >> colHormigas: anObject [
-
-	colHormigas := anObject
-]
 
 { #category : #accessing }
 Hormiguero >> color [
@@ -40,6 +28,31 @@ Hormiguero >> color: anObject [
 Hormiguero >> colorAleatorio [
 
 	^ #('rojo' 'negro') atRandom
+]
+
+{ #category : #initialize }
+Hormiguero >> inicializarColor: unColor ubicacion: unaUbicacion [
+
+	| reinaBatata |
+	reinaBatata := Reina new inicializarUbicacion: unaUbicacion.
+
+	self color: unColor.
+	self ubicacion: unaUbicacion.
+	self reina: reinaBatata .
+	
+reinaBatata inicializarExploradora  
+]
+
+{ #category : #accessing }
+Hormiguero >> reina [
+
+	^ reina
+]
+
+{ #category : #accessing }
+Hormiguero >> reina: anObject [
+
+	reina := anObject
 ]
 
 { #category : #accessing }
