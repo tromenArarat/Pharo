@@ -7,8 +7,7 @@ Class {
 	#instVars : [
 		'color',
 		'colHormigas',
-		'ubicacion',
-		'mundo'
+		'ubicacion'
 	],
 	#category : #'SimuladorHormigas-Base'
 }
@@ -35,18 +34,6 @@ Hormiguero >> color [
 Hormiguero >> color: anObject [
 
 	color := anObject
-]
-
-{ #category : #accessing }
-Hormiguero >> mundo [
-
-	^ mundo
-]
-
-{ #category : #accessing }
-Hormiguero >> mundo: anObject [
-
-	mundo := anObject
 ]
 
 { #category : #accessing }

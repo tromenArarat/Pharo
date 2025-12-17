@@ -160,6 +160,16 @@ Mundo >> colHormigueros: anObject [
 	colHormigueros := anObject
 ]
 
+{ #category : #random }
+Mundo >> colorAleatorio [
+
+| colores indice|
+colores := #( 'rojo' 'negro' ).
+indice := (1 to: 2) atRandom .
+
+^ colores at:indice
+]
+
 { #category : #'game logic' }
 Mundo >> encontrarReinaEn: unaUbicacion [
 
@@ -187,6 +197,71 @@ Mundo >> estaEnMapa: celda [
 ]
 
 { #category : #initalize }
+Mundo >> inicializarFuenteAlimentos [
+
+	| numAlimentos posicionesUsadas m n |
+	numAlimentos := 10.
+	posicionesUsadas := Set new.
+	n := self mapa size.
+	m := (self mapa at: 1) size.
+
+	self colAlimentos: OrderedCollection new.
+
+	numAlimentos timesRepeat: [ 
+		| filaRandom columnaRandom posicion alimento |
+		[ filaRandom := (1 to: n) atRandom.
+		columnaRandom := (1 to: m) atRandom.
+		posicion := filaRandom @ columnaRandom.
+		posicionesUsadas includes: posicion ] whileTrue.
+
+		posicionesUsadas add: posicion.
+
+		alimento := Alimento new
+			            ubicacion: posicion;
+			            cantidad: (10 to: 20) atRandom;
+			            yourself.
+
+		colAlimentos add: alimento.
+
+		((mapa at: filaRandom) at: columnaRandom) contenido: 'alimento' ]
+]
+
+{ #category : #initalize }
+Mundo >> inicializarHormigueros [
+
+	| numHormigueros posicionesUsadas m n |
+	numHormigueros := 2.
+	posicionesUsadas := self posicionesUsadasConAlimentoHormiguero.
+
+	n := self mapa size.
+	m := (self mapa at: 1) size.
+
+	self colHormigueros: OrderedCollection new.
+
+	numHormigueros timesRepeat: [ 
+		| filaRandom columnaRandom posicion hormiguero color |
+		[ 
+		filaRandom := (1 to: n) atRandom.
+		columnaRandom := (1 to: m) atRandom.
+		posicion := filaRandom @ columnaRandom.
+		posicionesUsadas includes: posicion ] whileTrue.
+
+		posicionesUsadas add: posicion.
+
+		color := self colorAleatorio.
+
+		hormiguero := Hormiguero new
+			              color: color;
+			              colHormigas: OrderedCollection new;
+			              ubicacion: posicion;
+			              yourself.
+
+		colHormigueros add: hormiguero.
+
+		((mapa at: filaRandom) at: columnaRandom) contenido: 'hormiguero' ]
+]
+
+{ #category : #initalize }
 Mundo >> inicializarMundoConFilas: n columnas: m [
 
 	| tablero |
@@ -202,34 +277,19 @@ Mundo >> inicializarMundoConFilas: n columnas: m [
 { #category : #initialization }
 Mundo >> initialize [
 
-	| m n tablero numAlimentos |
+	| m n tablero |
 	m := 10.
 	n := 10.
-	numAlimentos := 10.
 
 	tablero := (1 to: n) collect: [ :fila | 
 		           (1 to: m) collect: [ :columna | 
 			           Celda punto: fila @ columna contenido: 'vacio' ] ].
 
 	self mapa: tablero.
-	self colAlimentos: OrderedCollection new.
-	self colHormigueros: OrderedCollection new.
 
-	numAlimentos timesRepeat: [ 
-		| filaRandom columnaRandom posicion alimento |
-		 
-		filaRandom := (1 to: n) atRandom.
-		columnaRandom := (1 to: m) atRandom.
-		posicion := filaRandom @ columnaRandom .
-
-		alimento := Alimento new
-			            ubicacion: posicion;
-			            cantidad: (10 to: 20) atRandom;
-			            yourself.
-
-		colAlimentos add: alimento.
-
-		((mapa at: filaRandom) at: columnaRandom) contenido: 'alimento' ]
+	self inicializarFuenteAlimentos .
+	
+	self inicializarHormigueros 
 ]
 
 { #category : #accessing }
@@ -274,4 +334,18 @@ Mundo >> moverHormiga: hormiga contador: unNumero [
 					hormiga ubicacion: posAleatoria.
 					hormiga actualizarRecorridas ] ]
 		ifFalse: [ self moverHormiga: hormiga contador: contador ]
+]
+
+{ #category : #checking }
+Mundo >> posicionesUsadasConAlimentoHormiguero [
+
+	| posicionesUsadas |
+	posicionesUsadas := Set new.
+
+	self mapa do: [ :fila | 
+		fila do: [ :celda | 
+			(celda contenido = 'alimento' or: ( celda contenido = 'hormiguero' )) 
+				ifTrue: [ posicionesUsadas add: celda punto ] ] ].
+
+	^ posicionesUsadas
 ]
