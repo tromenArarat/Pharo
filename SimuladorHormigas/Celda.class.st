@@ -6,7 +6,9 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'punto',
-		'contenido'
+		'contenido',
+		'x',
+		'y'
 	],
 	#category : #'SimuladorHormigas-Base'
 }
@@ -50,7 +52,19 @@ Celda >> x [
 ]
 
 { #category : #accessing }
+Celda >> x:unNumero [
+
+	x:= unNumero
+]
+
+{ #category : #accessing }
 Celda >> y [
 
 	^ punto y
+]
+
+{ #category : #accessing }
+Celda >> y:unNumero [
+
+	y := unNumero
 ]

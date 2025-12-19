@@ -137,6 +137,27 @@ Mundo class >> posRandom: unaUbicacion enMapa: unMapa [
 ]
 
 { #category : #accessing }
+Mundo class >> ubicacionAleatoria: unaUbicacion [
+
+	| movPosibles nuevaUbicacion |
+	movPosibles := unaUbicacion fourNeighbors.
+
+	nuevaUbicacion := movPosibles atRandom.
+
+	^ nuevaUbicacion
+]
+
+{ #category : #accessing }
+Mundo >> celdaEnMapa: unPuntoDeUbicacion [
+
+	| fila columna |
+	fila := unPuntoDeUbicacion x.
+	columna := unPuntoDeUbicacion y.
+
+	^ (self mapa at:fila) at:columna  .
+]
+
+{ #category : #accessing }
 Mundo >> colAlimentos [
 
 	^ colAlimentos
@@ -200,6 +221,20 @@ Mundo >> estaEnMapa: celda [
 	  & (celda y > 0)
 ]
 
+{ #category : #checking }
+Mundo >> estaUbicacionEnMapa: unaUbicacion [
+
+	| x y m n |
+	x := unaUbicacion x.
+	y := unaUbicacion y.
+	m := self mapa size.
+	n := (self mapa at: 1) size.
+
+	^ unaUbicacion x <= ((self mapa at: m) at: n) x
+	  & (unaUbicacion y <= ((mapa at: m) at: n) y) & (unaUbicacion x > 0)
+	  & (unaUbicacion y > 0)
+]
+
 { #category : #initalize }
 Mundo >> inicializarFuenteAlimentos [
 
@@ -256,41 +291,8 @@ Mundo >> inicializarHormigueros [
 		color := self colorAleatorio.
 
 		hormiguero := Hormiguero new
-			              color: color;
-			              ubicacion: posicion;
-			yourself.
-		hormiguero reina ubicacion: posicion.
-		colHormigueros add: hormiguero.
-
-		((mapa at: filaRandom) at: columnaRandom) contenido: 'hormiguero' ]
-]
-
-{ #category : #initalize }
-Mundo >> inicializarHormigueros2 [
-
-	| numHormigueros posicionesUsadas m n |
-	numHormigueros := 2.
-	posicionesUsadas := self posicionesUsadasConAlimentoHormiguero.
-
-	n := self mapa size.
-	m := (self mapa at: 1) size.
-
-	self colHormigueros: OrderedCollection new.
-
-	numHormigueros timesRepeat: [ 
-		| filaRandom columnaRandom posicion hormiguero color |
-		"Si el bloque es verdadero se ejecuta de vuelta"
-		[ 
-		filaRandom := (1 to: n) atRandom.
-		columnaRandom := (1 to: m) atRandom.
-		posicion := filaRandom @ columnaRandom.
-		posicionesUsadas includes: posicion ] whileTrue.
-
-		posicionesUsadas add: posicion.
-
-		color := self colorAleatorio.
-
-		hormiguero := Hormiguero new inicializarColor: color ubicacion: posicion.
+			              inicializarColor: color
+			              ubicacion: posicion.
 
 		self colHormigueros add: hormiguero.
 
@@ -325,7 +327,7 @@ Mundo >> initialize [
 
 	self inicializarFuenteAlimentos.
 
-	self inicializarHormigueros2
+	self inicializarHormigueros
 ]
 
 { #category : #accessing }
@@ -338,6 +340,31 @@ Mundo >> mapa [
 Mundo >> mapa: anObject [
 
 	mapa := anObject
+]
+
+{ #category : #'game logic' }
+Mundo >> moverExploradora: unaExploradora contador: unNumero [
+
+	| posActual celdaMapa recorridas posAleatoria contador |
+	posActual := unaExploradora ubicacion.
+	recorridas := unaExploradora colRecorridas.
+	posAleatoria := self class ubicacionAleatoria:
+		                unaExploradora ubicacion.
+	contador := unNumero.
+
+	(self estaUbicacionEnMapa: posAleatoria)
+		ifTrue: [ 
+			(unaExploradora estaEnRecorridas: posAleatoria) & (contador < 7)
+				ifTrue: [ 
+					contador := contador + 1.
+					self moverExploradora: unaExploradora contador: contador ]
+				ifFalse: [ 
+					celdaMapa := self celdaEnMapa: posAleatoria.
+
+
+					unaExploradora ubicacion: posAleatoria.
+					unaExploradora actualizarRecorridas ] ]
+		ifFalse: [ self moverExploradora: unaExploradora contador: contador ]
 ]
 
 { #category : #'game logic' }

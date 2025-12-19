@@ -68,8 +68,9 @@ Reina >> inicializarExploradora [
 	robinson := Exploradora new
 		            ubicacion: self ubicacion;
 		            colMensajes: OrderedCollection new;
-		            yourself .
-		self colExploradoras add:robinson
+		            yourself.
+	self colExploradoras add: robinson .
+	robinson actualizarRecorridas 
 ]
 
 { #category : #initalize }

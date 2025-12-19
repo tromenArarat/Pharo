@@ -54,7 +54,7 @@ Exploradora >> estaEnRecorridas: unaCelda [
 ]
 
 { #category : #initialization }
-Exploradora >> initialize [ 
+Exploradora >> initialize [
 
-self colRecorridas: OrderedCollection new .
+	self colRecorridas: OrderedCollection new 
 ]
