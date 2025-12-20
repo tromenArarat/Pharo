@@ -21,10 +21,35 @@ Class {
 		'colExploradoras',
 		'colGuardianas',
 		'colObreras',
-		'comidaMaxima'
+		'comidaMaxima',
+		'colContingencias'
 	],
 	#category : #'SimuladorHormigas-Base'
 }
+
+{ #category : #update }
+Reina >> actualizarContingencias: unaContingencia ubicacion: unaUbicacion [
+
+	| celda |
+	celda := Celda new.
+
+	celda punto: unaUbicacion.
+	celda contenido: unaContingencia.
+
+	self colContingencias add: celda
+]
+
+{ #category : #accessing }
+Reina >> colContingencias [
+
+	^ colContingencias
+]
+
+{ #category : #accessing }
+Reina >> colContingencias: anObject [
+
+	colContingencias := anObject
+]
 
 { #category : #accessing }
 Reina >> colExploradoras [

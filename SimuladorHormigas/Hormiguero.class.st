@@ -13,6 +13,19 @@ Class {
 	#category : #'SimuladorHormigas-Base'
 }
 
+{ #category : #calculating }
+Hormiguero >> bocasAlimentar [
+
+	| exploradorasEnHormiguero |
+	exploradorasEnHormiguero := 0.
+
+	self reina colExploradoras do: [ :exploradora | 
+		exploradora ubicacion = self ubicacion ifTrue: [ 
+			exploradorasEnHormiguero := exploradorasEnHormiguero + 1 ] ].
+
+	^ 1 + exploradorasEnHormiguero + self reina colGuardianas size + self reina colObreras size
+]
+
 { #category : #accessing }
 Hormiguero >> cantAlimento [
 
@@ -47,13 +60,13 @@ Hormiguero >> colorAleatorio [
 Hormiguero >> inicializarColor: unColor ubicacion: unaUbicacion [
 
 	| reinaBatata |
-	reinaBatata := Reina new inicializarUbicacion: unaUbicacion.
+	reinaBatata := Reina new inicializarUbicacion: unaUbicacion ;colContingencias: OrderedCollection new .
 
 	self color: unColor.
 	self ubicacion: unaUbicacion.
-	self reina: reinaBatata .
-	
-reinaBatata inicializarExploradora  
+	self reina: reinaBatata.
+
+	reinaBatata inicializarExploradora
 ]
 
 { #category : #accessing }

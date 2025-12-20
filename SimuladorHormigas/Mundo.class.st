@@ -237,6 +237,18 @@ Mundo >> colorAleatorio [
 	"
 ]
 
+{ #category : #decoding }
+Mundo >> decodificarMensaje: unaExploradora [
+
+	| ubicacionMensaje fila columna |
+	ubicacionMensaje := unaExploradora colMensajes at: 1.
+
+	fila := ubicacionMensaje x.
+	columna := ubicacionMensaje y.
+
+	^ ((self mapa at: fila) at: columna )contenido
+]
+
 { #category : #'game logic' }
 Mundo >> encontrarReinaEn: unaUbicacion [
 
@@ -455,4 +467,40 @@ Mundo >> posicionesUsadasConAlimentoHormiguero [
 				ifTrue: [ posicionesUsadas add: celda punto ] ] ].
 
 	^ posicionesUsadas
+]
+
+{ #category : #moves }
+Mundo >> volverExploradora: unaExploradora aHormiguero: unHormiguero [
+
+	"1) llenar colMensajes (unaExploradora actualizarMensaje)
+1 a) guardar contenido de la ubicacion actual
+2) actualizar colRecorridas a cero
+3) volver exploradora con nearestPointAlongLineFrom:  to: y fourNeighbors  "
+
+	| ubicacionExploradora ubicacionHormiguero ubicacionesCandidatas puntoMasCercano distanciaMinima mensaje |
+	ubicacionExploradora := unaExploradora ubicacion.
+
+	ubicacionHormiguero := unHormiguero ubicacion.
+
+	ubicacionesCandidatas := ubicacionExploradora asPoint fourNeighbors.
+
+	puntoMasCercano := ubicacionesCandidatas first.
+	distanciaMinima := puntoMasCercano distanceTo: ubicacionHormiguero.
+
+	ubicacionesCandidatas allButFirst do: [ :punto | 
+		| distanciaActual |
+		distanciaActual := punto distanceTo: ubicacionHormiguero.
+		distanciaActual < distanciaMinima ifTrue: [ 
+			distanciaMinima := distanciaActual.
+			puntoMasCercano := punto ] ].
+
+	unaExploradora actualizarMensajes.
+
+	mensaje := self decodificarMensaje: unaExploradora.
+
+	unHormiguero reina
+		actualizarContingencias: mensaje
+		ubicacion: ubicacionExploradora.
+
+	^ puntoMasCercano
 ]

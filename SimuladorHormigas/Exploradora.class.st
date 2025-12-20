@@ -18,6 +18,12 @@ Class {
 }
 
 { #category : #updating }
+Exploradora >> actualizarMensajes [
+
+self colMensajes add: self ubicacion .
+]
+
+{ #category : #updating }
 Exploradora >> actualizarRecorridas [
 
 	colRecorridas add: self ubicacion
