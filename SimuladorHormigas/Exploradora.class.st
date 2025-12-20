@@ -20,11 +20,11 @@ Class {
 
 { #category : #updating }
 Exploradora >> actualizarMensajes: unaCelda [
-| validacion |
 
-validacion := unaCelda contenido 	= 'alimento'.
-	
-	validacion ifTrue: [ self colMensajes add: unaCelda ]
+	| validacion |
+	validacion := unaCelda contenido = 'alimento'.
+
+	validacion ifTrue: [ self colMensajes addFirst: unaCelda ]
 ]
 
 { #category : #updating }

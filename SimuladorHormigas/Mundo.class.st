@@ -502,8 +502,7 @@ Mundo >> turnoExploradora: unaExploradora [
 	reina
 		actualizarContingencias:
 		(unaExploradora colMensajes at: 1) contenido
-		ubicacion: (unaExploradora colMensajes at: 1) punto.
-	unaExploradora colMensajes removeAll
+		ubicacion: (unaExploradora colMensajes at: 1) punto
 ]
 
 { #category : #'game logic' }
@@ -517,7 +516,10 @@ Mundo >> turnoExploradoraExplorando: unaExploradora [
 	& (self tieneVacio: unaExploradora ubicacion) ] whileTrue: [ 
 		self moverExploradora: unaExploradora contador: 0.
 		movimientos := movimientos + 1 ].
-	(self tieneAlimento: unaExploradora ubicacion) ifFalse: [ ^ self ].
+	(self tieneAlimento: unaExploradora ubicacion)
+	& (unaExploradora colMensajes allSatisfy: [ :mensaje | 
+			 mensaje punto ~= unaExploradora ubicacion ]) ifFalse: [ 
+		^ self ].
 	unaExploradora estado: 'volviendo'.
 	unaExploradora actualizarMensajes:
 		(self celdaEnMapa: unaExploradora ubicacion).

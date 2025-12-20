@@ -5,6 +5,27 @@ Class {
 }
 
 { #category : #tests }
+ExploradoraTest >> testIrVolverExploradora [
+
+	| mundo robinson hormiguero |
+	mundo := Mundo new.
+
+	robinson := (mundo colHormigueros at: 1) reina colExploradoras at: 1.
+
+	hormiguero := mundo colHormigueros at: 1.
+
+
+	[ hormiguero reina colContingencias isEmpty ] whileTrue: [ 
+		mundo turnoExploradora: robinson ].
+
+
+
+	self
+		assert: (hormiguero reina colContingencias at: 1) x
+		equals: (robinson colMensajes at: 1) x
+]
+
+{ #category : #tests }
 ExploradoraTest >> testMoverExploradora [
 
 	| mundo exploradora x y |
@@ -50,29 +71,4 @@ ExploradoraTest >> testMoverExploradoras [
 		           exploradora2 ubicacion.
 
 	self assert: cierto & cierto2
-]
-
-{ #category : #tests }
-ExploradoraTest >> testVolverExploradora [
-
-	| mundo hormiguero x y robinson |
-	mundo := Mundo new.
-
-	robinson := (mundo colHormigueros at: 1) reina colExploradoras at: 1.
-
-	hormiguero := mundo colHormigueros at: 1.
-
-	mundo.
-
-	x := (mundo colAlimentos at: 1) ubicacion x.
-
-	y := (mundo colAlimentos at: 1) ubicacion y.
-
-	robinson ubicacion: x @ y.
-
-	mundo volverExploradora: robinson aHormiguero: hormiguero.
-
-
-
-	self assert: (hormiguero reina colContingencias at: 1) x equals: x
 ]
