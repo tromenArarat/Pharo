@@ -20,7 +20,8 @@ Class {
 	#instVars : [
 		'colExploradoras',
 		'colGuardianas',
-		'colObreras'
+		'colObreras',
+		'comidaMaxima'
 	],
 	#category : #'SimuladorHormigas-Base'
 }
@@ -59,6 +60,18 @@ Reina >> colObreras [
 Reina >> colObreras: anObject [
 
 	colObreras := anObject
+]
+
+{ #category : #accessing }
+Reina >> comidaMaxima [
+
+	^ comidaMaxima
+]
+
+{ #category : #accessing }
+Reina >> comidaMaxima: anObject [
+
+	comidaMaxima := anObject
 ]
 
 { #category : #initalize }

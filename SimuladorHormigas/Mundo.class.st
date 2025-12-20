@@ -1,6 +1,48 @@
 "
 El mundo es donde la simulación comienza. Es la clase encargada de crear hormigueros y fuentes de alimento
 
+Ejemplo de testeo del algoritmo para moverExploradora:
+""Estoy buscando la ratio recorridas/repetidas""
+
+mundo moverExploradora: robinson contador: 0 .
+
+71 timesRepeat: [ mundo moverExploradora: robinson contador: 0  ] .
+
+robinson ubicacion .
+
+robinson colRecorridas .
+
+unPunto := robinson colRecorridas at:23.
+
+robinson colRecorridas select:  [ :x |  (x = unPunto) ] .
+
+""cómo hago para traer la ubicacion más repetida y cómo cuenta la cantidad de ubicaciones repetidas en total""
+
+coleccionOrdenada := robinson colRecorridas asOrderedCollection  .
+
+OrderedCollection selectors .
+
+contador := Dictionary new.
+
+coleccionOrdenada do: [:punto |  contador at: punto put: ((contador at: punto ifAbsent: [0]) + 1)] .
+
+contador  .
+
+contador size .
+
+maxRepeticiones := 0.
+puntoMasRepetido := nil.
+
+contador keysAndValuesDo: [:punto :cantidad | cantidad > maxRepeticiones ifTrue: [ maxRepeticiones := cantidad. 	puntoMasRepetido := punto]].
+
+maxRepeticiones .
+puntoMasRepetido .
+
+masRepetidoRecord := robinson colRecorridas select:  [ :x |  (x = puntoMasRepetido) ]  .
+
+masRepetidoRecord size .
+
+
 Los primeros comandos para crear el mapa del mundo, crear un hormiguero y completar sus atributos de instancia son los siguientes:
 
 mundo := Mundo new .
@@ -268,13 +310,14 @@ Mundo >> inicializarFuenteAlimentos [
 { #category : #initalize }
 Mundo >> inicializarHormigueros [
 
-	| numHormigueros posicionesUsadas m n |
+	| numHormigueros posicionesUsadas m n cantAlimentoPorHormiguero |
 	numHormigueros := 2.
 	posicionesUsadas := self posicionesUsadasConAlimentoHormiguero.
 
 	n := self mapa size.
 	m := (self mapa at: 1) size.
-
+	
+	cantAlimentoPorHormiguero :=  50 .
 	self colHormigueros: OrderedCollection new.
 
 	numHormigueros timesRepeat: [ 
@@ -293,6 +336,7 @@ Mundo >> inicializarHormigueros [
 		hormiguero := Hormiguero new
 			              inicializarColor: color
 			              ubicacion: posicion.
+		hormiguero cantAlimento: cantAlimentoPorHormiguero .
 
 		self colHormigueros add: hormiguero.
 

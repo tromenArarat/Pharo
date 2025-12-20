@@ -1,5 +1,8 @@
 "
-Cada unidad del mapa, definida con un objeto de la clase Point y una descripción
+Cada unidad del mapa, definida con un objeto de la clase Point y una descripción.
+
+
+
 "
 Class {
 	#name : #Celda,

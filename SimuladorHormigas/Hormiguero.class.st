@@ -7,10 +7,23 @@ Class {
 	#instVars : [
 		'color',
 		'reina',
-		'ubicacion'
+		'ubicacion',
+		'cantAlimento'
 	],
 	#category : #'SimuladorHormigas-Base'
 }
+
+{ #category : #accessing }
+Hormiguero >> cantAlimento [
+
+	^ cantAlimento
+]
+
+{ #category : #accessing }
+Hormiguero >> cantAlimento: anObject [
+
+	cantAlimento := anObject
+]
 
 { #category : #accessing }
 Hormiguero >> color [
