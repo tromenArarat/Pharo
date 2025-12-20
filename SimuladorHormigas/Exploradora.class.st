@@ -12,15 +12,19 @@ Class {
 	#superclass : #Hormiga,
 	#instVars : [
 		'colRecorridas',
-		'colMensajes'
+		'colMensajes',
+		'estado'
 	],
 	#category : #'SimuladorHormigas-Base'
 }
 
 { #category : #updating }
-Exploradora >> actualizarMensajes [
+Exploradora >> actualizarMensajes: unaCelda [
+| validacion |
 
-self colMensajes add: self ubicacion .
+validacion := unaCelda contenido 	= 'alimento'.
+	
+	validacion ifTrue: [ self colMensajes add: unaCelda ]
 ]
 
 { #category : #updating }
@@ -57,6 +61,18 @@ Exploradora >> colRecorridas: anObject [
 Exploradora >> estaEnRecorridas: unaCelda [
 
 ^ self colRecorridas includes: unaCelda .
+]
+
+{ #category : #accessing }
+Exploradora >> estado [
+
+	^ estado
+]
+
+{ #category : #accessing }
+Exploradora >> estado: anObject [
+
+	estado := anObject
 ]
 
 { #category : #initialization }

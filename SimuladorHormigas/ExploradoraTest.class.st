@@ -51,3 +51,28 @@ ExploradoraTest >> testMoverExploradoras [
 
 	self assert: cierto & cierto2
 ]
+
+{ #category : #tests }
+ExploradoraTest >> testVolverExploradora [
+
+	| mundo hormiguero x y robinson |
+	mundo := Mundo new.
+
+	robinson := (mundo colHormigueros at: 1) reina colExploradoras at: 1.
+
+	hormiguero := mundo colHormigueros at: 1.
+
+	mundo.
+
+	x := (mundo colAlimentos at: 1) ubicacion x.
+
+	y := (mundo colAlimentos at: 1) ubicacion y.
+
+	robinson ubicacion: x @ y.
+
+	mundo volverExploradora: robinson aHormiguero: hormiguero.
+
+
+
+	self assert: (hormiguero reina colContingencias at: 1) x equals: x
+]

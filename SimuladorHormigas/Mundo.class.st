@@ -1,8 +1,13 @@
 "
 El mundo es donde la simulación comienza. Es la clase encargada de crear hormigueros y fuentes de alimento
 
-Ejemplo de testeo del algoritmo para moverExploradora:
-""Estoy buscando la ratio recorridas/repetidas""
+Los primeros comandos para crear el mapa del mundo, crear un hormiguero y completar sus atributos de instancia son los siguientes:
+
+mundo := Mundo new .
+
+## Ejemplo de testeo del algoritmo para moverExploradora:
+
+- ""Estoy buscando la ratio recorridas/repetidas""
 
 mundo moverExploradora: robinson contador: 0 .
 
@@ -16,7 +21,7 @@ unPunto := robinson colRecorridas at:23.
 
 robinson colRecorridas select:  [ :x |  (x = unPunto) ] .
 
-""cómo hago para traer la ubicacion más repetida y cómo cuenta la cantidad de ubicaciones repetidas en total""
+- ""cómo hago para traer la ubicacion más repetida y cómo cuenta la cantidad de ubicaciones repetidas en total""
 
 coleccionOrdenada := robinson colRecorridas asOrderedCollection  .
 
@@ -43,9 +48,7 @@ masRepetidoRecord := robinson colRecorridas select:  [ :x |  (x = puntoMasRepeti
 masRepetidoRecord size .
 
 
-Los primeros comandos para crear el mapa del mundo, crear un hormiguero y completar sus atributos de instancia son los siguientes:
-
-mundo := Mundo new .
+## Otros comandos
 
 mundo inicializarMundoConFilas: 10 columnas: 10 .
 
@@ -189,6 +192,29 @@ Mundo class >> ubicacionAleatoria: unaUbicacion [
 	^ nuevaUbicacion
 ]
 
+{ #category : #'game logic' }
+Mundo class >> volverExploradora: unaExploradora [
+
+	| ubicacionExploradora ubicacionHormiguero candidatas puntoMasCercano distanciaMinima |
+	ubicacionExploradora := unaExploradora ubicacion.
+
+	ubicacionHormiguero := unaExploradora colRecorridas at: 1.
+
+	candidatas := ubicacionExploradora asPoint fourNeighbors.
+
+	puntoMasCercano := candidatas first.
+
+	distanciaMinima := puntoMasCercano distanceTo: ubicacionHormiguero.
+
+	candidatas allButFirst do: [ :punto | 
+		| distanciaActual |
+		distanciaActual := punto distanceTo: ubicacionHormiguero.
+		distanciaActual < distanciaMinima ifTrue: [ 
+			distanciaMinima := distanciaActual.
+			puntoMasCercano := punto ].
+		unaExploradora ubicacion: puntoMasCercano ]
+]
+
 { #category : #accessing }
 Mundo >> celdaEnMapa: unPuntoDeUbicacion [
 
@@ -249,16 +275,14 @@ Mundo >> decodificarMensaje: unaExploradora [
 	^ ((self mapa at: fila) at: columna )contenido
 ]
 
-{ #category : #'game logic' }
+{ #category : #accessing }
 Mundo >> encontrarReinaEn: unaUbicacion [
 
-	"Retorna la reina que se encuentra en la ubicación especificada"
+	"Retorna la reina que se encuentra en la ubicación especificada, o nil si no hay ninguna"
 
-	^ self hormigas
-		  detect: [ :hormiga | 
-			  (hormiga class: Hormiga) and: [ 
-				  hormiga ubicacion = unaUbicacion ] ]
-		  ifNone: [ nil ]
+	self colHormigueros do: [ :hormiguero |
+        hormiguero reina ifNotNil: [ :reina |
+            (reina ubicacion = unaUbicacion) ifTrue: [ ^ reina ] ] ].
 ]
 
 { #category : #checking }
@@ -322,14 +346,14 @@ Mundo >> inicializarFuenteAlimentos [
 { #category : #initalize }
 Mundo >> inicializarHormigueros [
 
-	| numHormigueros posicionesUsadas m n cantAlimentoPorHormiguero |
+	| numHormigueros posicionesUsadas m n cantAlimentoPorHormiguero  |
 	numHormigueros := 2.
 	posicionesUsadas := self posicionesUsadasConAlimentoHormiguero.
 
 	n := self mapa size.
 	m := (self mapa at: 1) size.
-	
-	cantAlimentoPorHormiguero :=  50 .
+
+	cantAlimentoPorHormiguero := 50.
 	self colHormigueros: OrderedCollection new.
 
 	numHormigueros timesRepeat: [ 
@@ -348,7 +372,9 @@ Mundo >> inicializarHormigueros [
 		hormiguero := Hormiguero new
 			              inicializarColor: color
 			              ubicacion: posicion.
-		hormiguero cantAlimento: cantAlimentoPorHormiguero .
+
+
+		hormiguero alimento: cantAlimentoPorHormiguero.
 
 		self colHormigueros add: hormiguero.
 
@@ -423,38 +449,6 @@ Mundo >> moverExploradora: unaExploradora contador: unNumero [
 		ifFalse: [ self moverExploradora: unaExploradora contador: contador ]
 ]
 
-{ #category : #'game logic' }
-Mundo >> moverHormiga: hormiga contador: unNumero [
-
-	" Este método debe mover la hormiga en cualquier dirección distinta a la de su posición actual y evitar pasar por las 	posiciones ya transitadas (colRecorridas).
-
-	- Que reciba la posicion actual y la colección de recorridas y elija una opción al azar.
-	- Chequear si la posición está en el mapa. (estaEnMapa: unaCelda)
-	- Actualizar colRecorridas. Se debe resetear cuano la hormiga encuentra alimento "
-
-	| posActual recorridas posAleatoria contador |
-	posActual := hormiga ubicacion.
-	recorridas := hormiga colRecorridas.
-	posAleatoria := self class posRandom: posActual enMapa: self mapa.
-	contador := unNumero.
-
-	"Actualiza colRecorridas con posición actual en el primer lugar "
-	"hormiga actualizarRecorridas."
-
-	(self estaEnMapa: posAleatoria)
-		ifTrue: [ 
-			(hormiga estaEnRecorridas: posAleatoria) & (contador < 7)
-				ifTrue: [ 
-					contador = contador + 1.
-					self moverHormiga: hormiga contador: contador ]
-				ifFalse: [ 
-					posAleatoria contenido:
-						((self mapa at: posAleatoria x) at: posAleatoria y) contenido.
-					hormiga ubicacion: posAleatoria.
-					hormiga actualizarRecorridas ] ]
-		ifFalse: [ self moverHormiga: hormiga contador: contador ]
-]
-
 { #category : #checking }
 Mundo >> posicionesUsadasConAlimentoHormiguero [
 
@@ -469,38 +463,79 @@ Mundo >> posicionesUsadasConAlimentoHormiguero [
 	^ posicionesUsadas
 ]
 
-{ #category : #moves }
-Mundo >> volverExploradora: unaExploradora aHormiguero: unHormiguero [
+{ #category : #checking }
+Mundo >> tieneAlimento: unPuntoDeUbicacion [
 
-	"1) llenar colMensajes (unaExploradora actualizarMensaje)
-1 a) guardar contenido de la ubicacion actual
-2) actualizar colRecorridas a cero
-3) volver exploradora con nearestPointAlongLineFrom:  to: y fourNeighbors  "
+	| fila columna |
+	fila := unPuntoDeUbicacion x.
+	columna := unPuntoDeUbicacion y.
+	
+	^ ((self mapa at: fila) at: columna ) contenido = 'alimento'
 
-	| ubicacionExploradora ubicacionHormiguero ubicacionesCandidatas puntoMasCercano distanciaMinima mensaje |
-	ubicacionExploradora := unaExploradora ubicacion.
+	
+]
 
-	ubicacionHormiguero := unHormiguero ubicacion.
+{ #category : #checking }
+Mundo >> tieneVacio: unPuntoDeUbicacion [
 
-	ubicacionesCandidatas := ubicacionExploradora asPoint fourNeighbors.
+	| fila columna celda |
+	fila := unPuntoDeUbicacion x.
+	columna := unPuntoDeUbicacion y.
 
-	puntoMasCercano := ubicacionesCandidatas first.
-	distanciaMinima := puntoMasCercano distanceTo: ubicacionHormiguero.
+	celda := (self mapa at: fila) at: columna.
 
-	ubicacionesCandidatas allButFirst do: [ :punto | 
-		| distanciaActual |
-		distanciaActual := punto distanceTo: ubicacionHormiguero.
-		distanciaActual < distanciaMinima ifTrue: [ 
-			distanciaMinima := distanciaActual.
-			puntoMasCercano := punto ] ].
+	^ celda contenido = 'vacio' or: (celda contenido = 'hormiguero')
+]
 
-	unaExploradora actualizarMensajes.
+{ #category : #'game logic' }
+Mundo >> turnoExploradora: unaExploradora [
 
-	mensaje := self decodificarMensaje: unaExploradora.
+	| ubicacionHormiguero reina |
+	ubicacionHormiguero := unaExploradora colRecorridas at: 1.
+	reina := self encontrarReinaEn: ubicacionHormiguero.
+	unaExploradora estado = 'explorando'
+		ifTrue: [ self turnoExploradoraExplorando: unaExploradora ]
+		ifFalse: [ self turnoExploradoraVolviendo: unaExploradora ].
 
-	unHormiguero reina
-		actualizarContingencias: mensaje
-		ubicacion: ubicacionExploradora.
+	unaExploradora ubicacion = ubicacionHormiguero ifFalse: [ ^ self ].
+	unaExploradora estado: 'explorando'.
+	reina
+		actualizarContingencias:
+		(unaExploradora colMensajes at: 1) contenido
+		ubicacion: (unaExploradora colMensajes at: 1) punto.
+	unaExploradora colMensajes removeAll
+]
 
-	^ puntoMasCercano
+{ #category : #'game logic' }
+Mundo >> turnoExploradoraExplorando: unaExploradora [
+
+	| movimientos ubicacionHormiguero |
+	ubicacionHormiguero := unaExploradora colRecorridas at: 1.
+	movimientos := 0.
+	[ 
+	unaExploradora estado = 'explorando' & (movimientos < 4)
+	& (self tieneVacio: unaExploradora ubicacion) ] whileTrue: [ 
+		self moverExploradora: unaExploradora contador: 0.
+		movimientos := movimientos + 1 ].
+	(self tieneAlimento: unaExploradora ubicacion) ifFalse: [ ^ self ].
+	unaExploradora estado: 'volviendo'.
+	unaExploradora actualizarMensajes:
+		(self celdaEnMapa: unaExploradora ubicacion).
+	unaExploradora colRecorridas removeAllSuchThat: [ :each | 
+		(unaExploradora colRecorridas indexOf: each) > 1 ].
+	movimientos := 4
+]
+
+{ #category : #accessing }
+Mundo >> turnoExploradoraVolviendo: unaExploradora [
+
+	| ubicacionHormiguero movimientos |
+	ubicacionHormiguero := unaExploradora colRecorridas at: 1.
+	movimientos := 0.
+	[ 
+	unaExploradora ubicacion ~= ubicacionHormiguero & (movimientos < 4) ] 
+		whileTrue: [ 
+			self class volverExploradora: unaExploradora.
+			movimientos := movimientos + 1 ].
+
 ]

@@ -8,34 +8,45 @@ Class {
 		'color',
 		'reina',
 		'ubicacion',
-		'cantAlimento'
+		'alimento'
 	],
 	#category : #'SimuladorHormigas-Base'
 }
 
+{ #category : #accessing }
+Hormiguero >> alimento [
+
+	^ alimento
+]
+
+{ #category : #accessing }
+Hormiguero >> alimento: anObject [
+
+	alimento := anObject
+]
+
 { #category : #calculating }
 Hormiguero >> bocasAlimentar [
 
-	| exploradorasEnHormiguero |
+	| exploradorasEnHormiguero obrerasEnHormiguero guardianasEnHormiguero |
 	exploradorasEnHormiguero := 0.
+	obrerasEnHormiguero := 0.
+	guardianasEnHormiguero := 0.
 
 	self reina colExploradoras do: [ :exploradora | 
 		exploradora ubicacion = self ubicacion ifTrue: [ 
 			exploradorasEnHormiguero := exploradorasEnHormiguero + 1 ] ].
 
-	^ 1 + exploradorasEnHormiguero + self reina colGuardianas size + self reina colObreras size
-]
+	self reina colObreras do: [ :obrera | 
+		obrera ubicacion = self ubicacion ifTrue: [ 
+			obrerasEnHormiguero := obrerasEnHormiguero + 1 ] ].
 
-{ #category : #accessing }
-Hormiguero >> cantAlimento [
+	self reina colGuardianas do: [ :guardiana | 
+		guardiana ubicacion = self ubicacion ifTrue: [ 
+			obrerasEnHormiguero := guardianasEnHormiguero + 1 ] ].
 
-	^ cantAlimento
-]
 
-{ #category : #accessing }
-Hormiguero >> cantAlimento: anObject [
-
-	cantAlimento := anObject
+	^ 1 + exploradorasEnHormiguero + obrerasEnHormiguero + guardianasEnHormiguero
 ]
 
 { #category : #accessing }
@@ -54,6 +65,16 @@ Hormiguero >> color: anObject [
 Hormiguero >> colorAleatorio [
 
 	^ #('rojo' 'negro') atRandom
+]
+
+{ #category : #reducing }
+Hormiguero >> darAlimento [
+
+| comensales |
+
+comensales := self bocasAlimentar .
+
+	self alimento: self alimento 
 ]
 
 { #category : #initialize }

@@ -35,6 +35,8 @@ Reina >> actualizarContingencias: unaContingencia ubicacion: unaUbicacion [
 
 	celda punto: unaUbicacion.
 	celda contenido: unaContingencia.
+	celda x: celda punto x .
+	celda y: celda punto y .
 
 	self colContingencias add: celda
 ]
@@ -106,9 +108,10 @@ Reina >> inicializarExploradora [
 	robinson := Exploradora new
 		            ubicacion: self ubicacion;
 		            colMensajes: OrderedCollection new;
+		estado: 'explorando';
 		            yourself.
-	self colExploradoras add: robinson .
-	robinson actualizarRecorridas 
+	self colExploradoras add: robinson.
+	robinson actualizarRecorridas
 ]
 
 { #category : #initalize }
