@@ -11,7 +11,7 @@ probabilidades es la siguiente:
 
 Obreras: 30%
 Exploradoras: 20%
-Guerreras: 30%
+Guardianas: 30%
 Nacimiento fallido: 20% (no nace ninguna hormiga)
 "
 Class {
@@ -104,14 +104,26 @@ Reina >> comidaMaxima: anObject [
 { #category : #initalize }
 Reina >> inicializarExploradora [
 
-	| robinson |
-	robinson := Exploradora new
+	| margaretMead |
+	margaretMead := Exploradora new
 		            ubicacion: self ubicacion;
 		            colMensajes: OrderedCollection new;
-		estado: 'explorando';
+		            estado: 'explorando';
 		            yourself.
-	self colExploradoras add: robinson.
-	robinson actualizarRecorridas
+	self colExploradoras add: margaretMead.
+	margaretMead actualizarRecorridas
+]
+
+{ #category : #initalize }
+Reina >> inicializarObrera [
+
+	| lucyParsons |
+	lucyParsons := Obrera new
+		               ubicacion: self ubicacion;
+		               mochila: 0;
+		               yourself.
+	self colObreras add: lucyParsons .
+	lucyParsons actualizarRecorridas 
 ]
 
 { #category : #initalize }

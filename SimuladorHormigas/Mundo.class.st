@@ -144,6 +144,27 @@ Class {
 }
 
 { #category : #accessing }
+Mundo class >> moverObrera: unaObrera aAlimento: ubicacionAlimento [
+
+	| ubicacionObrera candidatas puntoMasCercano distanciaMinima |
+	ubicacionObrera := unaObrera ubicacion.
+
+	candidatas := ubicacionObrera asPoint fourNeighbors.
+
+	puntoMasCercano := candidatas first.
+
+	distanciaMinima := puntoMasCercano distanceTo: ubicacionAlimento.
+
+	candidatas allButFirst do: [ :punto | 
+		| distanciaActual |
+		distanciaActual := punto distanceTo: ubicacionAlimento.
+		distanciaActual < distanciaMinima ifTrue: [ 
+			distanciaMinima := distanciaActual.
+			puntoMasCercano := punto ].
+		unaObrera ubicacion: puntoMasCercano ]
+]
+
+{ #category : #accessing }
 Mundo class >> posRandom: unaUbicacion enMapa: unMapa [
 
 	| x y ejeRandom movimientoRandom nuevaUbicacion mundo |
@@ -192,9 +213,9 @@ Mundo class >> ubicacionAleatoria: unaUbicacion [
 	^ nuevaUbicacion
 ]
 
-{ #category : #'game logic' }
+{ #category : #accessing }
 Mundo class >> volverExploradora: unaExploradora [
-
+ 
 	| ubicacionExploradora ubicacionHormiguero candidatas puntoMasCercano distanciaMinima |
 	ubicacionExploradora := unaExploradora ubicacion.
 
@@ -212,7 +233,7 @@ Mundo class >> volverExploradora: unaExploradora [
 		distanciaActual < distanciaMinima ifTrue: [ 
 			distanciaMinima := distanciaActual.
 			puntoMasCercano := punto ].
-		unaExploradora ubicacion: puntoMasCercano ]
+		unaExploradora ubicacion: puntoMasCercano ] 
 ]
 
 { #category : #accessing }
@@ -528,7 +549,7 @@ Mundo >> turnoExploradoraExplorando: unaExploradora [
 	movimientos := 4
 ]
 
-{ #category : #accessing }
+{ #category : #'game logic' }
 Mundo >> turnoExploradoraVolviendo: unaExploradora [
 
 	| ubicacionHormiguero movimientos |
@@ -540,4 +561,24 @@ Mundo >> turnoExploradoraVolviendo: unaExploradora [
 			self class volverExploradora: unaExploradora.
 			movimientos := movimientos + 1 ].
 
+]
+
+{ #category : #'game logic' }
+Mundo >> turnoReina: unaReina [
+
+	| destinoObrera obrerasEnHormiguero obrera |
+	destinoObrera := nil.
+	unaReina colContingencias isEmpty ifFalse:
+		[ destinoObrera := (unaReina colContingencias at: 1) punto ] .
+
+	obrerasEnHormiguero := OrderedCollection new.
+
+	obrerasEnHormiguero := unaReina colObreras select: [ :o | 
+		                       o ubicacion = unaReina ubicacion ].
+
+	obrera := nil.
+	obrerasEnHormiguero isEmpty ifFalse: [ 
+		obrera := obrerasEnHormiguero at: 1 ].
+
+	self class moverObrera: obrera aAlimento: destinoObrera
 ]

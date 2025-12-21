@@ -19,10 +19,35 @@ Class {
 	#name : #Obrera,
 	#superclass : #Hormiga,
 	#instVars : [
-		'mochila'
+		'mochila',
+		'colRecorridas'
 	],
 	#category : #'SimuladorHormigas-Base'
 }
+
+{ #category : #updating }
+Obrera >> actualizarRecorridas [
+
+	colRecorridas add: self ubicacion
+]
+
+{ #category : #accessing }
+Obrera >> colRecorridas [
+
+	^ colRecorridas
+]
+
+{ #category : #accessing }
+Obrera >> colRecorridas: anObject [
+
+	colRecorridas := anObject
+]
+
+{ #category : #initialization }
+Obrera >> initialize [ 
+
+self colRecorridas: OrderedCollection new .
+]
 
 { #category : #accessing }
 Obrera >> mochila [

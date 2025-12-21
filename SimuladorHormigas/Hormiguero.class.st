@@ -80,14 +80,18 @@ comensales := self bocasAlimentar .
 { #category : #initialize }
 Hormiguero >> inicializarColor: unColor ubicacion: unaUbicacion [
 
-	| reinaBatata |
-	reinaBatata := Reina new inicializarUbicacion: unaUbicacion ;colContingencias: OrderedCollection new .
+	| njingaMbandi |
+	njingaMbandi := Reina new
+		                inicializarUbicacion: unaUbicacion;
+		comidaMaxima: 3;
+		                colContingencias: OrderedCollection new.
 
 	self color: unColor.
 	self ubicacion: unaUbicacion.
-	self reina: reinaBatata.
+	self reina: njingaMbandi.
 
-	reinaBatata inicializarExploradora
+	njingaMbandi inicializarExploradora.
+	njingaMbandi inicializarObrera
 ]
 
 { #category : #accessing }
