@@ -28,3 +28,26 @@ ObreraTest >> testIrObreraHaciaAlimento [
 	self assert: (reina ubicacion distanceTo: alimento)
 		> (obrera ubicacion distanceTo: alimento)
 ]
+
+{ #category : #tests }
+ObreraTest >> testObreraCargaDescarga [
+
+	| mundo hormiguero exploradora reina obrera alimento  |
+	mundo := Mundo new.
+	exploradora := (mundo colHormigueros at: 1) reina colExploradoras 
+		               at: 1.
+	hormiguero := mundo colHormigueros at: 1.
+	reina := hormiguero reina.
+	[ reina colContingencias isEmpty ] whileTrue: [ 
+		mundo turnoExploradora: exploradora ].
+	obrera := reina colObreras at: 1.
+	alimento := mundo encontrarAlimentoEn:
+		            (reina colContingencias at: 1) punto.
+
+
+	mundo turnoReina: reina.
+
+	8 timesRepeat: [ mundo turnoObrera: obrera ].
+
+	self assert: hormiguero alimento equals: 53
+]

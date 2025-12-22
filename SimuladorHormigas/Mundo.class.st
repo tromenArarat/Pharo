@@ -299,8 +299,10 @@ Mundo >> decodificarMensaje: unaExploradora [
 { #category : #accessing }
 Mundo >> encontrarAlimentoEn: unaUbicacion [
 
-	self colAlimentos detect: [ :alimento | 
-		(alimento ubicacion) = unaUbicacion ]
+^ 	self colAlimentos detect: [ :alimento | 
+		alimento ubicacion = unaUbicacion ] .
+	
+ 
 ]
 
 { #category : #accessing }
@@ -595,11 +597,12 @@ Mundo >> turnoObreraIda: unaObrera [
 
 	destino := (reina colContingencias at: 1) punto.
 	contador := 0.
-	[ (contador < 3) & (unaObrera ubicacion ~= destino) ] whileTrue: [ 
+	[ contador < 3 & (unaObrera ubicacion ~= destino) ] whileTrue: [ 
 		self class moverObrera: unaObrera aUbicacion: destino.
 		contador := contador + 1 ].
 	unaObrera ubicacion = destino ifFalse: [ ^ self ].
 	alimento := self encontrarAlimentoEn: destino.
+	alimento restarCantidad .
 	unaObrera actualizarMochila: alimento.
 	unaObrera estado: 'volviendo'
 ]
