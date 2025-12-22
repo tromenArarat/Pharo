@@ -49,6 +49,12 @@ Hormiguero >> bocasAlimentar [
 	^ 1 + exploradorasEnHormiguero + obrerasEnHormiguero + guardianasEnHormiguero
 ]
 
+{ #category : #loading }
+Hormiguero >> cargarAlimento: unaMochila [
+
+self alimento: self alimento +unaMochila
+]
+
 { #category : #accessing }
 Hormiguero >> color [
 

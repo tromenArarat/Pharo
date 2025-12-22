@@ -25,6 +25,6 @@ ObreraTest >> testIrObreraHaciaAlimento [
 
 	alimento := (reina colContingencias at: 1) punto.
 
-	self assert:
-		(reina ubicacion distanceTo: alimento) > (obrera ubicacion distanceTo: alimento)
+	self assert: (reina ubicacion distanceTo: alimento)
+		> (obrera ubicacion distanceTo: alimento)
 ]

@@ -144,7 +144,7 @@ Class {
 }
 
 { #category : #accessing }
-Mundo class >> moverObrera: unaObrera aAlimento: ubicacionAlimento [
+Mundo class >> moverObrera: unaObrera aUbicacion: unaUbicacion [
 
 	| ubicacionObrera candidatas puntoMasCercano distanciaMinima |
 	ubicacionObrera := unaObrera ubicacion.
@@ -153,11 +153,11 @@ Mundo class >> moverObrera: unaObrera aAlimento: ubicacionAlimento [
 
 	puntoMasCercano := candidatas first.
 
-	distanciaMinima := puntoMasCercano distanceTo: ubicacionAlimento.
+	distanciaMinima := puntoMasCercano distanceTo: unaUbicacion.
 
 	candidatas allButFirst do: [ :punto | 
 		| distanciaActual |
-		distanciaActual := punto distanceTo: ubicacionAlimento.
+		distanciaActual := punto distanceTo: unaUbicacion.
 		distanciaActual < distanciaMinima ifTrue: [ 
 			distanciaMinima := distanciaActual.
 			puntoMasCercano := punto ].
@@ -294,6 +294,21 @@ Mundo >> decodificarMensaje: unaExploradora [
 	columna := ubicacionMensaje y.
 
 	^ ((self mapa at: fila) at: columna )contenido
+]
+
+{ #category : #accessing }
+Mundo >> encontrarAlimentoEn: unaUbicacion [
+
+	self colAlimentos detect: [ :alimento | 
+		(alimento ubicacion) = unaUbicacion ]
+]
+
+{ #category : #accessing }
+Mundo >> encontrarHormigueroEn: unaUbicacion [
+
+	self colHormigueros do: [ :hormiguero | 
+		hormiguero reina ifNotNil: [ :reina | 
+			reina ubicacion = unaUbicacion ifTrue: [ ^ hormiguero ] ] ]
 ]
 
 { #category : #accessing }
@@ -564,15 +579,56 @@ Mundo >> turnoExploradoraVolviendo: unaExploradora [
 ]
 
 { #category : #'game logic' }
+Mundo >> turnoObrera: unaObrera [
+
+	unaObrera estado = 'ida'
+		ifTrue: [ self turnoObreraIda: unaObrera ] 
+		ifFalse: [ self turnoObreraVuelta: unaObrera ]
+]
+
+{ #category : #'game logic' }
+Mundo >> turnoObreraIda: unaObrera [
+
+	| reina hormiguero destino contador alimento |
+	reina := self encontrarReinaEn: (unaObrera colRecorridas at: 1).
+	hormiguero := self encontrarHormigueroEn: reina ubicacion.
+
+	destino := (reina colContingencias at: 1) punto.
+	contador := 0.
+	[ (contador < 3) & (unaObrera ubicacion ~= destino) ] whileTrue: [ 
+		self class moverObrera: unaObrera aUbicacion: destino.
+		contador := contador + 1 ].
+	unaObrera ubicacion = destino ifFalse: [ ^ self ].
+	alimento := self encontrarAlimentoEn: destino.
+	unaObrera actualizarMochila: alimento.
+	unaObrera estado: 'volviendo'
+]
+
+{ #category : #'game logic' }
+Mundo >> turnoObreraVuelta: unaObrera [
+
+	| reina hormiguero contador  |
+	reina := self encontrarReinaEn: (unaObrera colRecorridas at: 1).
+	hormiguero := self encontrarHormigueroEn: reina ubicacion.
+	contador := 0.
+	unaObrera mochila > 0 ifTrue: [ contador := 2 ].
+	[ contador < 3 & (unaObrera ubicacion ~= hormiguero ubicacion) ] 
+		whileTrue: [ 
+			self class moverObrera: unaObrera aUbicacion: hormiguero ubicacion.
+			contador := contador + 1 ].
+	unaObrera ubicacion = hormiguero ubicacion ifFalse: [ ^ self ].
+	hormiguero cargarAlimento: unaObrera mochila.
+	unaObrera descargarMochila.
+	unaObrera estado: 'yendo'
+]
+
+{ #category : #'game logic' }
 Mundo >> turnoReina: unaReina [
 
 	| destinoObrera obrerasEnHormiguero obrera |
 	destinoObrera := nil.
-	unaReina colContingencias isEmpty ifFalse:
-		[ destinoObrera := (unaReina colContingencias at: 1) punto ] .
-
-	obrerasEnHormiguero := OrderedCollection new.
-
+	unaReina colContingencias isEmpty ifTrue: [ ^ self ].
+	
 	obrerasEnHormiguero := unaReina colObreras select: [ :o | 
 		                       o ubicacion = unaReina ubicacion ].
 
@@ -580,5 +636,5 @@ Mundo >> turnoReina: unaReina [
 	obrerasEnHormiguero isEmpty ifFalse: [ 
 		obrera := obrerasEnHormiguero at: 1 ].
 
-	self class moverObrera: obrera aAlimento: destinoObrera
+	self turnoObrera: obrera
 ]

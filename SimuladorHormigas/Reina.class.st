@@ -147,11 +147,12 @@ Reina >> inicializarObrera [
 	lucyParsons := Obrera new
 		               ubicacion: self ubicacion;
 		               mochila: 0;
+		               estado: 'ida';
 		               yourself.
 	self colObreras add: lucyParsons.
-	lucyParsons actualizarRecorridas .
-	
-^ lucyParsons
+	lucyParsons actualizarRecorridas.
+
+	^ lucyParsons
 ]
 
 { #category : #initalize }

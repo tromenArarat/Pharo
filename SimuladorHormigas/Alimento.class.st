@@ -23,6 +23,12 @@ Alimento >> cantidad: anObject [
 	cantidad := anObject
 ]
 
+{ #category : #reducing }
+Alimento >> restarCantidad [
+
+self cantidad: self cantidad -1
+]
+
 { #category : #accessing }
 Alimento >> ubicacion [
 
