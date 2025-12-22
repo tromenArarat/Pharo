@@ -22,7 +22,8 @@ Class {
 		'colGuardianas',
 		'colObreras',
 		'comidaMaxima',
-		'colContingencias'
+		'colContingencias',
+		'semillero'
 	],
 	#category : #'SimuladorHormigas-Base'
 }
@@ -101,17 +102,42 @@ Reina >> comidaMaxima: anObject [
 	comidaMaxima := anObject
 ]
 
+{ #category : #creation }
+Reina >> engendrar [
+
+	| bendi |
+	comidaMaxima = 3 ifFalse: [ ^ self ].
+	bendi := semillero removeFirst.
+	semillero addLast: bendi.
+	self inicializarSegunClaseDeBendi: bendi.
+	self comidaMaxima: 0
+]
+
 { #category : #initalize }
 Reina >> inicializarExploradora [
 
 	| margaretMead |
 	margaretMead := Exploradora new
-		            ubicacion: self ubicacion;
-		            colMensajes: OrderedCollection new;
-		            estado: 'explorando';
-		            yourself.
+		                ubicacion: self ubicacion;
+		                colMensajes: OrderedCollection new;
+		                estado: 'explorando';
+		                yourself.
 	self colExploradoras add: margaretMead.
-	margaretMead actualizarRecorridas
+	margaretMead actualizarRecorridas .
+	 
+^ margaretMead
+]
+
+{ #category : #initalize }
+Reina >> inicializarGuardiana [
+
+	| mujerKurda |
+	mujerKurda := Guardiana new ubicacion: self ubicacion.
+	self colGuardianas add: mujerKurda .
+	
+	^ mujerKurda
+	
+
 ]
 
 { #category : #initalize }
@@ -122,8 +148,21 @@ Reina >> inicializarObrera [
 		               ubicacion: self ubicacion;
 		               mochila: 0;
 		               yourself.
-	self colObreras add: lucyParsons .
-	lucyParsons actualizarRecorridas 
+	self colObreras add: lucyParsons.
+	lucyParsons actualizarRecorridas .
+	
+^ lucyParsons
+]
+
+{ #category : #initalize }
+Reina >> inicializarSegunClaseDeBendi: unaBendi [
+
+	unaBendi class
+		caseOf: { 
+				([ Exploradora ] -> [ self inicializarExploradora ]).
+				([ Guardiana ] -> [ self inicializarGuardiana ]).
+				([ Obrera ] -> [ self inicializarObrera ]) }
+		otherwise: [  ]
 ]
 
 { #category : #initalize }
@@ -133,4 +172,18 @@ Reina >> inicializarUbicacion: unaUbicacion [
 	self colExploradoras: OrderedCollection new.
 	self colGuardianas: OrderedCollection new.
 	self colObreras: OrderedCollection new
+]
+
+{ #category : #accessing }
+Reina >> semillero [
+
+	
+
+	^ semillero
+]
+
+{ #category : #accessing }
+Reina >> semillero: anObject [
+
+	semillero := anObject
 ]

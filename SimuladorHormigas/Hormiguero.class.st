@@ -83,7 +83,8 @@ Hormiguero >> inicializarColor: unColor ubicacion: unaUbicacion [
 	| njingaMbandi |
 	njingaMbandi := Reina new
 		                inicializarUbicacion: unaUbicacion;
-		comidaMaxima: 3;
+		                comidaMaxima: 3;
+		semillero: self inicializarSemillero ;
 		                colContingencias: OrderedCollection new.
 
 	self color: unColor.
@@ -91,7 +92,39 @@ Hormiguero >> inicializarColor: unColor ubicacion: unaUbicacion [
 	self reina: njingaMbandi.
 
 	njingaMbandi inicializarExploradora.
-	njingaMbandi inicializarObrera
+	njingaMbandi inicializarObrera.
+	njingaMbandi inicializarGuardiana
+]
+
+{ #category : #initialize }
+Hormiguero >> inicializarSemillero [
+
+	| crias margaretMead mujerKurda lucyParsons |
+	margaretMead := Exploradora new
+		                ubicacion: self ubicacion;
+		                colMensajes: OrderedCollection new;
+		                estado: 'explorando'.
+
+	mujerKurda := Guardiana new ubicacion: self ubicacion.
+
+	lucyParsons := Obrera new
+		               ubicacion: self ubicacion;
+		               mochila: 0.
+
+	crias := OrderedCollection new.
+	crias
+		add: margaretMead;
+		add: lucyParsons;
+		add: mujerKurda;
+		add: nil;
+		add: mujerKurda;
+		add: lucyParsons;
+		add: margaretMead;
+		add: lucyParsons;
+		add: mujerKurda;
+		add: nil .
+		
+^ crias .
 ]
 
 { #category : #accessing }
