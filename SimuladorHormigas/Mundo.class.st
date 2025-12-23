@@ -602,7 +602,6 @@ Mundo >> turnoObreraIda: unaObrera [
 		contador := contador + 1 ].
 	unaObrera ubicacion = destino ifFalse: [ ^ self ].
 	alimento := self encontrarAlimentoEn: destino.
-	alimento restarCantidad .
 	unaObrera actualizarMochila: alimento.
 	unaObrera estado: 'volviendo'
 ]
@@ -623,21 +622,4 @@ Mundo >> turnoObreraVuelta: unaObrera [
 	hormiguero cargarAlimento: unaObrera mochila.
 	unaObrera descargarMochila.
 	unaObrera estado: 'yendo'
-]
-
-{ #category : #'game logic' }
-Mundo >> turnoReina: unaReina [
-
-	| destinoObrera obrerasEnHormiguero obrera |
-	destinoObrera := nil.
-	unaReina colContingencias isEmpty ifTrue: [ ^ self ].
-	
-	obrerasEnHormiguero := unaReina colObreras select: [ :o | 
-		                       o ubicacion = unaReina ubicacion ].
-
-	obrera := nil.
-	obrerasEnHormiguero isEmpty ifFalse: [ 
-		obrera := obrerasEnHormiguero at: 1 ].
-
-	self turnoObrera: obrera
 ]
