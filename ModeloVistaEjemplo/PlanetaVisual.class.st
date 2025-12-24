@@ -20,15 +20,20 @@ PlanetaVisual >> cerrar [
 { #category : #initialization }
 PlanetaVisual >> initialize [
 
-	| origen planeta |
+	| origen planeta continentes indice |
 	super initialize.
 	self position: 45 @ 45.
 	self bounds: (self position extent: 350 @ 70).
 
 	planeta := Planeta nuevo: Continente new.
 
-	continente := planeta continente .
-	continente nombre: 'América'.
+	continentes := #('América' 'Asia' 'Europa' 'África' 'Oceanía').
+
+	indice := (1 to: 5) atRandom.
+
+	planeta continente nombre: (continentes at: indice).
+
+	continente := planeta continente.
 
 	nombreContinente := StringMorph new.
 
@@ -44,7 +49,14 @@ PlanetaVisual >> initialize [
 	botonCerrar label: 'CERRAR'.
 
 	continente addDependent: self.
-	self update: continente.
+	self update: planeta.
 
 	botonCerrar mouseAction: [ self cerrar ]
+]
+
+{ #category : #updating }
+PlanetaVisual >> update: unPlaneta [
+
+	unPlaneta ifNotNil: [ 
+		nombreContinente contents: unPlaneta continente nombre]
 ]
