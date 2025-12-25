@@ -5,7 +5,7 @@ Class {
 		'nombre',
 		'ubicacion'
 	],
-	#category : #'ModeloVistaEjemplo-Modelo'
+	#category : #'ModeloVistaEjemplo-ModeloAstro'
 }
 
 { #category : #accessing }

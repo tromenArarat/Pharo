@@ -4,13 +4,21 @@ Class {
 	#instVars : [
 		'continente'
 	],
-	#category : #'ModeloVistaEjemplo-Modelo'
+	#category : #'ModeloVistaEjemplo-ModeloAstro'
 }
 
 { #category : #constructor }
 Planeta class >> nuevo: unContinente [
 
 	^self new continente: unContinente
+]
+
+{ #category : #changes }
+Planeta >> cambiarNombreContinente [
+
+self continente nombre: 'Medio-Oriente' .
+
+self changed 
 ]
 
 { #category : #accessing }

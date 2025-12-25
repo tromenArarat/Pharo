@@ -1,5 +1,5 @@
 Class {
-	#name : #Modelo,
+	#name : #NuevoMundo,
 	#superclass : #Object,
 	#instVars : [
 		'mapa'
@@ -8,19 +8,19 @@ Class {
 }
 
 { #category : #constructor }
-Modelo class >> nuevo: unMapa [
+NuevoMundo class >> nuevo: unMapa [
 
 	^ self new mapa: unMapa
 ]
 
 { #category : #accessing }
-Modelo >> mapa [
+NuevoMundo >> mapa [
 
 	^ mapa
 ]
 
 { #category : #accessing }
-Modelo >> mapa: anObject [
+NuevoMundo >> mapa: anObject [
 
 	mapa := anObject
 ]

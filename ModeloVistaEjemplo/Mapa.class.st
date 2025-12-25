@@ -1,19 +1,41 @@
 Class {
 	#name : #Mapa,
 	#superclass : #Object,
+	#instVars : [
+		'tablero'
+	],
 	#category : #'ModeloVistaEjemplo-Modelo'
 }
 
 { #category : #initialization }
-Mapa >> initialize [
+Mapa >> celdaEnFila: fila columna: columna [
 
-	| m n tablero |
+	"Return a cell at the given row and column"
+
+	^ (tablero at: fila) at: columna
+]
+
+{ #category : #initialization }
+Mapa >> initialize [
+| m n |
 	m := 10.
 	n := 10.
 
 	tablero := (1 to: n) collect: [ :fila | 
 		           (1 to: m) collect: [ :columna | 
-			           Celda punto: fila @ columna contenido: 'vacio' ] ] .
-	
-^ tablero
+			           Celda punto: fila @ columna contenido: 'vacio' ] ].
+
+	^ tablero
+]
+
+{ #category : #accessing }
+Mapa >> tablero [
+
+	^ tablero
+]
+
+{ #category : #accessing }
+Mapa >> tablero: anObject [
+
+	tablero := anObject
 ]

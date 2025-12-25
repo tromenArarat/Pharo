@@ -7,7 +7,7 @@ Class {
 		'botonCerrar',
 		'botonCambiar'
 	],
-	#category : #'ModeloVistaEjemplo-Vista'
+	#category : #'ModeloVistaEjemplo-VistaAstro'
 }
 
 { #category : #accessing }
@@ -114,16 +114,15 @@ PlanetaVisual >> initialize [
 	origen := self innerBounds origin.
 
 	nombreContinente position: origen + (10 @ 10).
-	botonCambiar position: origen + (50 @ 10).
-	botonCerrar position: origen + (50 @ 50).
+	botonCambiar position: origen + (100 @ 10).
+	botonCerrar position: origen + (100 @ 40).
 	botonCambiar label: 'CAMBIAR'.
 	botonCerrar label: 'CERRAR'.
 
 	continente addDependent: self.
 	self update: planeta.
-	botonCambiar
-		mouseAction: [ self cambiar: planeta ] .
-		botonCerrar mouseAction: [ self cerrar ]
+	botonCambiar mouseAction: [ planeta cambiarNombreContinente . self update: planeta.].
+	botonCerrar mouseAction: [ self cerrar ]
 ]
 
 { #category : #accessing }

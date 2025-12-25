@@ -2,28 +2,48 @@ Class {
 	#name : #Vista,
 	#superclass : #BorderedMorph,
 	#instVars : [
-		'tablero'
+		'tablero',
+		'botonCerrar'
 	],
 	#category : #'ModeloVistaEjemplo-Vista'
 }
 
+{ #category : #updating }
+Vista >> actualizar: unaCelda enFila: fila columna: columna [
+
+	unaCelda ifNotNil: [ 
+		((tablero at: fila) at: columna) contenido: unaCelda contenido ]
+]
+
+{ #category : #initialization }
+Vista >> cerrar [
+
+	"minimiza la ventana"
+
+	self collapse
+	
+]
+
 { #category : #initialization }
 Vista >> construirTableroVisual [
 
-	"Construye la interfaz gráfica del tablero"
+	"Builds the graphical interface of the board"
 
 	self removeAllMorphs.
 
-	tablero := tablero doWithIndex: [ :fila :x | 
-		           fila doWithIndex: [ :columna :y | 
-			           [ 
-			           | celda celdaVisual |
-			           celda := (tablero at: x) at: y.
-			           celdaVisual := self
-				                          crearCeldaMorph: celda
-				                          enFila: x
-				                          columna: y.
-			           celda addDependent: self ] ] ]
+	1 to: tablero size do: [ :filaIndex | 
+		1 to: (tablero at: 1) size do: [ :columnaIndex | 
+			| celda celdaVisual |
+			celda := (tablero at: filaIndex) at: columnaIndex.
+			celdaVisual := self
+				               crearCeldaMorph: celda
+				               enFila: filaIndex
+				               columna: columnaIndex.
+			self
+				actualizar: celda
+				enFila: filaIndex
+				columna: columnaIndex.
+			self addMorph: celdaVisual ] ]
 ]
 
 { #category : #initialization }
@@ -55,30 +75,32 @@ Vista >> crearCeldaMorph: unaCelda enFila: filaIndex columna: columnaIndex [
 { #category : #initialization }
 Vista >> initialize [
 
-	"Dado que Vista es subclase de BorderedMorph, es necesario asegurar que se realizarán
-todas las inicializaciones necesarias relacionadas a variables y comportamiento heredado"
-
+	| origen nuevoMundo |
 	super initialize.
-	"Se establece el color del elemento gráfico, y su posición en la pantalla, o sea el WORLD. La
-posición para este morph es la esquina superior izquierda del recuadro. El método 'extent' es para
-indicar el ancho y alto del recuadro "
-	self color: Color gray.
 	self position: 45 @ 45.
-	self bounds: (self position extent: 800 @ 800).
 
-	"1. Crear el modelo (la clase que tiene el método initialize se llama Modelo)"
-	tablero := Modelo nuevo: Mapa new.
-	
-	tablero := tablero mapa.
+	"Calculate bounds based on board size (10x10 cells of 40x40 each)"
+	self bounds: (self position extent: 10 * 40 @ (10 * 40)).
 
-	"2. Configurar la dependencia"
+	"Create the game world with a new map"
+	nuevoMundo := NuevoMundo nuevo: Mapa new.
+	tablero := nuevoMundo mapa.
+
+	botonCerrar := BotonAccion new.
+
+	self addMorph: botonCerrar.
+
+	origen := self innerBounds origin.
+	botonCerrar position: origen + (100 @ 40).
+	botonCerrar label: 'CERRAR'.
+
 	tablero addDependent: self.
 
-	"3. Actualizar la vista inicialmente"
-	self update: tablero.
+	"Build the visual board"
+	self construirTableroVisual.
 
-	"4. Visualizar el tablero en el morph"
-	self construirTableroVisual
+
+	botonCerrar mouseAction: [ self cerrar ]
 ]
 
 { #category : #accessing }
