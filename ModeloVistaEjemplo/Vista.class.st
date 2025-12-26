@@ -3,7 +3,9 @@ Class {
 	#superclass : #BorderedMorph,
 	#instVars : [
 		'tablero',
-		'botonCerrar'
+		'celdasVisuales',
+		'botonCerrar',
+		'botonTurno'
 	],
 	#category : #'ModeloVistaEjemplo-Vista'
 }
@@ -12,7 +14,49 @@ Class {
 Vista >> actualizar: unaCelda enFila: fila columna: columna [
 
 	unaCelda ifNotNil: [ 
-		((tablero at: fila) at: columna) contenido: unaCelda contenido ]
+		 ((tablero at: fila) at: columna) contenido: unaCelda contenido ]
+]
+
+{ #category : #accessing }
+Vista >> botonCerrar [
+
+	^ botonCerrar
+]
+
+{ #category : #accessing }
+Vista >> botonCerrar: anObject [
+
+	botonCerrar := anObject
+]
+
+{ #category : #accessing }
+Vista >> botonTurno [
+
+	^ botonTurno
+]
+
+{ #category : #accessing }
+Vista >> botonTurno: anObject [
+
+	botonTurno := anObject
+]
+
+{ #category : #initialization }
+Vista >> celdaMorphEnFila: fila columna: columna [
+	"Devuelve la CeldaMorph en la posición especificada"
+	^ celdasVisuales at: fila @ columna ifAbsent: [ nil ]
+]
+
+{ #category : #accessing }
+Vista >> celdasVisuales [
+
+	^ celdasVisuales
+]
+
+{ #category : #accessing }
+Vista >> celdasVisuales: anObject [
+
+	celdasVisuales := anObject
 ]
 
 { #category : #initialization }
@@ -27,47 +71,73 @@ Vista >> cerrar [
 { #category : #initialization }
 Vista >> construirTableroVisual [
 
-	"Builds the graphical interface of the board"
-
 	self removeAllMorphs.
+	celdasVisuales := Dictionary new.
 
-	1 to: tablero size do: [ :filaIndex | 
-		1 to: (tablero at: 1) size do: [ :columnaIndex | 
+	1 to: tablero size do: [ :fila | 
+		1 to: (tablero at: 1) size do: [ :columna | 
 			| celda celdaVisual |
-			celda := (tablero at: filaIndex) at: columnaIndex.
+			celda := (tablero at: fila) at: columna.
 			celdaVisual := self
 				               crearCeldaMorph: celda
-				               enFila: filaIndex
-				               columna: columnaIndex.
-			self
-				actualizar: celda
-				enFila: filaIndex
-				columna: columnaIndex.
-			self addMorph: celdaVisual ] ]
+				               enFila: fila
+				               columna: columna.
+
+			"Almacenar referencia en el diccionario"
+			celdasVisuales at: fila @ columna put: celdaVisual.
+
+			self addMorph: celdaVisual ] ].
+
+	botonTurno := BotonAccion new.
+	botonCerrar := BotonAccion new.
+
+	self addMorph: botonTurno.
+	self addMorph: botonCerrar.
+
+	botonTurno position: 450 @ 550.
+	botonTurno label: 'TURNO'.
+	botonCerrar position: 500 @ 550.
+	botonCerrar label: 'CERRAR'.
+
+	botonTurno mouseAction: [ 
+		| celdaVisual |
+		celdaVisual := self celdaMorphEnFila: 1 columna: 1.
+		celdaVisual submorphs first contents: 'hormiguero' ].
+
+	botonCerrar mouseAction: [ self cerrar ]
 ]
 
 { #category : #initialization }
-Vista >> crearCeldaMorph: unaCelda enFila: filaIndex columna: columnaIndex [
+Vista >> crearCeldaMorph: unaCelda enFila: fila columna: columna [
 
-	| celdaMorph textoMorph |
+	| origen celdaMorph textoMorph colRel filRel |
+	origen := self innerBounds origin.
+
+	colRel := columna - 1 * 50.
+	filRel := fila - 1 * 50.
+
+
 	celdaMorph := BorderedMorph new
 		              borderWidth: 10;
 		              borderColor: Color gray;
-		              extent: 40 @ 40;
+		              extent: 50 @ 50;
 		              color: Color white;
-		              position: (columnaIndex - 1) * 40 @ ((filaIndex - 1) * 40);
+		              position: origen + (colRel @ filRel);
 		              yourself.
 
 	"Crear texto con información"
 	textoMorph := StringMorph new
 		              contents: unaCelda contenido;
 		              color: Color black;
-		              position: celdaMorph bounds origin + (5 @ 5);
+		              position: celdaMorph bounds origin + (10 @ 15);
 		              yourself.
 
 	celdaMorph addMorphBack: textoMorph.
 
 	self addMorph: celdaMorph.
+
+
+	unaCelda addDependent: celdaMorph.
 
 	^ celdaMorph
 ]
@@ -75,7 +145,7 @@ Vista >> crearCeldaMorph: unaCelda enFila: filaIndex columna: columnaIndex [
 { #category : #initialization }
 Vista >> initialize [
 
-	| origen nuevoMundo |
+	| mapa nuevoMundo  |
 	super initialize.
 	self position: 45 @ 45.
 
@@ -83,24 +153,16 @@ Vista >> initialize [
 	self bounds: (self position extent: 10 * 40 @ (10 * 40)).
 
 	"Create the game world with a new map"
-	nuevoMundo := NuevoMundo nuevo: Mapa new.
+
+	mapa := Mapa new.
+
+	nuevoMundo := NuevoMundo nuevo: mapa.
 	tablero := nuevoMundo mapa.
-
-	botonCerrar := BotonAccion new.
-
-	self addMorph: botonCerrar.
-
-	origen := self innerBounds origin.
-	botonCerrar position: origen + (100 @ 40).
-	botonCerrar label: 'CERRAR'.
 
 	tablero addDependent: self.
 
 	"Build the visual board"
-	self construirTableroVisual.
-
-
-	botonCerrar mouseAction: [ self cerrar ]
+	self construirTableroVisual
 ]
 
 { #category : #accessing }
