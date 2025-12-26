@@ -8,6 +8,13 @@ Class {
 }
 
 { #category : #initialization }
+Mapa >> casillaEnFila: fila columna: columna [
+
+
+	^ (tablero at: fila) at: columna
+]
+
+{ #category : #initialization }
 Mapa >> celdaEnFila: fila columna: columna [
 
 	"Return a cell at the given row and column"
@@ -24,8 +31,8 @@ Mapa >> initialize [
 
 	tablero := (1 to: n) collect: [ :fila | 
 		           (1 to: m) collect: [ :columna | 
-			           | celda |
-			           celda := Celda punto: fila @ columna contenido: 'vacio' ] ].
+			           | casilla |
+			           casilla := Casilla crear: 'vacia' en: fila y: columna ] ].
 	^ tablero
 ]
 

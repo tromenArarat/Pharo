@@ -121,7 +121,9 @@ PlanetaVisual >> initialize [
 
 	continente addDependent: self.
 	self update: planeta.
-	botonCambiar mouseAction: [ planeta cambiarNombreContinente . self update: planeta.].
+	botonCambiar mouseAction: [ 
+		self solicitarCambiar: planeta.
+		self update: planeta ].
 	botonCerrar mouseAction: [ self cerrar ]
 ]
 
@@ -135,6 +137,16 @@ PlanetaVisual >> nombreContinente [
 PlanetaVisual >> nombreContinente: anObject [
 
 	nombreContinente := anObject
+]
+
+{ #category : #initialize }
+PlanetaVisual >> solicitarCambiar: unPlaneta [
+
+	| valor |
+	valor := (UIManager default) request: '¿Por qué continente desea cambiar?' .
+	unPlaneta continente nombre: valor.
+
+	self update: unPlaneta
 ]
 
 { #category : #updating }
