@@ -14,7 +14,7 @@ Class {
 Vista >> actualizar: unaCelda enFila: fila columna: columna [
 
 	unaCelda ifNotNil: [ 
-		 ((tablero at: fila) at: columna) contenido: unaCelda contenido ]
+		unaCelda submorphs first contents: ((tablero at: fila) at: columna) contenido ]
 ]
 
 { #category : #accessing }
@@ -88,23 +88,7 @@ Vista >> construirTableroVisual [
 
 			self addMorph: celdaVisual ] ].
 
-	botonTurno := BotonAccion new.
-	botonCerrar := BotonAccion new.
 
-	self addMorph: botonTurno.
-	self addMorph: botonCerrar.
-
-	botonTurno position: 450 @ 550.
-	botonTurno label: 'TURNO'.
-	botonCerrar position: 500 @ 550.
-	botonCerrar label: 'CERRAR'.
-
-	botonTurno mouseAction: [ 
-		| celdaVisual |
-		celdaVisual := self celdaMorphEnFila: 1 columna: 1.
-		celdaVisual submorphs first contents: 'hormiguero' ].
-
-	botonCerrar mouseAction: [ self cerrar ]
 ]
 
 { #category : #initialization }
@@ -145,7 +129,7 @@ Vista >> crearCeldaMorph: unaCelda enFila: fila columna: columna [
 { #category : #initialization }
 Vista >> initialize [
 
-	| mapa nuevoMundo  |
+	| mapa nuevoMundo |
 	super initialize.
 	self position: 45 @ 45.
 
@@ -162,7 +146,27 @@ Vista >> initialize [
 	tablero addDependent: self.
 
 	"Build the visual board"
-	self construirTableroVisual
+	self construirTableroVisual.
+
+	botonTurno := BotonAccion new.
+	botonCerrar := BotonAccion new.
+
+	self addMorph: botonTurno.
+	self addMorph: botonCerrar.
+
+	botonTurno position: 450 @ 550.
+	botonTurno label: 'TURNO'.
+	botonCerrar position: 500 @ 550.
+	botonCerrar label: 'CERRAR'.
+
+	botonTurno mouseAction: [ 
+		| celda celdaVisual |
+		celda := (tablero at: 1) at: 1.
+		celdaVisual := self celdaMorphEnFila: 1 columna: 1.
+		nuevoMundo cambiarContenidoCelda: celda punto .
+		self actualizar: celdaVisual enFila: 1 columna: 1 ].
+
+	botonCerrar mouseAction: [ self cerrar ]
 ]
 
 { #category : #accessing }
