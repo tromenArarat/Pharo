@@ -119,6 +119,37 @@ NuevoMundo >> ejecutarTurno [
 	" faltaria trabajar el tema del estado estable del mundo"
 ]
 
+{ #category : #initalize }
+NuevoMundo >> inicializarFuenteAlimentos [
+
+	| numAlimentos posicionesUsadas m n |
+	numAlimentos := 10.
+	posicionesUsadas := Set new.
+	n := self mapa size.
+	m := (self mapa at: 1) size.
+
+	self colAlimentos: OrderedCollection new.
+
+	numAlimentos timesRepeat: [ 
+		| filaRandom columnaRandom posicion alimento |
+		[ 
+		filaRandom := (1 to: n) atRandom.
+		columnaRandom := (1 to: m) atRandom.
+		posicion := filaRandom @ columnaRandom.
+		posicionesUsadas includes: posicion ] whileTrue.
+
+		posicionesUsadas add: posicion.
+
+		alimento := Alimento new
+			            ubicacion: posicion;
+			            cantidad: (10 to: 20) atRandom;
+			            yourself.
+
+		colAlimentos add: alimento.
+
+		((mapa at: filaRandom) at: columnaRandom) estadoActual: 'alimento' ]
+]
+
 { #category : #initialization }
 NuevoMundo >> inicializarHormigueros [
 
@@ -153,7 +184,7 @@ NuevoMundo >> inicializarHormigueros [
 
 		self colHormigueros add: hormiguero.
 
-		((mapa at: filaRandom) at: columnaRandom) contenido: 'hormiguero' ]
+		((mapa at: filaRandom) at: columnaRandom) estadoActual: 'hormiguero' ]
 ]
 
 { #category : #accessing }
@@ -176,7 +207,7 @@ NuevoMundo >> ubicacionesUsadasConAlimentoHormiguero [
 
 	self mapa do: [ :fila | 
 		fila do: [ :casilla | 
-			(casilla estado = 'alimento' or: casilla estado = 'hormiguero') 
+			(casilla estadoActual = 'alimento' or: casilla estadoActual = 'hormiguero') 
 				ifTrue: [ ubicacionesUsadas add: casilla posicion ] ] ].
 
 	^ ubicacionesUsadas

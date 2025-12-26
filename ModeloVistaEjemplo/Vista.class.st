@@ -176,7 +176,8 @@ Vista >> initialize [
 	mapa := Mapa new.
 
 	nuevoMundo := NuevoMundo nuevo: mapa.
-	nuevoMundo inicializarHormigueros .
+	nuevoMundo inicializarHormigueros.
+	nuevoMundo inicializarFuenteAlimentos.
 	tablero := nuevoMundo mapa.
 
 	tablero addDependent: self.
