@@ -12,10 +12,11 @@ Class {
 }
 
 { #category : #updating }
-Vista >> actualizar: unaCelda enFila: fila columna: columna [
+Vista >> actualizar: unaCasilla enFila: fila columna: columna [
 
-	unaCelda ifNotNil: [ 
-		unaCelda submorphs first contents: ((tablero at: fila) at: columna) estadoSiguiente ]
+	unaCasilla ifNotNil: [ 
+		unaCasilla submorphs first contents:
+			((tablero at: fila) at: columna) estadoSiguiente ]
 ]
 
 { #category : #accessing }
@@ -120,12 +121,12 @@ Vista >> crearCasillaMorph: unaCasilla enFila: fila columna: columna [
 
 
 	casillaMorph := BorderedMorph new
-		              borderWidth: 10;
-		              borderColor: Color gray;
-		              extent: 50 @ 50;
-		              color: Color white;
-		              position: origen + (colRel @ filRel);
-		              yourself.
+		                borderWidth: 4;
+		                borderColor: Color gray;
+		                extent: 50 @ 50;
+		                color: Color green;
+		                position: origen + (colRel @ filRel);
+		                yourself.
 
 	"Crear texto con información"
 	textoMorph := StringMorph new
@@ -135,6 +136,20 @@ Vista >> crearCasillaMorph: unaCasilla enFila: fila columna: columna [
 		              yourself.
 
 	casillaMorph addMorphBack: textoMorph.
+
+	textoMorph contents = 'vacia' ifTrue: [ 
+		casillaMorph color: Color lightOrange.
+		textoMorph contents: '' ].
+
+	textoMorph contents = 'hormiguero' ifTrue: [ 
+		casillaMorph color: Color lightCyan.
+		textoMorph contents: 'Horm' ].
+
+	textoMorph contents = 'alimento' ifTrue: [ 
+		| alimento |
+		alimento := nuevoMundo encontrarAlimentoEn: unaCasilla posicion.
+		casillaMorph color: Color lightYellow.
+		textoMorph contents: alimento cantidad asString ].
 
 	self addMorph: casillaMorph.
 

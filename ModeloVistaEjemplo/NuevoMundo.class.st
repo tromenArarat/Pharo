@@ -119,6 +119,13 @@ NuevoMundo >> ejecutarTurno [
 	" faltaria trabajar el tema del estado estable del mundo"
 ]
 
+{ #category : #accessing }
+NuevoMundo >> encontrarAlimentoEn: unaUbicacion [
+
+	^ self colAlimentos detect: [ :alimento | 
+		  alimento ubicacion = unaUbicacion ]
+]
+
 { #category : #initalize }
 NuevoMundo >> inicializarFuenteAlimentos [
 
