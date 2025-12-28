@@ -9,7 +9,7 @@ Class {
 
 { #category : #'code-critics' }
 ManifestModeloVistaEjemplo class >> rulePrecedenceRuleV1FalsePositive [
-	^ #(#(#(#RGMethodDefinition #(#Vista #crearCeldaMorph:enFila:columna: #false)) #'2025-12-26T07:40:00.958412-03:00') #(#(#RGMethodDefinition #(#Vista #crearCasillaMorph:enFila:columna: #false)) #'2025-12-27T09:44:18.161083-03:00') )
+	^ #(#(#(#RGMethodDefinition #(#Vista #crearCeldaMorph:enFila:columna: #false)) #'2025-12-26T07:40:00.958412-03:00') #(#(#RGMethodDefinition #(#Vista #crearCasillaMorph:enFila:columna: #false)) #'2025-12-27T09:44:18.161083-03:00') #(#(#RGMethodDefinition #(#Vista #crearHormigaMorph: #false)) #'2025-12-27T16:47:22.853261-03:00') )
 ]
 
 { #category : #'code-critics' }

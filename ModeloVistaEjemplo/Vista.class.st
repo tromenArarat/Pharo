@@ -6,13 +6,23 @@ Class {
 		'tablero',
 		'casillasVisuales',
 		'botonCerrar',
-		'botonTurno'
+		'botonTurno',
+		'hormigasMorph',
+		'cajaMensaje'
 	],
 	#category : #'ModeloVistaEjemplo-Vista'
 }
 
 { #category : #updating }
 Vista >> actualizar: unaCasilla enFila: fila columna: columna [
+
+	unaCasilla ifNotNil: [ 
+		unaCasilla submorphs first contents:
+			((tablero at: fila) at: columna) estadoSiguiente ]
+]
+
+{ #category : #updating }
+Vista >> actualizarCasilla: unaCasilla enFila: fila columna: columna [
 
 	unaCasilla ifNotNil: [ 
 		unaCasilla submorphs first contents:
@@ -56,6 +66,12 @@ Vista >> casillasVisuales [
 	^ casillasVisuales
 ]
 
+{ #category : #accessing }
+Vista >> casillasVisuales: anObject [
+
+	casillasVisuales := anObject
+]
+
 { #category : #initialization }
 Vista >> cerrar [
 
@@ -68,16 +84,28 @@ Vista >> cerrar [
 { #category : #initialization }
 Vista >> construirBotoneraEnMundo: unMundo [
 
+	| mensaje data |
+	cajaMensaje := TextMorph new.
 	botonTurno := BotonAccion new.
 	botonCerrar := BotonAccion new.
 
 	self addMorph: botonTurno.
 	self addMorph: botonCerrar.
+	self addMorph: cajaMensaje.
 
 	botonTurno position: 450 @ 550.
 	botonTurno label: 'TURNO'.
 	botonCerrar position: 500 @ 550.
 	botonCerrar label: 'CERRAR'.
+	cajaMensaje position: 600 @ 0.
+
+	data := ((nuevoMundo mapa at: 1) at: 1) posicion asString.
+	mensaje := 'Punto inicial: ' , data.
+	cajaMensaje
+		string: mensaje
+		fontName: 'Arial'
+		size: 12
+		wrap: true.
 
 	botonTurno mouseAction: [ 
 		| casilla casillaVisual |
@@ -87,6 +115,24 @@ Vista >> construirBotoneraEnMundo: unMundo [
 		self actualizar: casillaVisual enFila: 1 columna: 1 ].
 
 	botonCerrar mouseAction: [ self cerrar ]
+]
+
+{ #category : #initialization }
+Vista >> construirHormigasMorph [
+
+	| exploradorasHormigueroUno |
+	hormigasMorph := OrderedCollection new.
+
+	exploradorasHormigueroUno := (nuevoMundo colHormigueros at: 1) reina
+		                             colExploradoras.
+
+	exploradorasHormigueroUno do: [ :hormiga | 
+		| hormigaMorph |
+		hormigaMorph := self crearHormigaMorph: hormiga.
+
+		hormigasMorph add: hormigaMorph.
+
+		self addMorph: hormigaMorph ]
 ]
 
 { #category : #initialization }
@@ -149,7 +195,8 @@ Vista >> crearCasillaMorph: unaCasilla enFila: fila columna: columna [
 		| alimento |
 		alimento := nuevoMundo encontrarAlimentoEn: unaCasilla posicion.
 		casillaMorph color: Color lightYellow.
-		textoMorph contents: alimento cantidad asString ].
+		textoMorph contents:
+			alimento cantidad asString ].
 
 	self addMorph: casillaMorph.
 
@@ -157,6 +204,31 @@ Vista >> crearCasillaMorph: unaCasilla enFila: fila columna: columna [
 	unaCasilla addDependent: casillaMorph.
 
 	^ casillaMorph
+]
+
+{ #category : #initialization }
+Vista >> crearHormigaMorph: unaHormiga [
+
+	| origen columna fila colRel filRel hormigaMorph |
+	origen := self innerBounds origin.
+
+	fila := unaHormiga ubicacion x.
+	columna:= unaHormiga ubicacion y.
+
+	colRel := columna - 1 * 50.
+	filRel := fila - 1 * 50.
+
+	hormigaMorph := Morph new
+		                extent: 50 @ 50;
+		                color: Color red;
+		                position: origen + (colRel @ filRel).
+
+	self addMorph: hormigaMorph.
+
+
+	unaHormiga addDependent: hormigaMorph.
+
+	^ hormigaMorph
 ]
 
 { #category : #methods }
@@ -176,30 +248,33 @@ Vista >> ejecutarUnTurno [
 	nuevoMundo  ejecutarTurno
 ]
 
+{ #category : #accessing }
+Vista >> hormigasMorph [
+
+	^ hormigasMorph
+]
+
+{ #category : #accessing }
+Vista >> hormigasMorph: anObject [
+
+	hormigasMorph := anObject
+]
+
 { #category : #initialization }
 Vista >> initialize [
 
 	| mapa |
 	super initialize.
 	self position: 45 @ 45.
-
-	"Calculate bounds based on board size (10x10 cells of 40x40 each)"
 	self bounds: (self position extent: 10 * 40 @ (10 * 40)).
-
-	"Create the game world with a new map"
-
 	mapa := Mapa new.
-
 	nuevoMundo := NuevoMundo nuevo: mapa.
 	nuevoMundo inicializarHormigueros.
 	nuevoMundo inicializarFuenteAlimentos.
 	tablero := nuevoMundo mapa.
-
 	tablero addDependent: self.
-
-	"Build the visual board"
 	self construirTableroVisual.
-
+	self construirHormigasMorph.
 	self construirBotoneraEnMundo: nuevoMundo
 ]
 

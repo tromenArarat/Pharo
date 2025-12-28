@@ -183,8 +183,8 @@ NuevoMundo >> inicializarHormigueros [
 
 		color := self colorAleatorio.
 
-		hormiguero := Hormiguebrio new .
-		hormiguero inicializarColor: color  ubicacion:  ubicacion .
+		hormiguero := Hormiguero new.
+		hormiguero inicializarColor: color ubicacion: ubicacion.
 
 
 		hormiguero alimento: cantAlimentoPorHormiguero.
