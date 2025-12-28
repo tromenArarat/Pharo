@@ -1,10 +1,12 @@
 Class {
-	#name : #ObreraTest,
-	#superclass : #TestCase,
-	#category : #'SimuladorHormigas-Tests'
+	#name : 'ObreraTest',
+	#superclass : 'TestCase',
+	#category : 'SimuladorHormigas-Tests',
+	#package : 'SimuladorHormigas',
+	#tag : 'Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 ObreraTest >> testIrObreraHaciaAlimento [
 
 	| mundo hormiguero reina exploradora obrera alimento |
@@ -28,7 +30,7 @@ ObreraTest >> testIrObreraHaciaAlimento [
 		> (obrera ubicacion distanceTo: alimento)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 ObreraTest >> testObreraCargaDescarga [
 
 	| mundo hormiguero exploradora reina obrera alimento ubicacion cantidad |

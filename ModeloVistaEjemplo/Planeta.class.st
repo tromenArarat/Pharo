@@ -1,19 +1,21 @@
 Class {
-	#name : #Planeta,
-	#superclass : #Object,
+	#name : 'Planeta',
+	#superclass : 'Object',
 	#instVars : [
 		'continente'
 	],
-	#category : #'ModeloVistaEjemplo-ModeloAstro'
+	#category : 'ModeloVistaEjemplo-ModeloAstro',
+	#package : 'ModeloVistaEjemplo',
+	#tag : 'ModeloAstro'
 }
 
-{ #category : #constructor }
+{ #category : 'constructor' }
 Planeta class >> nuevo: unContinente [
 
 	^self new continente: unContinente
 ]
 
-{ #category : #changes }
+{ #category : 'changes' }
 Planeta >> cambiarNombreContinente [
 
 self continente nombre: 'Medio-Oriente' .
@@ -21,13 +23,13 @@ self continente nombre: 'Medio-Oriente' .
 self changed 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Planeta >> continente [
 
 	^ continente
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Planeta >> continente: anObject [
 
 	continente := anObject

@@ -1,6 +1,6 @@
 Class {
-	#name : #Vista,
-	#superclass : #BorderedMorph,
+	#name : 'Vista',
+	#superclass : 'BorderedMorph',
 	#instVars : [
 		'nuevoMundo',
 		'tablero',
@@ -10,10 +10,12 @@ Class {
 		'hormigasMorph',
 		'cajaMensaje'
 	],
-	#category : #'ModeloVistaEjemplo-Vista'
+	#category : 'SimuladorHormigas-Vista',
+	#package : 'SimuladorHormigas',
+	#tag : 'Vista'
 }
 
-{ #category : #updating }
+{ #category : 'updating' }
 Vista >> actualizar: unaCasilla enFila: fila columna: columna [
 
 	unaCasilla ifNotNil: [ 
@@ -21,7 +23,7 @@ Vista >> actualizar: unaCasilla enFila: fila columna: columna [
 			((tablero at: fila) at: columna) estadoSiguiente ]
 ]
 
-{ #category : #updating }
+{ #category : 'updating' }
 Vista >> actualizarCasilla: unaCasilla enFila: fila columna: columna [
 
 	unaCasilla ifNotNil: [ 
@@ -29,50 +31,50 @@ Vista >> actualizarCasilla: unaCasilla enFila: fila columna: columna [
 			((tablero at: fila) at: columna) estadoSiguiente ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Vista >> botonCerrar [
 
 	^ botonCerrar
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Vista >> botonCerrar: anObject [
 
 	botonCerrar := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Vista >> botonTurno [
 
 	^ botonTurno
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Vista >> botonTurno: anObject [
 
 	botonTurno := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Vista >> casillaMorphEnFila: fila columna: columna [
 
 
 	^ casillasVisuales at: fila @ columna ifAbsent: [ nil ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Vista >> casillasVisuales [
 
 	^ casillasVisuales
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Vista >> casillasVisuales: anObject [
 
 	casillasVisuales := anObject
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 Vista >> cerrar [
 
 	"minimiza la ventana"
@@ -81,7 +83,7 @@ Vista >> cerrar [
 	
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 Vista >> construirBotoneraEnMundo: unMundo [
 
 	| mensaje data |
@@ -117,7 +119,7 @@ Vista >> construirBotoneraEnMundo: unMundo [
 	botonCerrar mouseAction: [ self cerrar ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 Vista >> construirHormigasMorph [
 
 	| exploradorasHormigueroUno |
@@ -135,7 +137,7 @@ Vista >> construirHormigasMorph [
 		self addMorph: hormigaMorph ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 Vista >> construirTableroVisual [
 
 	self removeAllMorphs.
@@ -156,7 +158,7 @@ Vista >> construirTableroVisual [
 			self addMorph: casillaVisual ] ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 Vista >> crearCasillaMorph: unaCasilla enFila: fila columna: columna [
 
 	| origen casillaMorph textoMorph colRel filRel |
@@ -206,7 +208,7 @@ Vista >> crearCasillaMorph: unaCasilla enFila: fila columna: columna [
 	^ casillaMorph
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 Vista >> crearHormigaMorph: unaHormiga [
 
 	| origen columna fila colRel filRel hormigaMorph |
@@ -231,7 +233,7 @@ Vista >> crearHormigaMorph: unaHormiga [
 	^ hormigaMorph
 ]
 
-{ #category : #methods }
+{ #category : 'methods' }
 Vista >> ejecutarTurnos [
 
 	"Se considera que se ejecutan 10 turnos. Esto deberá flexibilizarse, solicitando al
@@ -240,7 +242,7 @@ usuario la cantidad de turnos que desea ejecutar"
 	1 to: 10 do: [ :i | self ejecutarUnTurno ]
 ]
 
-{ #category : #methods }
+{ #category : 'methods' }
 Vista >> ejecutarUnTurno [
 
 	"Se ejecuta un turno del nuevoMundo"
@@ -248,19 +250,19 @@ Vista >> ejecutarUnTurno [
 	nuevoMundo  ejecutarTurno
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Vista >> hormigasMorph [
 
 	^ hormigasMorph
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Vista >> hormigasMorph: anObject [
 
 	hormigasMorph := anObject
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 Vista >> initialize [
 
 	| mapa |
@@ -278,31 +280,31 @@ Vista >> initialize [
 	self construirBotoneraEnMundo: nuevoMundo
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Vista >> nuevoMundo [
 
 	^ nuevoMundo
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Vista >> nuevoMundo: anObject [
 
 	nuevoMundo := anObject
 ]
 
-{ #category : #methods }
+{ #category : 'methods' }
 Vista >> step [
 
 	nuevoMundo ejecutarUnTurno
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Vista >> tablero [
 
 	^ tablero
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Vista >> tablero: anObject [
 
 	tablero := anObject

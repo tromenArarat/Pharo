@@ -15,8 +15,8 @@ Guardianas: 30%
 Nacimiento fallido: 20% (no nace ninguna hormiga)
 "
 Class {
-	#name : #Reina,
-	#superclass : #Hormiga,
+	#name : 'Reina',
+	#superclass : 'Hormiga',
 	#instVars : [
 		'colExploradoras',
 		'colGuardianas',
@@ -25,10 +25,12 @@ Class {
 		'colContingencias',
 		'semillero'
 	],
-	#category : #'SimuladorHormigas-Base'
+	#category : 'SimuladorHormigas-Base',
+	#package : 'SimuladorHormigas',
+	#tag : 'Base'
 }
 
-{ #category : #update }
+{ #category : 'update' }
 Reina >> actualizarContingencias: unaContingencia ubicacion: unaUbicacion [
 
 	| celda |
@@ -42,67 +44,67 @@ Reina >> actualizarContingencias: unaContingencia ubicacion: unaUbicacion [
 	self colContingencias add: celda
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Reina >> colContingencias [
 
 	^ colContingencias
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Reina >> colContingencias: anObject [
 
 	colContingencias := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Reina >> colExploradoras [
 
 	^ colExploradoras
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Reina >> colExploradoras: anObject [
 
 	colExploradoras := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Reina >> colGuardianas [
 
 	^ colGuardianas
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Reina >> colGuardianas: anObject [
 
 	colGuardianas := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Reina >> colObreras [
 
 	^ colObreras
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Reina >> colObreras: anObject [
 
 	colObreras := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Reina >> comidaMaxima [
 
 	^ comidaMaxima
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Reina >> comidaMaxima: anObject [
 
 	comidaMaxima := anObject
 ]
 
-{ #category : #creation }
+{ #category : 'creation' }
 Reina >> engendrar [
 
 	| bendi |
@@ -113,7 +115,7 @@ Reina >> engendrar [
 	self comidaMaxima: 0
 ]
 
-{ #category : #initalize }
+{ #category : 'initalize' }
 Reina >> inicializarExploradora [
 
 	| margaretMead |
@@ -128,7 +130,7 @@ Reina >> inicializarExploradora [
 ^ margaretMead
 ]
 
-{ #category : #initalize }
+{ #category : 'initalize' }
 Reina >> inicializarGuardiana [
 
 	| mujerKurda |
@@ -140,7 +142,7 @@ Reina >> inicializarGuardiana [
 
 ]
 
-{ #category : #initalize }
+{ #category : 'initalize' }
 Reina >> inicializarObrera [
 
 	| lucyParsons |
@@ -155,7 +157,7 @@ Reina >> inicializarObrera [
 	^ lucyParsons
 ]
 
-{ #category : #initalize }
+{ #category : 'initalize' }
 Reina >> inicializarSegunClaseDeBendi: unaBendi [
 
 	unaBendi class
@@ -166,7 +168,7 @@ Reina >> inicializarSegunClaseDeBendi: unaBendi [
 		otherwise: [  ]
 ]
 
-{ #category : #initalize }
+{ #category : 'initalize' }
 Reina >> inicializarUbicacion: unaUbicacion [
 
 	self ubicacion: unaUbicacion.
@@ -175,7 +177,7 @@ Reina >> inicializarUbicacion: unaUbicacion [
 	self colObreras: OrderedCollection new
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Reina >> semillero [
 
 	
@@ -183,7 +185,7 @@ Reina >> semillero [
 	^ semillero
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Reina >> semillero: anObject [
 
 	semillero := anObject

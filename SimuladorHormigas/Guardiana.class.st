@@ -14,21 +14,23 @@ Cada guerrera consume una unidad de comida por día solo cuando está en el horm
 Es importante destacar, que la guerrera solo puede atacar si está al lado de la colonia enemiga, es decir, para ir a la guerra debe caminar hasta la colonia enemiga.
 "
 Class {
-	#name : #Guardiana,
-	#superclass : #Hormiga,
+	#name : 'Guardiana',
+	#superclass : 'Hormiga',
 	#instVars : [
 		'estado'
 	],
-	#category : #'SimuladorHormigas-Base'
+	#category : 'SimuladorHormigas-Base',
+	#package : 'SimuladorHormigas',
+	#tag : 'Base'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Guardiana >> estado [
 
 	^ estado
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Guardiana >> estado: anObject [
 
 	estado := anObject

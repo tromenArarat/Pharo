@@ -2,30 +2,32 @@
 El hormiguero es el único lugar donde las hormigas comen una unidad de comida por turno.
 "
 Class {
-	#name : #Hormiguero,
-	#superclass : #Object,
+	#name : 'Hormiguero',
+	#superclass : 'Object',
 	#instVars : [
 		'color',
 		'reina',
 		'ubicacion',
 		'alimento'
 	],
-	#category : #'SimuladorHormigas-Base'
+	#category : 'SimuladorHormigas-Base',
+	#package : 'SimuladorHormigas',
+	#tag : 'Base'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Hormiguero >> alimento [
 
 	^ alimento
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Hormiguero >> alimento: anObject [
 
 	alimento := anObject
 ]
 
-{ #category : #calculating }
+{ #category : 'calculating' }
 Hormiguero >> bocasAlimentar [
 
 	| exploradorasEnHormiguero obrerasEnHormiguero guardianasEnHormiguero |
@@ -49,31 +51,31 @@ Hormiguero >> bocasAlimentar [
 	^ 1 + exploradorasEnHormiguero + obrerasEnHormiguero + guardianasEnHormiguero
 ]
 
-{ #category : #loading }
+{ #category : 'loading' }
 Hormiguero >> cargarAlimento: unaMochila [
 
 self alimento: self alimento +unaMochila
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Hormiguero >> color [
 
 	^ color
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Hormiguero >> color: anObject [
 
 	color := anObject
 ]
 
-{ #category : #random }
+{ #category : 'random' }
 Hormiguero >> colorAleatorio [
 
 	^ #('rojo' 'negro') atRandom
 ]
 
-{ #category : #reducing }
+{ #category : 'reducing' }
 Hormiguero >> darAlimento [
 
 | comensales |
@@ -83,7 +85,7 @@ comensales := self bocasAlimentar .
 	self alimento: self alimento 
 ]
 
-{ #category : #initialize }
+{ #category : 'initialize' }
 Hormiguero >> inicializarColor: unColor ubicacion: unaUbicacion [
 
 	| njingaMbandi |
@@ -102,7 +104,7 @@ Hormiguero >> inicializarColor: unColor ubicacion: unaUbicacion [
 	njingaMbandi inicializarGuardiana
 ]
 
-{ #category : #initialize }
+{ #category : 'initialize' }
 Hormiguero >> inicializarSemillero [
 
 	| crias margaretMead mujerKurda lucyParsons |
@@ -133,25 +135,25 @@ Hormiguero >> inicializarSemillero [
 ^ crias .
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Hormiguero >> reina [
 
 	^ reina
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Hormiguero >> reina: anObject [
 
 	reina := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Hormiguero >> ubicacion [
 
 	^ ubicacion
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Hormiguero >> ubicacion: anObject [
 
 	ubicacion := anObject

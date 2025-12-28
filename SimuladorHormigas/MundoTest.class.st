@@ -1,10 +1,12 @@
 Class {
-	#name : #MundoTest,
-	#superclass : #TestCase,
-	#category : #'SimuladorHormigas-Tests'
+	#name : 'MundoTest',
+	#superclass : 'TestCase',
+	#category : 'SimuladorHormigas-Tests',
+	#package : 'SimuladorHormigas',
+	#tag : 'Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 MundoTest >> testHormiguerosCreados [
     | mundo hormiguerosEnColeccion hormiguerosEnMapa |
     mundo := Mundo new.
@@ -19,7 +21,7 @@ MundoTest >> testHormiguerosCreados [
     self assert: hormiguerosEnMapa equals: 2
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MundoTest >> testMundoSetAndRead [
 
 	| mundo alimentos |
@@ -32,7 +34,7 @@ MundoTest >> testMundoSetAndRead [
 	^ self assert: alimentos equals: 10
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 MundoTest >> testVaciasIgualTotalMenosAlimentoHormiguero [
 
 	| mundo hormiguerosEnMapa alimentosEnMapa vaciasEnMapa |

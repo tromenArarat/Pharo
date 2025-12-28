@@ -1,20 +1,22 @@
 Class {
-	#name : #Mapa,
-	#superclass : #Object,
+	#name : 'Mapa',
+	#superclass : 'Object',
 	#instVars : [
 		'tablero'
 	],
-	#category : #'ModeloVistaEjemplo-Modelo'
+	#category : 'SimuladorHormigas-Modelo',
+	#package : 'SimuladorHormigas',
+	#tag : 'Modelo'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 Mapa >> casillaEnFila: fila columna: columna [
 
 
 	^ (tablero at: fila) at: columna
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 Mapa >> celdaEnFila: fila columna: columna [
 
 	"Return a cell at the given row and column"
@@ -22,7 +24,7 @@ Mapa >> celdaEnFila: fila columna: columna [
 	^ (tablero at: fila) at: columna
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 Mapa >> initialize [
 
 	| m n |
@@ -36,13 +38,13 @@ Mapa >> initialize [
 	^ tablero
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Mapa >> tablero [
 
 	^ tablero
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Mapa >> tablero: anObject [
 
 	tablero := anObject

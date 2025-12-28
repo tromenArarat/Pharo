@@ -1,10 +1,12 @@
 Class {
-	#name : #ExploradoraTest,
-	#superclass : #TestCase,
-	#category : #'SimuladorHormigas-Tests'
+	#name : 'ExploradoraTest',
+	#superclass : 'TestCase',
+	#category : 'SimuladorHormigas-Tests',
+	#package : 'SimuladorHormigas',
+	#tag : 'Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 ExploradoraTest >> testIrVolverExploradora [
 
 	| mundo robinson hormiguero |
@@ -25,7 +27,7 @@ ExploradoraTest >> testIrVolverExploradora [
 		equals: (robinson colMensajes at: 1) x
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 ExploradoraTest >> testMoverExploradora [
 
 	| mundo exploradora x y |
@@ -44,7 +46,7 @@ ExploradoraTest >> testMoverExploradora [
 		equals: exploradora ubicacion
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 ExploradoraTest >> testMoverExploradoras [
 
 	| mundo exploradora exploradora2 x y x2 y2 cierto cierto2 |

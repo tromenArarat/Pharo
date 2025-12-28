@@ -1,15 +1,17 @@
 Class {
-	#name : #Casilla,
-	#superclass : #Object,
+	#name : 'Casilla',
+	#superclass : 'Object',
 	#instVars : [
 		'estadoActual',
 		'estadoSiguiente',
 		'posicion'
 	],
-	#category : #'ModeloVistaEjemplo-Modelo'
+	#category : 'SimuladorHormigas-Modelo',
+	#package : 'SimuladorHormigas',
+	#tag : 'Modelo'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 Casilla class >> crear: estado en: latitud y: longitud [
 
 	"Se crea una casilla con el estado inicial recibido por parámetro"
@@ -17,7 +19,7 @@ Casilla class >> crear: estado en: latitud y: longitud [
 	^ self new inicializar: estado en: latitud y: longitud
 ]
 
-{ #category : #method }
+{ #category : 'method' }
 Casilla >> actualizar [
 
 	"se efectiviza el update de la casilla"
@@ -25,7 +27,7 @@ Casilla >> actualizar [
 	estadoActual = estadoSiguiente ifFalse: [ self cambiarEstado ]
 ]
 
-{ #category : #method }
+{ #category : 'method' }
 Casilla >> cambiarEstado [
 
 	estadoActual := estadoSiguiente.
@@ -33,31 +35,31 @@ Casilla >> cambiarEstado [
 	self changed
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Casilla >> estadoActual [
 
 	^ estadoActual
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Casilla >> estadoActual: anObject [
 
 	estadoActual := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Casilla >> estadoSiguiente [
 
 	^ estadoSiguiente
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Casilla >> estadoSiguiente: anObject [
 
 	estadoSiguiente := anObject
 ]
 
-{ #category : #method }
+{ #category : 'method' }
 Casilla >> inicializar: estado [
 
 	"Se mantiene un estado actual y un estado siguiente para poder pasar por todas las casillas antes
@@ -68,7 +70,7 @@ de modificar su estado. La inicializacion se refleja en la parte visual"
 	self changed
 ]
 
-{ #category : #method }
+{ #category : 'method' }
 Casilla >> inicializar: estado en: latitud y: longitud [
 
 
@@ -78,19 +80,19 @@ Casilla >> inicializar: estado en: latitud y: longitud [
 	self changed
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Casilla >> posicion [
 
 	^ posicion
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Casilla >> posicion: anObject [
 
 	posicion := anObject
 ]
 
-{ #category : #method }
+{ #category : 'method' }
 Casilla >> verificarVacia [
 
 	"se verifica si la casilla está vacía"

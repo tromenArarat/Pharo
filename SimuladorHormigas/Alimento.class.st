@@ -2,40 +2,42 @@
 Creado por Mapa, que asigna ubicación y cantidad de cada fuente de alimento.
 "
 Class {
-	#name : #Alimento,
-	#superclass : #Object,
+	#name : 'Alimento',
+	#superclass : 'Object',
 	#instVars : [
 		'ubicacion',
 		'cantidad'
 	],
-	#category : #'SimuladorHormigas-Base'
+	#category : 'SimuladorHormigas-Base',
+	#package : 'SimuladorHormigas',
+	#tag : 'Base'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Alimento >> cantidad [
 
 	^ cantidad
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Alimento >> cantidad: anObject [
 
 	cantidad := anObject
 ]
 
-{ #category : #reducing }
+{ #category : 'reducing' }
 Alimento >> restarCantidad [
 
 self cantidad: self cantidad -1
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Alimento >> ubicacion [
 
 	^ ubicacion
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Alimento >> ubicacion: anObject [
 
 	ubicacion := anObject

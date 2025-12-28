@@ -1,31 +1,23 @@
 Class {
-	#name : #NuevoMundo,
-	#superclass : #Object,
+	#name : 'NuevoMundo',
+	#superclass : 'Object',
 	#instVars : [
 		'mapa',
 		'colHormigueros',
 		'colAlimentos'
 	],
-	#category : #'ModeloVistaEjemplo-Modelo'
+	#category : 'SimuladorHormigas-Modelo',
+	#package : 'SimuladorHormigas',
+	#tag : 'Modelo'
 }
 
-{ #category : #constructor }
+{ #category : 'constructor' }
 NuevoMundo class >> nuevo: unMapa [
 
 	^ self new mapa: unMapa
 ]
 
-{ #category : #search }
-NuevoMundo >> cambiar [
-
-	| filas columnas |
-	filas := mapa rowCount.
-	columnas := mapa columnCount.
-	1 to: filas do: [ :i | 
-	1 to: columnas do: [ :j | (mapa at: i at: j) actualizar ] ]
-]
-
-{ #category : #'old - ffi backend support' }
+{ #category : 'old - ffi backend support' }
 NuevoMundo >> cambiarContenidoCasilla: posicion [
 
 	| casilla |
@@ -35,7 +27,7 @@ NuevoMundo >> cambiarContenidoCasilla: posicion [
 	self changed
 ]
 
-{ #category : #'old - ffi backend support' }
+{ #category : 'old - ffi backend support' }
 NuevoMundo >> cambiarContenidoCelda: ubicacion [
 
 |celda |
@@ -45,7 +37,7 @@ celda contenido: 'hormiguero'.
 self changed
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 NuevoMundo >> cambiarEstadoCasilla: ubicacion [
 
 	| casilla |
@@ -55,7 +47,7 @@ NuevoMundo >> cambiarEstadoCasilla: ubicacion [
 	self changed
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 NuevoMundo >> casillaEnMapa: unPuntoDeUbicacion [
 
 	| fila columna |
@@ -65,7 +57,7 @@ NuevoMundo >> casillaEnMapa: unPuntoDeUbicacion [
 	^ (self mapa at: fila) at: columna
 ]
 
-{ #category : #'old - ffi backend support' }
+{ #category : 'old - ffi backend support' }
 NuevoMundo >> celdaEnMapa: unPuntoDeUbicacion [
 
 	| fila columna |
@@ -75,31 +67,31 @@ NuevoMundo >> celdaEnMapa: unPuntoDeUbicacion [
 	^ (self mapa at: fila) at: columna
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 NuevoMundo >> colAlimentos [
 
 	^ colAlimentos
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 NuevoMundo >> colAlimentos: anObject [
 
 	colAlimentos := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 NuevoMundo >> colHormigueros [
 
 	^ colHormigueros
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 NuevoMundo >> colHormigueros: anObject [
 
 	colHormigueros := anObject
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 NuevoMundo >> colorAleatorio [
 
 	| colores indice |
@@ -109,7 +101,7 @@ NuevoMundo >> colorAleatorio [
 	^ colores at: indice
 ]
 
-{ #category : #search }
+{ #category : 'search' }
 NuevoMundo >> ejecutarTurno [
 
 	"se realiza una recorrida por el mundo, se prepara cada celda para su cambio y finalmente se efectiviza el cambio"
@@ -119,14 +111,14 @@ NuevoMundo >> ejecutarTurno [
 	" faltaria trabajar el tema del estado estable del mundo"
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 NuevoMundo >> encontrarAlimentoEn: unaUbicacion [
 
 	^ self colAlimentos detect: [ :alimento | 
 		  alimento ubicacion = unaUbicacion ]
 ]
 
-{ #category : #initalize }
+{ #category : 'initalize' }
 NuevoMundo >> inicializarFuenteAlimentos [
 
 	| numAlimentos posicionesUsadas m n |
@@ -157,7 +149,7 @@ NuevoMundo >> inicializarFuenteAlimentos [
 		((mapa at: filaRandom) at: columnaRandom) estadoActual: 'alimento' ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 NuevoMundo >> inicializarHormigueros [
 
 	| numHormigueros ubicacionesUsadas m n cantAlimentoPorHormiguero |
@@ -194,19 +186,19 @@ NuevoMundo >> inicializarHormigueros [
 		((mapa at: filaRandom) at: columnaRandom) estadoActual: 'hormiguero' ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 NuevoMundo >> mapa [
 
 	^ mapa
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 NuevoMundo >> mapa: anObject [
 
 	mapa := anObject
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 NuevoMundo >> ubicacionesUsadasConAlimentoHormiguero [
 
 	| ubicacionesUsadas |
