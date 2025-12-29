@@ -159,7 +159,9 @@ Vista >> construirBotoneraEnMundo: unMundo [
 				               colExploradoras first.
 
 			nuevoMundo moverExploradora: exploradora contador: 0 .
-			"self construirBotoneraEnMundo: nuevoMundo "]
+			self construirTableroVisual .
+			self construirHormigasMorph .
+			self construirBotoneraEnMundo: nuevoMundo ]
 ]
 
 { #category : 'initialization' }
