@@ -18,5 +18,5 @@ ManifestSimuladorHormigas class >> ruleBadMessageRule2V1FalsePositive [
 ManifestSimuladorHormigas class >> rulePrecedenceRuleV1FalsePositive [
 
 	<ignoreForCoverage>
-	^ #(#(#(#RGMethodDefinition #(#Vista #crearHormigaMorph: #false)) #'2025-12-28T21:07:22.386756-03:00') )
+	^ #(#(#(#RGMethodDefinition #(#Vista #crearHormigaMorph: #false)) #'2025-12-28T21:07:22.386756-03:00') #(#(#RGMethodDefinition #(#Vista #crearCasillaMorph:enFila:columna: #false)) #'2025-12-29T08:10:34.646731-03:00') )
 ]

@@ -137,7 +137,8 @@ Vista >> construirBotoneraEnMundo: unMundo [
 	           , data1 ubicacion asString , ' Alime1 '
 	           , data1 alimento asString , ' Hormig2 '
 	           , data2 ubicacion asString , ' Alime2 '
-	           , data2 alimento asString , ' Explo1 ', (data1 reina colExploradoras at:1) ubicacion asString.
+	           , data2 alimento asString , ' Explo1 '
+	           , data1 reina colExploradoras first ubicacion asString.
 	cajaMensaje
 		string: mensaje
 		fontName: 'Arial'
@@ -154,28 +155,47 @@ Vista >> construirBotoneraEnMundo: unMundo [
 	botonCerrar mouseAction: [ self cerrar ].
 
 	botonMoverExploradora mouseAction: [
-			| exploradora |
+			| exploradora exploradora2|
 			exploradora := self nuevoMundo colHormigueros first reina
 				               colExploradoras first.
+				
+			exploradora2 := self nuevoMundo colHormigueros second reina
+				               colExploradoras first.
 
-			nuevoMundo moverExploradora: exploradora contador: 0 .
-			self construirTableroVisual .
-			self construirHormigasMorph .
+			nuevoMundo moverExploradora: exploradora contador: 0.
+			nuevoMundo moverExploradora: exploradora2 contador: 0.
+			self construirTableroVisual.
+			self construirHormigasMorph.
 			self construirBotoneraEnMundo: nuevoMundo ]
 ]
 
 { #category : 'initialization' }
 Vista >> construirHormigasMorph [
 
-	| exploradorasHormigueroUno |
+	| exploradorasHormigueroUno exploradorasHormigueroDos hormiguero1 color1 hormiguero2 color2|
 	hormigasMorph := OrderedCollection new.
 
 	exploradorasHormigueroUno := nuevoMundo colHormigueros first reina
 		                             colExploradoras.
-
+	hormiguero1 := self nuevoMundo encontrarHormigueroEn: nuevoMundo colHormigueros first reina ubicacion.
+	color1:= hormiguero1 color.
+	hormiguero2 := self nuevoMundo encontrarHormigueroEn: nuevoMundo colHormigueros second reina ubicacion.
+	color2:= hormiguero2 color.
+	
 	exploradorasHormigueroUno do: [ :hormiga |
+			| hormigaMorph|
+			hormigaMorph := self crearHormigaMorph: hormiga color: color1.
+
+			hormigasMorph add: hormigaMorph.
+
+			self addMorph: hormigaMorph ] .
+		
+	exploradorasHormigueroDos := nuevoMundo colHormigueros second reina
+		                             colExploradoras.
+
+	exploradorasHormigueroDos do: [ :hormiga |
 			| hormigaMorph |
-			hormigaMorph := self crearHormigaMorph: hormiga.
+			hormigaMorph := self crearHormigaMorph: hormiga color: color2.
 
 			hormigasMorph add: hormigaMorph.
 
@@ -235,7 +255,9 @@ Vista >> crearCasillaMorph: unaCasilla enFila: fila columna: columna [
 		textoMorph contents: '' ].
 
 	textoMorph contents = 'hormiguero' ifTrue: [ 
-		casillaMorph color: Color lightCyan.
+		| hormiguero |
+		hormiguero := self nuevoMundo encontrarHormigueroEn: unaCasilla punto .
+		hormiguero color = 'rojo' ifTrue: [casillaMorph color: Color red.  ] ifFalse:[ casillaMorph color: Color lightGray ].
 		textoMorph contents: 'Horm' ].
 
 	textoMorph contents = 'alimento' ifTrue: [ 
@@ -256,7 +278,7 @@ Vista >> crearCasillaMorph: unaCasilla enFila: fila columna: columna [
 { #category : 'initialization' }
 Vista >> crearHormigaMorph: unaHormiga [
 
-	| origen columna fila colRel filRel hormigaMorph |
+	| origen columna fila colRel filRel hormigaMorph hormiguere colore |
 	origen := self innerBounds origin.
 
 	fila := unaHormiga ubicacion x.
@@ -270,6 +292,34 @@ Vista >> crearHormigaMorph: unaHormiga [
 		                color: Color lightYellow ;
 		                position: origen + (colRel @ filRel).
 
+	self addMorph: hormigaMorph.
+
+
+	unaHormiga addDependent: hormigaMorph.
+
+	^ hormigaMorph
+]
+
+{ #category : 'initialization' }
+Vista >> crearHormigaMorph: unaHormiga color: unColor [
+
+	| origen columna fila colRel filRel hormigaMorph hormiguere colore |
+	origen := self innerBounds origin.
+
+	fila := unaHormiga ubicacion x.
+	columna:= unaHormiga ubicacion y.
+
+	colRel := columna - 1 * 50.
+	filRel := fila - 1 * 50.
+
+	hormigaMorph := Morph new
+		                extent: 50 @ 50;
+		                color: Color lightYellow ;
+		                position: origen + (colRel @ filRel).
+
+	
+	unColor = 'rojo' ifTrue:[ hormigaMorph color: Color red ] ifFalse:[ hormigaMorph color: Color lightGray ] .
+	
 	self addMorph: hormigaMorph.
 
 
