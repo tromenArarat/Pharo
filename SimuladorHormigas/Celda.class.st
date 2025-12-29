@@ -35,7 +35,8 @@ Celda >> contenido [
 { #category : 'accessing' }
 Celda >> contenido: unaCadena [
 
-	contenido := unaCadena
+	contenido := unaCadena .
+	self changed
 ]
 
 { #category : 'accessing' }
@@ -47,7 +48,8 @@ Celda >> punto [
 { #category : 'accessing' }
 Celda >> punto: unPunto [
 
-	punto := unPunto
+	punto := unPunto .
+	self changed
 ]
 
 { #category : 'accessing' }
@@ -59,7 +61,8 @@ Celda >> x [
 { #category : 'accessing' }
 Celda >> x:unNumero [
 
-	x:= unNumero
+	x:= unNumero .
+	self changed .
 ]
 
 { #category : 'accessing' }
@@ -71,5 +74,6 @@ Celda >> y [
 { #category : 'accessing' }
 Celda >> y:unNumero [
 
-	y := unNumero
+	y := unNumero .
+	self changed
 ]

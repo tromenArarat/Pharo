@@ -8,7 +8,8 @@ Class {
 		'botonCerrar',
 		'botonTurno',
 		'hormigasMorph',
-		'cajaMensaje'
+		'cajaMensaje',
+		'botonMoverExploradora'
 	],
 	#category : 'SimuladorHormigas-Vista',
 	#package : 'SimuladorHormigas',
@@ -44,6 +45,18 @@ Vista >> botonCerrar: anObject [
 ]
 
 { #category : 'accessing' }
+Vista >> botonMoverExploradora [
+
+	^ botonMoverExploradora
+]
+
+{ #category : 'accessing' }
+Vista >> botonMoverExploradora: anObject [
+
+	botonMoverExploradora := anObject
+]
+
+{ #category : 'accessing' }
 Vista >> botonTurno [
 
 	^ botonTurno
@@ -53,6 +66,18 @@ Vista >> botonTurno [
 Vista >> botonTurno: anObject [
 
 	botonTurno := anObject
+]
+
+{ #category : 'accessing' }
+Vista >> cajaMensaje [
+
+	^ cajaMensaje
+]
+
+{ #category : 'accessing' }
+Vista >> cajaMensaje: anObject [
+
+	cajaMensaje := anObject
 ]
 
 { #category : 'accessing' }
@@ -86,37 +111,55 @@ Vista >> cerrar [
 { #category : 'initialization' }
 Vista >> construirBotoneraEnMundo: unMundo [
 
-	| mensaje data |
+	| mensaje data data1 data2 |
 	cajaMensaje := TextMorph new.
-	botonTurno := BotonAccion new.
+	"botonTurno := BotonAccion new."
 	botonCerrar := BotonAccion new.
+	botonMoverExploradora := BotonAccion new.
 
-	self addMorph: botonTurno.
+	"self addMorph: botonTurno."
 	self addMorph: botonCerrar.
 	self addMorph: cajaMensaje.
+	self addMorph: botonMoverExploradora.
 
-	botonTurno position: 450 @ 550.
-	botonTurno label: 'TURNO'.
+	"botonTurno position: 450 @ 550.
+	botonTurno label: 'TURNO'."
 	botonCerrar position: 500 @ 550.
 	botonCerrar label: 'CERRAR'.
 	cajaMensaje position: 600 @ 0.
+	botonMoverExploradora label: 'MOVER'.
+	botonMoverExploradora position: 450 @ 550.
 
-	data := ((nuevoMundo mapa at: 1) at: 1) posicion asString.
-	mensaje := 'Punto inicial: ' , data.
+	data := nuevoMundo mapa first first.
+	data1 := nuevoMundo colHormigueros first.
+	data2 := nuevoMundo colHormigueros at: 2.
+	mensaje := 'Punto inicial: ' , data punto asString , ' Hormig1 '
+	           , data1 ubicacion asString , ' Alime1 '
+	           , data1 alimento asString , ' Hormig2 '
+	           , data2 ubicacion asString , ' Alime2 '
+	           , data2 alimento asString , ' Explo1 ', (data1 reina colExploradoras at:1) ubicacion asString.
 	cajaMensaje
 		string: mensaje
 		fontName: 'Arial'
 		size: 12
 		wrap: true.
 
-	botonTurno mouseAction: [ 
-		| casilla casillaVisual |
-		casilla := (tablero at: 1) at: 1.
-		casillaVisual := self casillaMorphEnFila: 1 columna: 1.
-		unMundo cambiarEstadoCasilla: casilla posicion.
-		self actualizar: casillaVisual enFila: 1 columna: 1 ].
+	"botonTurno mouseAction: [
+			| casilla casillaVisual |
+			casilla := tablero first first.
+			casillaVisual := self casillaMorphEnFila: 1 columna: 1.
+			unMundo cambiarEstadoCasilla: casilla posicion.
+			self actualizar: casillaVisual enFila: 1 columna: 1 ]."
 
-	botonCerrar mouseAction: [ self cerrar ]
+	botonCerrar mouseAction: [ self cerrar ].
+
+	botonMoverExploradora mouseAction: [
+			| exploradora |
+			exploradora := self nuevoMundo colHormigueros first reina
+				               colExploradoras first.
+
+			nuevoMundo moverExploradora: exploradora contador: 0 .
+			"self construirBotoneraEnMundo: nuevoMundo "]
 ]
 
 { #category : 'initialization' }
@@ -125,16 +168,16 @@ Vista >> construirHormigasMorph [
 	| exploradorasHormigueroUno |
 	hormigasMorph := OrderedCollection new.
 
-	exploradorasHormigueroUno := (nuevoMundo colHormigueros at: 1) reina
+	exploradorasHormigueroUno := nuevoMundo colHormigueros first reina
 		                             colExploradoras.
 
-	exploradorasHormigueroUno do: [ :hormiga | 
-		| hormigaMorph |
-		hormigaMorph := self crearHormigaMorph: hormiga.
+	exploradorasHormigueroUno do: [ :hormiga |
+			| hormigaMorph |
+			hormigaMorph := self crearHormigaMorph: hormiga.
 
-		hormigasMorph add: hormigaMorph.
+			hormigasMorph add: hormigaMorph.
 
-		self addMorph: hormigaMorph ]
+			self addMorph: hormigaMorph ]
 ]
 
 { #category : 'initialization' }
@@ -178,14 +221,14 @@ Vista >> crearCasillaMorph: unaCasilla enFila: fila columna: columna [
 
 	"Crear texto con información"
 	textoMorph := StringMorph new
-		              contents: unaCasilla estadoActual;
+		              contents: unaCasilla contenido;
 		              color: Color black;
 		              position: casillaMorph bounds origin + (10 @ 15);
 		              yourself.
 
 	casillaMorph addMorphBack: textoMorph.
 
-	textoMorph contents = 'vacia' ifTrue: [ 
+	textoMorph contents = 'vacio' ifTrue: [ 
 		casillaMorph color: Color lightOrange.
 		textoMorph contents: '' ].
 
@@ -195,7 +238,7 @@ Vista >> crearCasillaMorph: unaCasilla enFila: fila columna: columna [
 
 	textoMorph contents = 'alimento' ifTrue: [ 
 		| alimento |
-		alimento := nuevoMundo encontrarAlimentoEn: unaCasilla posicion.
+		alimento := self nuevoMundo encontrarAlimentoEn: fila@columna.
 		casillaMorph color: Color lightYellow.
 		textoMorph contents:
 			alimento cantidad asString ].
@@ -222,7 +265,7 @@ Vista >> crearHormigaMorph: unaHormiga [
 
 	hormigaMorph := Morph new
 		                extent: 50 @ 50;
-		                color: Color red;
+		                color: Color lightYellow ;
 		                position: origen + (colRel @ filRel).
 
 	self addMorph: hormigaMorph.
@@ -265,14 +308,15 @@ Vista >> hormigasMorph: anObject [
 { #category : 'initialization' }
 Vista >> initialize [
 
-	| mapa |
+	"| mapa |"
 	super initialize.
 	self position: 45 @ 45.
 	self bounds: (self position extent: 10 * 40 @ (10 * 40)).
-	mapa := Mapa new.
-	nuevoMundo := NuevoMundo nuevo: mapa.
-	nuevoMundo inicializarHormigueros.
-	nuevoMundo inicializarFuenteAlimentos.
+	"mapa := Mapa new."
+	"nuevoMundo := NuevoMundo nuevo: mapa."
+	nuevoMundo := Mundo new.
+	"nuevoMundo inicializarHormigueros.
+	nuevoMundo inicializarFuenteAlimentos."
 	tablero := nuevoMundo mapa.
 	tablero addDependent: self.
 	self construirTableroVisual.
@@ -294,8 +338,7 @@ Vista >> nuevoMundo: anObject [
 
 { #category : 'methods' }
 Vista >> step [
-
-	nuevoMundo ejecutarUnTurno
+	"nuevoMundo ejecutarUnTurno"
 ]
 
 { #category : 'accessing' }

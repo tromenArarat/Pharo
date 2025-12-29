@@ -126,6 +126,7 @@ Reina >> inicializarExploradora [
 		                yourself.
 	self colExploradoras add: margaretMead.
 	margaretMead actualizarRecorridas .
+	self changed .
 	 
 ^ margaretMead
 ]

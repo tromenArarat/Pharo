@@ -107,7 +107,7 @@ NuevoMundo >> ejecutarTurno [
 	"se realiza una recorrida por el mundo, se prepara cada celda para su cambio y finalmente se efectiviza el cambio"
 
 	"self prepararCambios."
-	self cambiar
+	"self cambiar"
 	" faltaria trabajar el tema del estado estable del mundo"
 ]
 

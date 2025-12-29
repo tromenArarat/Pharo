@@ -13,3 +13,10 @@ Class {
 ManifestSimuladorHormigas class >> ruleBadMessageRule2V1FalsePositive [
 	^ #(#(#(#RGMethodDefinition #(#Reina #inicializarSegunClaseDeBendi: #false)) #'2025-12-21T22:09:57.787465-03:00') )
 ]
+
+{ #category : 'code-critics' }
+ManifestSimuladorHormigas class >> rulePrecedenceRuleV1FalsePositive [
+
+	<ignoreForCoverage>
+	^ #(#(#(#RGMethodDefinition #(#Vista #crearHormigaMorph: #false)) #'2025-12-28T21:07:22.386756-03:00') )
+]
