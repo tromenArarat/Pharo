@@ -9,7 +9,8 @@ Class {
 		'botonTurno',
 		'hormigasMorph',
 		'cajaMensaje',
-		'botonMoverExploradora'
+		'botonMoverExploradora',
+		'botonMoverObrera'
 	],
 	#category : 'SimuladorHormigas-Vista',
 	#package : 'SimuladorHormigas',
@@ -116,19 +117,23 @@ Vista >> construirBotoneraEnMundo: unMundo [
 	"botonTurno := BotonAccion new."
 	botonCerrar := BotonAccion new.
 	botonMoverExploradora := BotonAccion new.
+	botonMoverObrera := BotonAccion new.
 
 	"self addMorph: botonTurno."
 	self addMorph: botonCerrar.
 	self addMorph: cajaMensaje.
 	self addMorph: botonMoverExploradora.
+	self addMorph: botonMoverObrera.
 
 	"botonTurno position: 450 @ 550.
 	botonTurno label: 'TURNO'."
 	botonCerrar position: 500 @ 550.
 	botonCerrar label: 'CERRAR'.
 	cajaMensaje position: 600 @ 0.
-	botonMoverExploradora label: 'MOVER'.
+	botonMoverExploradora label: 'MOVER E'.
 	botonMoverExploradora position: 450 @ 550.
+	botonMoverObrera label: 'MOVER O'.
+	botonMoverObrera position: 400 @ 550.
 
 	data := nuevoMundo mapa first first.
 	data1 := nuevoMundo colHormigueros first.
@@ -155,32 +160,46 @@ Vista >> construirBotoneraEnMundo: unMundo [
 	botonCerrar mouseAction: [ self cerrar ].
 
 	botonMoverExploradora mouseAction: [
-			| exploradora exploradora2|
+			| exploradora exploradora2 |
 			exploradora := self nuevoMundo colHormigueros first reina
 				               colExploradoras first.
 				
 			exploradora2 := self nuevoMundo colHormigueros second reina
 				               colExploradoras first.
+			
 
-			nuevoMundo moverExploradora: exploradora contador: 0.
-			nuevoMundo moverExploradora: exploradora2 contador: 0.
+			nuevoMundo turnoExploradora: exploradora .
+			"nuevoMundo turnoExploradora: exploradora2 ."
+			
 			self construirTableroVisual.
 			self construirHormigasMorph.
-			self construirBotoneraEnMundo: nuevoMundo ]
+			self construirBotoneraEnMundo: nuevoMundo ] .
+		
+		botonMoverObrera mouseAction: [
+			| obrera1 obrera2|
+	obrera1 := self nuevoMundo colHormigueros first reina
+				               colObreras first.
+			obrera2 := self nuevoMundo colHormigueros second reina
+				               colObreras first. 
+				
+			nuevoMundo turnoObrera: obrera1 .
+			"nuevoMundo turnoObrera: obrera2 ."
+			self construirTableroVisual.
+			self construirHormigasMorph.
+			self construirBotoneraEnMundo: nuevoMundo 
+				 ]
 ]
 
 { #category : 'initialization' }
-Vista >> construirHormigasMorph [
+Vista >> construirExploradorasMorph [
 
-	| exploradorasHormigueroUno exploradorasHormigueroDos hormiguero1 color1 hormiguero2 color2|
+| exploradorasHormigueroUno exploradorasHormigueroDos hormiguero1 color1 hormiguero2 color2|
 	hormigasMorph := OrderedCollection new.
 
 	exploradorasHormigueroUno := nuevoMundo colHormigueros first reina
 		                             colExploradoras.
 	hormiguero1 := self nuevoMundo encontrarHormigueroEn: nuevoMundo colHormigueros first reina ubicacion.
 	color1:= hormiguero1 color.
-	hormiguero2 := self nuevoMundo encontrarHormigueroEn: nuevoMundo colHormigueros second reina ubicacion.
-	color2:= hormiguero2 color.
 	
 	exploradorasHormigueroUno do: [ :hormiga |
 			| hormigaMorph|
@@ -193,7 +212,53 @@ Vista >> construirHormigasMorph [
 	exploradorasHormigueroDos := nuevoMundo colHormigueros second reina
 		                             colExploradoras.
 
+	hormiguero2 := self nuevoMundo encontrarHormigueroEn: nuevoMundo colHormigueros second reina ubicacion.
+	color2:= hormiguero2 color.
+	
 	exploradorasHormigueroDos do: [ :hormiga |
+			| hormigaMorph |
+			hormigaMorph := self crearHormigaMorph: hormiga color: color2.
+
+			hormigasMorph add: hormigaMorph.
+
+			self addMorph: hormigaMorph ]
+]
+
+{ #category : 'initialization' }
+Vista >> construirHormigasMorph [
+
+self construirExploradorasMorph .
+
+self construirObrerasMorph .
+	
+]
+
+{ #category : 'initialization' }
+Vista >> construirObrerasMorph [
+
+| obrerasHormigueroUno obrerasHormigueroDos hormiguero1 color1 hormiguero2 color2|
+	hormigasMorph := OrderedCollection new.
+
+	obrerasHormigueroUno := nuevoMundo colHormigueros first reina
+		                             colObreras.
+	hormiguero1 := self nuevoMundo encontrarHormigueroEn: nuevoMundo colHormigueros first reina ubicacion.
+	color1:= hormiguero1 color.
+	
+	obrerasHormigueroUno do: [ :hormiga |
+			| hormigaMorph|
+			hormigaMorph := self crearHormigaMorph: hormiga color: color1.
+
+			hormigasMorph add: hormigaMorph.
+
+			self addMorph: hormigaMorph ] .
+		
+	obrerasHormigueroDos := nuevoMundo colHormigueros second reina
+		                             colObreras.
+
+	hormiguero2 := self nuevoMundo encontrarHormigueroEn: nuevoMundo colHormigueros second reina ubicacion.
+	color2:= hormiguero2 color.
+	
+	obrerasHormigueroDos do: [ :hormiga |
 			| hormigaMorph |
 			hormigaMorph := self crearHormigaMorph: hormiga color: color2.
 
@@ -276,34 +341,9 @@ Vista >> crearCasillaMorph: unaCasilla enFila: fila columna: columna [
 ]
 
 { #category : 'initialization' }
-Vista >> crearHormigaMorph: unaHormiga [
-
-	| origen columna fila colRel filRel hormigaMorph hormiguere colore |
-	origen := self innerBounds origin.
-
-	fila := unaHormiga ubicacion x.
-	columna:= unaHormiga ubicacion y.
-
-	colRel := columna - 1 * 50.
-	filRel := fila - 1 * 50.
-
-	hormigaMorph := Morph new
-		                extent: 50 @ 50;
-		                color: Color lightYellow ;
-		                position: origen + (colRel @ filRel).
-
-	self addMorph: hormigaMorph.
-
-
-	unaHormiga addDependent: hormigaMorph.
-
-	^ hormigaMorph
-]
-
-{ #category : 'initialization' }
 Vista >> crearHormigaMorph: unaHormiga color: unColor [
 
-	| origen columna fila colRel filRel hormigaMorph hormiguere colore |
+	| origen columna fila colRel filRel hormigaMorph textoMorph |
 	origen := self innerBounds origin.
 
 	fila := unaHormiga ubicacion x.
@@ -313,10 +353,20 @@ Vista >> crearHormigaMorph: unaHormiga color: unColor [
 	filRel := fila - 1 * 50.
 
 	hormigaMorph := Morph new
-		                extent: 50 @ 50;
+		                extent: 15 @ 15;
 		                color: Color lightYellow ;
-		                position: origen + (colRel @ filRel).
+		                position: origen + (colRel +10@ filRel+10).
+		
+	textoMorph := StringMorph new
+		              contents: 'E';
+		              color: Color black;
+		              position: hormigaMorph bounds origin + (3@1);
+		              yourself.
 
+
+	(self esExploradora:unaHormiga) ifTrue:[ textoMorph contents: 'E' ]ifFalse:[ textoMorph contents: 'O' ] .
+	
+	hormigaMorph addMorphBack: textoMorph.
 	
 	unColor = 'rojo' ifTrue:[ hormigaMorph color: Color red ] ifFalse:[ hormigaMorph color: Color lightGray ] .
 	
@@ -343,6 +393,12 @@ Vista >> ejecutarUnTurno [
 	"Se ejecuta un turno del nuevoMundo"
 
 	nuevoMundo  ejecutarTurno
+]
+
+{ #category : 'initialization' }
+Vista >> esExploradora:unaHormiga [
+
+^ unaHormiga isKindOf: Exploradora .
 ]
 
 { #category : 'accessing' }
