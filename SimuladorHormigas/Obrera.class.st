@@ -31,7 +31,7 @@ Class {
 { #category : 'updating' }
 Obrera >> actualizarMochila: unaFuenteDeAlimento [
 
-	[ unaFuenteDeAlimento cantidad > 1 & (self mochila < 3) ] whileTrue: [ 
+	[ unaFuenteDeAlimento cantidad > 0 & (self mochila < 3) ] whileTrue: [ 
 		unaFuenteDeAlimento restarCantidad.
 		self mochila: self mochila + 1 ]
 ]

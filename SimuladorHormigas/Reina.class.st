@@ -104,6 +104,12 @@ Reina >> comidaMaxima: anObject [
 	comidaMaxima := anObject
 ]
 
+{ #category : 'update' }
+Reina >> eliminarContingencia [
+
+	self colContingencias removeFirst .
+]
+
 { #category : 'creation' }
 Reina >> engendrar [
 
