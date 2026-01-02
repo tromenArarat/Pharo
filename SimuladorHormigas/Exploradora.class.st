@@ -8,17 +8,19 @@ Cuando una exploradora vuelve con un mensaje, la Reina decide que hacer. Si se d
 Luego de avisar, la hormiga exploradora, sale a caminar nuevamente por el mundo. Si encuentra algo que ya notificó, lo ignora y sigue por su lado. Las exploradores son muy hábiles para encontrar comida por su cuenta, por lo que no comen nunca en la colonia.
 "
 Class {
-	#name : #Exploradora,
-	#superclass : #Hormiga,
+	#name : 'Exploradora',
+	#superclass : 'Hormiga',
 	#instVars : [
 		'colRecorridas',
 		'colMensajes',
 		'estado'
 	],
-	#category : #'SimuladorHormigas-Base'
+	#category : 'SimuladorHormigas-Base',
+	#package : 'SimuladorHormigas',
+	#tag : 'Base'
 }
 
-{ #category : #updating }
+{ #category : 'updating' }
 Exploradora >> actualizarMensajes: unaCelda [
 
 	| validacion |
@@ -27,55 +29,55 @@ Exploradora >> actualizarMensajes: unaCelda [
 	validacion ifTrue: [ self colMensajes addFirst: unaCelda ]
 ]
 
-{ #category : #updating }
+{ #category : 'updating' }
 Exploradora >> actualizarRecorridas [
 
 	colRecorridas add: self ubicacion
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Exploradora >> colMensajes [
 
 	^ colMensajes
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Exploradora >> colMensajes: anObject [
 
 	colMensajes := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Exploradora >> colRecorridas [
 
 	^ colRecorridas
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Exploradora >> colRecorridas: anObject [
 
 	colRecorridas := anObject
 ]
 
-{ #category : #checking }
+{ #category : 'checking' }
 Exploradora >> estaEnRecorridas: unaCelda [
 
 ^ self colRecorridas includes: unaCelda .
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Exploradora >> estado [
 
 	^ estado
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Exploradora >> estado: anObject [
 
 	estado := anObject
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 Exploradora >> initialize [
 
 	self colRecorridas: OrderedCollection new 

@@ -1,1 +1,1 @@
-Package { #name : #SimuladorHormigas }
+Package { #name : 'SimuladorHormigas' }

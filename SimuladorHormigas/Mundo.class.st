@@ -133,17 +133,19 @@ celdaFueraDelMapa x <= ((mundo mapa at: 10) at: 10) x .
 
 "
 Class {
-	#name : #Mundo,
-	#superclass : #Object,
+	#name : 'Mundo',
+	#superclass : 'Object',
 	#instVars : [
 		'colHormigueros',
 		'mapa',
 		'colAlimentos'
 	],
-	#category : #'SimuladorHormigas-Base'
+	#category : 'SimuladorHormigas-Base',
+	#package : 'SimuladorHormigas',
+	#tag : 'Base'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Mundo class >> moverObrera: unaObrera aUbicacion: unaUbicacion [
 
 	| ubicacionObrera candidatas puntoMasCercano distanciaMinima |
@@ -164,7 +166,7 @@ Mundo class >> moverObrera: unaObrera aUbicacion: unaUbicacion [
 		unaObrera ubicacion: puntoMasCercano ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Mundo class >> posRandom: unaUbicacion enMapa: unMapa [
 
 	| x y ejeRandom movimientoRandom nuevaUbicacion mundo |
@@ -202,7 +204,7 @@ Mundo class >> posRandom: unaUbicacion enMapa: unMapa [
 	^ nuevaUbicacion
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Mundo class >> ubicacionAleatoria: unaUbicacion [
 
 	| movPosibles nuevaUbicacion |
@@ -213,13 +215,13 @@ Mundo class >> ubicacionAleatoria: unaUbicacion [
 	^ nuevaUbicacion
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Mundo class >> volverExploradora: unaExploradora [
- 
+
 	| ubicacionExploradora ubicacionHormiguero candidatas puntoMasCercano distanciaMinima |
 	ubicacionExploradora := unaExploradora ubicacion.
 
-	ubicacionHormiguero := unaExploradora colRecorridas at: 1.
+	ubicacionHormiguero := unaExploradora colRecorridas first.
 
 	candidatas := ubicacionExploradora asPoint fourNeighbors.
 
@@ -227,16 +229,16 @@ Mundo class >> volverExploradora: unaExploradora [
 
 	distanciaMinima := puntoMasCercano distanceTo: ubicacionHormiguero.
 
-	candidatas allButFirst do: [ :punto | 
-		| distanciaActual |
-		distanciaActual := punto distanceTo: ubicacionHormiguero.
-		distanciaActual < distanciaMinima ifTrue: [ 
-			distanciaMinima := distanciaActual.
-			puntoMasCercano := punto ].
-		unaExploradora ubicacion: puntoMasCercano ] 
+	candidatas allButFirst do: [ :punto |
+			| distanciaActual |
+			distanciaActual := punto distanceTo: ubicacionHormiguero.
+			distanciaActual < distanciaMinima ifTrue: [
+					distanciaMinima := distanciaActual.
+					puntoMasCercano := punto ].
+			unaExploradora ubicacion: puntoMasCercano ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Mundo >> celdaEnMapa: unPuntoDeUbicacion [
 
 	| fila columna |
@@ -246,31 +248,31 @@ Mundo >> celdaEnMapa: unPuntoDeUbicacion [
 	^ (self mapa at:fila) at:columna  .
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Mundo >> colAlimentos [
 
 	^ colAlimentos
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Mundo >> colAlimentos: anObject [
 
 	colAlimentos := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Mundo >> colHormigueros [
 
 	^ colHormigueros
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Mundo >> colHormigueros: anObject [
 
 	colHormigueros := anObject
 ]
 
-{ #category : #random }
+{ #category : 'random' }
 Mundo >> colorAleatorio [
 
 	| colores indice |
@@ -284,19 +286,19 @@ Mundo >> colorAleatorio [
 	"
 ]
 
-{ #category : #decoding }
+{ #category : 'decoding' }
 Mundo >> decodificarMensaje: unaExploradora [
 
 	| ubicacionMensaje fila columna |
-	ubicacionMensaje := unaExploradora colMensajes at: 1.
+	ubicacionMensaje := unaExploradora colMensajes first.
 
 	fila := ubicacionMensaje x.
 	columna := ubicacionMensaje y.
 
-	^ ((self mapa at: fila) at: columna )contenido
+	^ ((self mapa at: fila) at: columna) contenido
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Mundo >> encontrarAlimentoEn: unaUbicacion [
 
 ^ 	self colAlimentos detect: [ :alimento | 
@@ -305,7 +307,7 @@ Mundo >> encontrarAlimentoEn: unaUbicacion [
  
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Mundo >> encontrarHormigueroEn: unaUbicacion [
 
 	self colHormigueros do: [ :hormiguero | 
@@ -313,7 +315,7 @@ Mundo >> encontrarHormigueroEn: unaUbicacion [
 			reina ubicacion = unaUbicacion ifTrue: [ ^ hormiguero ] ] ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Mundo >> encontrarReinaEn: unaUbicacion [
 
 	"Retorna la reina que se encuentra en la ubicación especificada, o nil si no hay ninguna"
@@ -323,7 +325,7 @@ Mundo >> encontrarReinaEn: unaUbicacion [
             (reina ubicacion = unaUbicacion) ifTrue: [ ^ reina ] ] ].
 ]
 
-{ #category : #checking }
+{ #category : 'checking' }
 Mundo >> estaEnMapa: celda [
 
 	| x y m n |
@@ -337,7 +339,7 @@ Mundo >> estaEnMapa: celda [
 	  & (celda y > 0)
 ]
 
-{ #category : #checking }
+{ #category : 'checking' }
 Mundo >> estaUbicacionEnMapa: unaUbicacion [
 
 	| x y m n |
@@ -351,7 +353,7 @@ Mundo >> estaUbicacionEnMapa: unaUbicacion [
 	  & (unaUbicacion y > 0)
 ]
 
-{ #category : #initalize }
+{ #category : 'initalize' }
 Mundo >> inicializarFuenteAlimentos [
 
 	| numAlimentos posicionesUsadas m n |
@@ -381,7 +383,7 @@ Mundo >> inicializarFuenteAlimentos [
 		((mapa at: filaRandom) at: columnaRandom) contenido: 'alimento' ]
 ]
 
-{ #category : #initalize }
+{ #category : 'initalize' }
 Mundo >> inicializarHormigueros [
 
 	| numHormigueros posicionesUsadas m n cantAlimentoPorHormiguero  |
@@ -419,7 +421,7 @@ Mundo >> inicializarHormigueros [
 		((mapa at: filaRandom) at: columnaRandom) contenido: 'hormiguero' ]
 ]
 
-{ #category : #initalize }
+{ #category : 'initalize' }
 Mundo >> inicializarMundoConFilas: n columnas: m [
 
 	| tablero |
@@ -432,7 +434,7 @@ Mundo >> inicializarMundoConFilas: n columnas: m [
 	self colAlimentos: OrderedCollection new .
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 Mundo >> initialize [
 
 	| m n tablero |
@@ -450,19 +452,19 @@ Mundo >> initialize [
 	self inicializarHormigueros
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Mundo >> mapa [
 
 	^ mapa
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Mundo >> mapa: anObject [
 
 	mapa := anObject
 ]
 
-{ #category : #'game logic' }
+{ #category : 'game logic' }
 Mundo >> moverExploradora: unaExploradora contador: unNumero [
 
 	| posActual celdaMapa recorridas posAleatoria contador |
@@ -487,7 +489,7 @@ Mundo >> moverExploradora: unaExploradora contador: unNumero [
 		ifFalse: [ self moverExploradora: unaExploradora contador: contador ]
 ]
 
-{ #category : #checking }
+{ #category : 'checking' }
 Mundo >> posicionesUsadasConAlimentoHormiguero [
 
 	| posicionesUsadas |
@@ -501,7 +503,7 @@ Mundo >> posicionesUsadasConAlimentoHormiguero [
 	^ posicionesUsadas
 ]
 
-{ #category : #checking }
+{ #category : 'checking' }
 Mundo >> tieneAlimento: unPuntoDeUbicacion [
 
 	| fila columna |
@@ -513,7 +515,7 @@ Mundo >> tieneAlimento: unPuntoDeUbicacion [
 	
 ]
 
-{ #category : #checking }
+{ #category : 'checking' }
 Mundo >> tieneVacio: unPuntoDeUbicacion [
 
 	| fila columna celda |
@@ -525,11 +527,11 @@ Mundo >> tieneVacio: unPuntoDeUbicacion [
 	^ celda contenido = 'vacio' or: (celda contenido = 'hormiguero')
 ]
 
-{ #category : #'game logic' }
+{ #category : 'game logic' }
 Mundo >> turnoExploradora: unaExploradora [
 
 	| ubicacionHormiguero reina |
-	ubicacionHormiguero := unaExploradora colRecorridas at: 1.
+	ubicacionHormiguero := unaExploradora colRecorridas first.
 	reina := self encontrarReinaEn: ubicacionHormiguero.
 	unaExploradora estado = 'explorando'
 		ifTrue: [ self turnoExploradoraExplorando: unaExploradora ]
@@ -538,86 +540,86 @@ Mundo >> turnoExploradora: unaExploradora [
 	unaExploradora ubicacion = ubicacionHormiguero ifFalse: [ ^ self ].
 	unaExploradora estado: 'explorando'.
 	reina
-		actualizarContingencias:
-		(unaExploradora colMensajes at: 1) contenido
-		ubicacion: (unaExploradora colMensajes at: 1) punto
+		actualizarContingencias: unaExploradora colMensajes first contenido
+		ubicacion: unaExploradora colMensajes first punto
 ]
 
-{ #category : #'game logic' }
+{ #category : 'game logic' }
 Mundo >> turnoExploradoraExplorando: unaExploradora [
 
 	| movimientos ubicacionHormiguero |
-	ubicacionHormiguero := unaExploradora colRecorridas at: 1.
+	ubicacionHormiguero := unaExploradora colRecorridas first.
 	movimientos := 0.
-	[ 
-	unaExploradora estado = 'explorando' & (movimientos < 4)
-	& (self tieneVacio: unaExploradora ubicacion) ] whileTrue: [ 
-		self moverExploradora: unaExploradora contador: 0.
-		movimientos := movimientos + 1 ].
+	[
+		unaExploradora estado = 'explorando' & (movimientos < 4)
+		& (self tieneVacio: unaExploradora ubicacion) ] whileTrue: [
+			self moverExploradora: unaExploradora contador: 0.
+			movimientos := movimientos + 1 ].
 	(self tieneAlimento: unaExploradora ubicacion)
-	& (unaExploradora colMensajes allSatisfy: [ :mensaje | 
-			 mensaje punto ~= unaExploradora ubicacion ]) ifFalse: [ 
-		^ self ].
+	& (unaExploradora colMensajes allSatisfy: [ :mensaje |
+			 mensaje punto ~= unaExploradora ubicacion ]) ifFalse: [ ^ self ].
 	unaExploradora estado: 'volviendo'.
 	unaExploradora actualizarMensajes:
 		(self celdaEnMapa: unaExploradora ubicacion).
-	unaExploradora colRecorridas removeAllSuchThat: [ :each | 
+	unaExploradora colRecorridas removeAllSuchThat: [ :each |
 		(unaExploradora colRecorridas indexOf: each) > 1 ].
 	movimientos := 4
 ]
 
-{ #category : #'game logic' }
+{ #category : 'game logic' }
 Mundo >> turnoExploradoraVolviendo: unaExploradora [
 
 	| ubicacionHormiguero movimientos |
-	ubicacionHormiguero := unaExploradora colRecorridas at: 1.
+	ubicacionHormiguero := unaExploradora colRecorridas first.
 	movimientos := 0.
-	[ 
-	unaExploradora ubicacion ~= ubicacionHormiguero & (movimientos < 4) ] 
-		whileTrue: [ 
-			self class volverExploradora: unaExploradora.
-			movimientos := movimientos + 1 ].
-
+	[
+	unaExploradora ubicacion ~= ubicacionHormiguero & (movimientos < 4) ]
+		whileTrue: [
+				self class volverExploradora: unaExploradora.
+				movimientos := movimientos + 1 ]
 ]
 
-{ #category : #'game logic' }
+{ #category : 'game logic' }
 Mundo >> turnoObrera: unaObrera [
 
-	unaObrera estado = 'ida'
+	unaObrera estado = 'yendo'
 		ifTrue: [ self turnoObreraIda: unaObrera ] 
 		ifFalse: [ self turnoObreraVuelta: unaObrera ]
 ]
 
-{ #category : #'game logic' }
+{ #category : 'game logic' }
 Mundo >> turnoObreraIda: unaObrera [
 
-	| reina hormiguero destino contador alimento |
-	reina := self encontrarReinaEn: (unaObrera colRecorridas at: 1).
+	| reina hormiguero destino contador alimento celdaAlimento |
+	reina := self encontrarReinaEn: unaObrera colRecorridas first.
 	hormiguero := self encontrarHormigueroEn: reina ubicacion.
-
-	destino := (reina colContingencias at: 1) punto.
+	destino := reina colContingencias first punto.
 	contador := 0.
-	[ contador < 3 & (unaObrera ubicacion ~= destino) ] whileTrue: [ 
-		self class moverObrera: unaObrera aUbicacion: destino.
-		contador := contador + 1 ].
+	[ contador < 3 & (unaObrera ubicacion ~= destino) ] whileTrue: [
+			self class moverObrera: unaObrera aUbicacion: destino.
+			contador := contador + 1 ].
 	unaObrera ubicacion = destino ifFalse: [ ^ self ].
 	alimento := self encontrarAlimentoEn: destino.
 	unaObrera actualizarMochila: alimento.
-	unaObrera estado: 'volviendo'
+	unaObrera estado: 'volviendo'.
+	alimento cantidad = 0 ifFalse: [ ^ self ].
+	celdaAlimento := self celdaEnMapa: alimento ubicacion.
+	celdaAlimento contenido: 'vacio'.
+	reina eliminarContingencia
 ]
 
-{ #category : #'game logic' }
+{ #category : 'game logic' }
 Mundo >> turnoObreraVuelta: unaObrera [
 
-	| reina hormiguero contador  |
-	reina := self encontrarReinaEn: (unaObrera colRecorridas at: 1).
+	| reina hormiguero contador |
+	reina := self encontrarReinaEn: unaObrera colRecorridas first.
 	hormiguero := self encontrarHormigueroEn: reina ubicacion.
 	contador := 0.
 	unaObrera mochila > 0 ifTrue: [ contador := 2 ].
-	[ contador < 3 & (unaObrera ubicacion ~= hormiguero ubicacion) ] 
-		whileTrue: [ 
-			self class moverObrera: unaObrera aUbicacion: hormiguero ubicacion.
-			contador := contador + 1 ].
+	[ contador < 3 & (unaObrera ubicacion ~= hormiguero ubicacion) ]
+		whileTrue: [
+				self class moverObrera: unaObrera aUbicacion: hormiguero ubicacion.
+				contador := contador + 1 ].
 	unaObrera ubicacion = hormiguero ubicacion ifFalse: [ ^ self ].
 	hormiguero cargarAlimento: unaObrera mochila.
 	unaObrera descargarMochila.

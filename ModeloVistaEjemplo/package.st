@@ -1,1 +1,1 @@
-Package { #name : #ModeloVistaEjemplo }
+Package { #name : 'ModeloVistaEjemplo' }

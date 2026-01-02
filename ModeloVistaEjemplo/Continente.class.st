@@ -1,32 +1,34 @@
 Class {
-	#name : #Continente,
-	#superclass : #Object,
+	#name : 'Continente',
+	#superclass : 'Object',
 	#instVars : [
 		'nombre',
 		'ubicacion'
 	],
-	#category : #'ModeloVistaEjemplo-ModeloAstro'
+	#category : 'ModeloVistaEjemplo-ModeloAstro',
+	#package : 'ModeloVistaEjemplo',
+	#tag : 'ModeloAstro'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Continente >> nombre [
 
 	^ nombre
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Continente >> nombre: anObject [
 
 	nombre := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Continente >> ubicacion [
 
 	^ ubicacion
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Continente >> ubicacion: anObject [
 
 	ubicacion := anObject

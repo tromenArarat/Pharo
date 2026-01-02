@@ -5,18 +5,20 @@ Cada unidad del mapa, definida con un objeto de la clase Point y una descripció
 
 "
 Class {
-	#name : #Celda,
-	#superclass : #Object,
+	#name : 'Celda',
+	#superclass : 'Object',
 	#instVars : [
 		'punto',
 		'contenido',
 		'x',
 		'y'
 	],
-	#category : #'SimuladorHormigas-Base'
+	#category : 'SimuladorHormigas-Base',
+	#package : 'SimuladorHormigas',
+	#tag : 'Base'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 Celda class >> punto: unPunto contenido: unaCadena [
     ^ self new
         punto: unPunto;
@@ -24,50 +26,54 @@ Celda class >> punto: unPunto contenido: unaCadena [
         yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Celda >> contenido [
 
 	^ contenido
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Celda >> contenido: unaCadena [
 
-	contenido := unaCadena
+	contenido := unaCadena .
+	self changed
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Celda >> punto [
 
 	^ punto
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Celda >> punto: unPunto [
 
-	punto := unPunto
+	punto := unPunto .
+	self changed
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Celda >> x [
 
 	^ punto x
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Celda >> x:unNumero [
 
-	x:= unNumero
+	x:= unNumero .
+	self changed .
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Celda >> y [
 
 	^ punto y
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Celda >> y:unNumero [
 
-	y := unNumero
+	y := unNumero .
+	self changed
 ]

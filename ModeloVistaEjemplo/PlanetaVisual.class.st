@@ -1,40 +1,42 @@
 Class {
-	#name : #PlanetaVisual,
-	#superclass : #BorderedMorph,
+	#name : 'PlanetaVisual',
+	#superclass : 'BorderedMorph',
 	#instVars : [
 		'continente',
 		'nombreContinente',
 		'botonCerrar',
 		'botonCambiar'
 	],
-	#category : #'ModeloVistaEjemplo-VistaAstro'
+	#category : 'ModeloVistaEjemplo-VistaAstro',
+	#package : 'ModeloVistaEjemplo',
+	#tag : 'VistaAstro'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PlanetaVisual >> botonCambiar [
 
 	^ botonCambiar
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PlanetaVisual >> botonCambiar: anObject [
 
 	botonCambiar := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PlanetaVisual >> botonCerrar [
 
 	^ botonCerrar
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PlanetaVisual >> botonCerrar: anObject [
 
 	botonCerrar := anObject
 ]
 
-{ #category : #initialize }
+{ #category : 'initialize' }
 PlanetaVisual >> cambiar [
 
 	"minimiza la ventana"
@@ -47,7 +49,7 @@ PlanetaVisual >> cambiar [
 	self nombreContinente: (continentes at: indice)
 ]
 
-{ #category : #initialize }
+{ #category : 'initialize' }
 PlanetaVisual >> cambiar: unPlaneta [
 
 	"minimiza la ventana"
@@ -62,7 +64,7 @@ PlanetaVisual >> cambiar: unPlaneta [
 self update:unPlaneta
 ]
 
-{ #category : #initialize }
+{ #category : 'initialize' }
 PlanetaVisual >> cerrar [
 
 	"minimiza la ventana"
@@ -70,19 +72,19 @@ PlanetaVisual >> cerrar [
 	self collapse
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PlanetaVisual >> continente [
 
 	^ continente
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PlanetaVisual >> continente: anObject [
 
 	continente := anObject
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PlanetaVisual >> initialize [
 
 	| origen planeta continentes indice |
@@ -127,19 +129,19 @@ PlanetaVisual >> initialize [
 	botonCerrar mouseAction: [ self cerrar ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PlanetaVisual >> nombreContinente [
 
 	^ nombreContinente
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PlanetaVisual >> nombreContinente: anObject [
 
 	nombreContinente := anObject
 ]
 
-{ #category : #initialize }
+{ #category : 'initialize' }
 PlanetaVisual >> solicitarCambiar: unPlaneta [
 
 	| valor |
@@ -149,7 +151,7 @@ PlanetaVisual >> solicitarCambiar: unPlaneta [
 	self update: unPlaneta
 ]
 
-{ #category : #updating }
+{ #category : 'updating' }
 PlanetaVisual >> update: unPlaneta [
 
 	unPlaneta ifNotNil: [ 

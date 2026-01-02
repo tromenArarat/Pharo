@@ -1,6 +1,9 @@
+"
+Interfaz gráfica del simulador de hormigas
+"
 Class {
-	#name : #Vista,
-	#superclass : #BorderedMorph,
+	#name : 'Vista',
+	#superclass : 'BorderedMorph',
 	#instVars : [
 		'nuevoMundo',
 		'tablero',
@@ -8,12 +11,18 @@ Class {
 		'botonCerrar',
 		'botonTurno',
 		'hormigasMorph',
-		'cajaMensaje'
+		'cajaMensaje',
+		'botonMoverExploradora',
+		'botonMoverObrera',
+		'botonSimulacion',
+		'botonFinSimulacion'
 	],
-	#category : #'SimuladorHormigas-Vista'
+	#category : 'SimuladorHormigas-Vista',
+	#package : 'SimuladorHormigas',
+	#tag : 'Vista'
 }
 
-{ #category : #updating }
+{ #category : 'updating' }
 Vista >> actualizar: unaCasilla enFila: fila columna: columna [
 
 	unaCasilla ifNotNil: [ 
@@ -21,7 +30,7 @@ Vista >> actualizar: unaCasilla enFila: fila columna: columna [
 			((tablero at: fila) at: columna) estadoSiguiente ]
 ]
 
-{ #category : #updating }
+{ #category : 'updating' }
 Vista >> actualizarCasilla: unaCasilla enFila: fila columna: columna [
 
 	unaCasilla ifNotNil: [ 
@@ -29,50 +38,110 @@ Vista >> actualizarCasilla: unaCasilla enFila: fila columna: columna [
 			((tablero at: fila) at: columna) estadoSiguiente ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Vista >> botonCerrar [
 
 	^ botonCerrar
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Vista >> botonCerrar: anObject [
 
 	botonCerrar := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
+Vista >> botonFinSimulacion [
+
+	^ botonFinSimulacion
+]
+
+{ #category : 'accessing' }
+Vista >> botonFinSimulacion: anObject [
+
+	botonFinSimulacion := anObject
+]
+
+{ #category : 'accessing' }
+Vista >> botonMoverExploradora [
+
+	^ botonMoverExploradora
+]
+
+{ #category : 'accessing' }
+Vista >> botonMoverExploradora: anObject [
+
+	botonMoverExploradora := anObject
+]
+
+{ #category : 'accessing' }
+Vista >> botonMoverObrera [
+
+	^ botonMoverObrera
+]
+
+{ #category : 'accessing' }
+Vista >> botonMoverObrera: anObject [
+
+	botonMoverObrera := anObject
+]
+
+{ #category : 'accessing' }
+Vista >> botonSimulacion [
+
+	^ botonSimulacion
+]
+
+{ #category : 'accessing' }
+Vista >> botonSimulacion: anObject [
+
+	botonSimulacion := anObject
+]
+
+{ #category : 'accessing' }
 Vista >> botonTurno [
 
 	^ botonTurno
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Vista >> botonTurno: anObject [
 
 	botonTurno := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
+Vista >> cajaMensaje [
+
+	^ cajaMensaje
+]
+
+{ #category : 'accessing' }
+Vista >> cajaMensaje: anObject [
+
+	cajaMensaje := anObject
+]
+
+{ #category : 'accessing' }
 Vista >> casillaMorphEnFila: fila columna: columna [
 
 
 	^ casillasVisuales at: fila @ columna ifAbsent: [ nil ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Vista >> casillasVisuales [
 
 	^ casillasVisuales
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Vista >> casillasVisuales: anObject [
 
 	casillasVisuales := anObject
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 Vista >> cerrar [
 
 	"minimiza la ventana"
@@ -81,61 +150,151 @@ Vista >> cerrar [
 	
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 Vista >> construirBotoneraEnMundo: unMundo [
 
-	| mensaje data |
+	| mensaje data data1 data2 reina |
 	cajaMensaje := TextMorph new.
 	botonTurno := BotonAccion new.
 	botonCerrar := BotonAccion new.
+	botonMoverExploradora := BotonAccion new.
+	botonMoverObrera := BotonAccion new.
+	botonSimulacion := BotonAccion new.
+	botonFinSimulacion := BotonAccion new.
 
 	self addMorph: botonTurno.
 	self addMorph: botonCerrar.
 	self addMorph: cajaMensaje.
+	self addMorph: botonMoverExploradora.
+	self addMorph: botonMoverObrera.
+	self addMorph: botonSimulacion.
+	self addMorph: botonFinSimulacion.
 
-	botonTurno position: 450 @ 550.
+	botonSimulacion position: 0 @ 550.
+	botonSimulacion label: 'Sim'.
+	botonFinSimulacion position: 100 @ 550.
+	botonFinSimulacion label: 'FinSim'.
+	botonTurno position: 200 @ 550.
 	botonTurno label: 'TURNO'.
 	botonCerrar position: 500 @ 550.
 	botonCerrar label: 'CERRAR'.
 	cajaMensaje position: 600 @ 0.
+	botonMoverExploradora label: 'MOVER E'.
+	botonMoverExploradora position: 400 @ 550.
+	botonMoverObrera label: 'MOVER O'.
+	botonMoverObrera position: 300 @ 550.
 
-	data := ((nuevoMundo mapa at: 1) at: 1) posicion asString.
-	mensaje := 'Punto inicial: ' , data.
+	data := nuevoMundo mapa first first.
+	data1 := nuevoMundo colHormigueros first.
+	data2 := nuevoMundo colHormigueros at: 2.
+	mensaje := 'Punto inicial: ' , data punto asString , ' Hormig1 '
+	           , data1 ubicacion asString , ' Alime1 '
+	           , data1 alimento asString , ' Hormig2 '
+	           , data2 ubicacion asString , ' Alime2 '
+	           , data2 alimento asString , ' Explo1 '
+	           , data1 reina colExploradoras first ubicacion asString.
 	cajaMensaje
 		string: mensaje
 		fontName: 'Arial'
 		size: 12
 		wrap: true.
 
-	botonTurno mouseAction: [ 
-		| casilla casillaVisual |
-		casilla := (tablero at: 1) at: 1.
-		casillaVisual := self casillaMorphEnFila: 1 columna: 1.
-		unMundo cambiarEstadoCasilla: casilla posicion.
-		self actualizar: casillaVisual enFila: 1 columna: 1 ].
 
-	botonCerrar mouseAction: [ self cerrar ]
+	botonTurno mouseAction: [
+		reina := data1 reina .
+			(reina colContingencias isEmpty) ifTrue: [ self moverExploradora1  ] ifFalse:[
+			self moverObrera1]].
+
+	botonCerrar mouseAction: [ self cerrar ].
+
+	botonMoverExploradora mouseAction: [
+			self moverExploradoras ] .
+		
+		botonMoverObrera mouseAction: [
+			self moverObreras .
+				 ]			.
+		botonSimulacion mouseAction: [ self startStepping ].
+	botonFinSimulacion mouseAction: [ self stopStepping ].
 ]
 
-{ #category : #initialization }
-Vista >> construirHormigasMorph [
+{ #category : 'initialization' }
+Vista >> construirExploradorasMorph [
 
-	| exploradorasHormigueroUno |
+| exploradorasHormigueroUno exploradorasHormigueroDos hormiguero1 color1 hormiguero2 color2|
 	hormigasMorph := OrderedCollection new.
 
-	exploradorasHormigueroUno := (nuevoMundo colHormigueros at: 1) reina
+	exploradorasHormigueroUno := nuevoMundo colHormigueros first reina
+		                             colExploradoras.
+	hormiguero1 := self nuevoMundo encontrarHormigueroEn: nuevoMundo colHormigueros first reina ubicacion.
+	color1:= hormiguero1 color.
+	
+	exploradorasHormigueroUno do: [ :hormiga |
+			| hormigaMorph|
+			hormigaMorph := self crearHormigaMorph: hormiga color: color1.
+
+			hormigasMorph add: hormigaMorph.
+
+			self addMorph: hormigaMorph ] .
+		
+	exploradorasHormigueroDos := nuevoMundo colHormigueros second reina
 		                             colExploradoras.
 
-	exploradorasHormigueroUno do: [ :hormiga | 
-		| hormigaMorph |
-		hormigaMorph := self crearHormigaMorph: hormiga.
+	hormiguero2 := self nuevoMundo encontrarHormigueroEn: nuevoMundo colHormigueros second reina ubicacion.
+	color2:= hormiguero2 color.
+	
+	exploradorasHormigueroDos do: [ :hormiga |
+			| hormigaMorph |
+			hormigaMorph := self crearHormigaMorph: hormiga color: color2.
 
-		hormigasMorph add: hormigaMorph.
+			hormigasMorph add: hormigaMorph.
 
-		self addMorph: hormigaMorph ]
+			self addMorph: hormigaMorph ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
+Vista >> construirHormigasMorph [
+
+self construirExploradorasMorph .
+
+self construirObrerasMorph .
+	
+]
+
+{ #category : 'initialization' }
+Vista >> construirObrerasMorph [
+
+| obrerasHormigueroUno obrerasHormigueroDos hormiguero1 color1 hormiguero2 color2|
+	hormigasMorph := OrderedCollection new.
+
+	obrerasHormigueroUno := nuevoMundo colHormigueros first reina
+		                             colObreras.
+	hormiguero1 := self nuevoMundo encontrarHormigueroEn: nuevoMundo colHormigueros first reina ubicacion.
+	color1:= hormiguero1 color.
+	
+	obrerasHormigueroUno do: [ :hormiga |
+			| hormigaMorph|
+			hormigaMorph := self crearHormigaMorph: hormiga color: color1.
+
+			hormigasMorph add: hormigaMorph.
+
+			self addMorph: hormigaMorph ] .
+		
+	obrerasHormigueroDos := nuevoMundo colHormigueros second reina
+		                             colObreras.
+
+	hormiguero2 := self nuevoMundo encontrarHormigueroEn: nuevoMundo colHormigueros second reina ubicacion.
+	color2:= hormiguero2 color.
+	
+	obrerasHormigueroDos do: [ :hormiga |
+			| hormigaMorph |
+			hormigaMorph := self crearHormigaMorph: hormiga color: color2.
+
+			hormigasMorph add: hormigaMorph.
+
+			self addMorph: hormigaMorph ]
+]
+
+{ #category : 'initialization' }
 Vista >> construirTableroVisual [
 
 	self removeAllMorphs.
@@ -156,7 +315,7 @@ Vista >> construirTableroVisual [
 			self addMorph: casillaVisual ] ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 Vista >> crearCasillaMorph: unaCasilla enFila: fila columna: columna [
 
 	| origen casillaMorph textoMorph colRel filRel |
@@ -176,24 +335,26 @@ Vista >> crearCasillaMorph: unaCasilla enFila: fila columna: columna [
 
 	"Crear texto con información"
 	textoMorph := StringMorph new
-		              contents: unaCasilla estadoActual;
+		              contents: unaCasilla contenido;
 		              color: Color black;
 		              position: casillaMorph bounds origin + (10 @ 15);
 		              yourself.
 
 	casillaMorph addMorphBack: textoMorph.
 
-	textoMorph contents = 'vacia' ifTrue: [ 
+	textoMorph contents = 'vacio' ifTrue: [ 
 		casillaMorph color: Color lightOrange.
 		textoMorph contents: '' ].
 
 	textoMorph contents = 'hormiguero' ifTrue: [ 
-		casillaMorph color: Color lightCyan.
+		| hormiguero |
+		hormiguero := self nuevoMundo encontrarHormigueroEn: unaCasilla punto .
+		hormiguero color = 'rojo' ifTrue: [casillaMorph color: Color red.  ] ifFalse:[ casillaMorph color: Color lightGray ].
 		textoMorph contents: 'Horm' ].
 
 	textoMorph contents = 'alimento' ifTrue: [ 
 		| alimento |
-		alimento := nuevoMundo encontrarAlimentoEn: unaCasilla posicion.
+		alimento := self nuevoMundo encontrarAlimentoEn: fila@columna.
 		casillaMorph color: Color lightYellow.
 		textoMorph contents:
 			alimento cantidad asString ].
@@ -206,10 +367,10 @@ Vista >> crearCasillaMorph: unaCasilla enFila: fila columna: columna [
 	^ casillaMorph
 ]
 
-{ #category : #initialization }
-Vista >> crearHormigaMorph: unaHormiga [
+{ #category : 'initialization' }
+Vista >> crearHormigaMorph: unaHormiga color: unColor [
 
-	| origen columna fila colRel filRel hormigaMorph |
+	| origen columna fila colRel filRel hormigaMorph textoMorph |
 	origen := self innerBounds origin.
 
 	fila := unaHormiga ubicacion x.
@@ -219,10 +380,23 @@ Vista >> crearHormigaMorph: unaHormiga [
 	filRel := fila - 1 * 50.
 
 	hormigaMorph := Morph new
-		                extent: 50 @ 50;
-		                color: Color red;
-		                position: origen + (colRel @ filRel).
+		                extent: 15 @ 15;
+		                color: Color lightYellow ;
+		                position: origen + (colRel +10@ filRel+10).
+		
+	textoMorph := StringMorph new
+		              contents: 'E';
+		              color: Color black;
+		              position: hormigaMorph bounds origin + (3@1);
+		              yourself.
 
+
+	(self esExploradora:unaHormiga) ifTrue:[ textoMorph contents: 'E' ]ifFalse:[ textoMorph contents: 'O' ] .
+	
+	hormigaMorph addMorphBack: textoMorph.
+	
+	unColor = 'rojo' ifTrue:[ hormigaMorph color: Color red ] ifFalse:[ hormigaMorph color: Color lightGray ] .
+	
 	self addMorph: hormigaMorph.
 
 
@@ -231,7 +405,7 @@ Vista >> crearHormigaMorph: unaHormiga [
 	^ hormigaMorph
 ]
 
-{ #category : #methods }
+{ #category : 'methods' }
 Vista >> ejecutarTurnos [
 
 	"Se considera que se ejecutan 10 turnos. Esto deberá flexibilizarse, solicitando al
@@ -240,37 +414,47 @@ usuario la cantidad de turnos que desea ejecutar"
 	1 to: 10 do: [ :i | self ejecutarUnTurno ]
 ]
 
-{ #category : #methods }
+{ #category : 'methods' }
 Vista >> ejecutarUnTurno [
 
 	"Se ejecuta un turno del nuevoMundo"
-
-	nuevoMundo  ejecutarTurno
+| reina |
+	reina := nuevoMundo  colHormigueros first reina .
+	
+			(reina colContingencias isEmpty) ifTrue: [ self moverExploradora1  ] ifFalse:[
+			self moverObrera1]
 ]
 
-{ #category : #accessing }
+{ #category : 'initialization' }
+Vista >> esExploradora:unaHormiga [
+
+^ unaHormiga isKindOf: Exploradora .
+]
+
+{ #category : 'accessing' }
 Vista >> hormigasMorph [
 
 	^ hormigasMorph
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Vista >> hormigasMorph: anObject [
 
 	hormigasMorph := anObject
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 Vista >> initialize [
 
-	| mapa |
+	"| mapa |"
 	super initialize.
 	self position: 45 @ 45.
 	self bounds: (self position extent: 10 * 40 @ (10 * 40)).
-	mapa := Mapa new.
-	nuevoMundo := NuevoMundo nuevo: mapa.
-	nuevoMundo inicializarHormigueros.
-	nuevoMundo inicializarFuenteAlimentos.
+	"mapa := Mapa new."
+	"nuevoMundo := NuevoMundo nuevo: mapa."
+	nuevoMundo := Mundo new.
+	"nuevoMundo inicializarHormigueros.
+	nuevoMundo inicializarFuenteAlimentos."
 	tablero := nuevoMundo mapa.
 	tablero addDependent: self.
 	self construirTableroVisual.
@@ -278,31 +462,94 @@ Vista >> initialize [
 	self construirBotoneraEnMundo: nuevoMundo
 ]
 
-{ #category : #accessing }
+{ #category : 'methods' }
+Vista >> moverExploradora1 [
+
+| exploradora |
+			exploradora := self nuevoMundo colHormigueros first reina
+				               colExploradoras first.
+			
+
+			nuevoMundo turnoExploradora: exploradora .
+			
+			self construirTableroVisual.
+			self construirHormigasMorph.
+			self construirBotoneraEnMundo: nuevoMundo 
+]
+
+{ #category : 'methods' }
+Vista >> moverExploradoras [
+
+| exploradora exploradora2 |
+			exploradora := self nuevoMundo colHormigueros first reina
+				               colExploradoras first.
+				
+			exploradora2 := self nuevoMundo colHormigueros second reina
+				               colExploradoras first.
+			
+
+			nuevoMundo turnoExploradora: exploradora .
+			nuevoMundo turnoExploradora: exploradora2 .
+			
+			self construirTableroVisual.
+			self construirHormigasMorph.
+			self construirBotoneraEnMundo: nuevoMundo 
+]
+
+{ #category : 'methods' }
+Vista >> moverObrera1 [
+
+| obrera1 |
+	obrera1 := self nuevoMundo colHormigueros first reina
+				               colObreras first.
+				
+			nuevoMundo turnoObrera: obrera1 .
+			self construirTableroVisual.
+			self construirHormigasMorph.
+			self construirBotoneraEnMundo: nuevoMundo 
+]
+
+{ #category : 'methods' }
+Vista >> moverObreras [
+
+| obrera1 obrera2|
+	obrera1 := self nuevoMundo colHormigueros first reina
+				               colObreras first.
+			obrera2 := self nuevoMundo colHormigueros second reina
+				               colObreras first. 
+				
+			nuevoMundo turnoObrera: obrera1 .
+			nuevoMundo turnoObrera: obrera2 .
+			self construirTableroVisual.
+			self construirHormigasMorph.
+			self construirBotoneraEnMundo: nuevoMundo 
+]
+
+{ #category : 'accessing' }
 Vista >> nuevoMundo [
 
 	^ nuevoMundo
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Vista >> nuevoMundo: anObject [
 
 	nuevoMundo := anObject
 ]
 
-{ #category : #methods }
+{ #category : 'methods' }
 Vista >> step [
 
-	nuevoMundo ejecutarUnTurno
+self ejecutarUnTurno 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Vista >> tablero [
 
 	^ tablero
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Vista >> tablero: anObject [
 
 	tablero := anObject

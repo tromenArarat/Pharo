@@ -16,73 +16,75 @@ Cada obrera puede llevar hasta 3 piezas de comida en su lomo y no necesitan come
 Si volvieron con las manos vacías (porque la fuente de comida se había agotado) se quedan dentro de la colonia hasta que se les ordene salir a recolectar más comida, y en este caso se alimentan de la comida existente en la colonia.
 "
 Class {
-	#name : #Obrera,
-	#superclass : #Hormiga,
+	#name : 'Obrera',
+	#superclass : 'Hormiga',
 	#instVars : [
 		'mochila',
 		'colRecorridas',
 		'estado'
 	],
-	#category : #'SimuladorHormigas-Base'
+	#category : 'SimuladorHormigas-Base',
+	#package : 'SimuladorHormigas',
+	#tag : 'Base'
 }
 
-{ #category : #updating }
+{ #category : 'updating' }
 Obrera >> actualizarMochila: unaFuenteDeAlimento [
 
-	[ unaFuenteDeAlimento cantidad > 1 & (self mochila < 3) ] whileTrue: [ 
+	[ unaFuenteDeAlimento cantidad > 0 & (self mochila < 3) ] whileTrue: [ 
 		unaFuenteDeAlimento restarCantidad.
 		self mochila: self mochila + 1 ]
 ]
 
-{ #category : #updating }
+{ #category : 'updating' }
 Obrera >> actualizarRecorridas [
 
 	colRecorridas add: self ubicacion
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Obrera >> colRecorridas [
 
 	^ colRecorridas
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Obrera >> colRecorridas: anObject [
 
 	colRecorridas := anObject
 ]
 
-{ #category : #reseting }
+{ #category : 'reseting' }
 Obrera >> descargarMochila [
 
 self mochila: 0
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Obrera >> estado [
 
 	^ estado
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Obrera >> estado: anObject [
 
 	estado := anObject
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 Obrera >> initialize [ 
 
 self colRecorridas: OrderedCollection new .
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Obrera >> mochila [
 
 	^ mochila
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Obrera >> mochila: anObject [
 
 	mochila := anObject
