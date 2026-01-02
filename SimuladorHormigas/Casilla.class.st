@@ -6,7 +6,7 @@ Class {
 		'estadoSiguiente',
 		'posicion'
 	],
-	#category : #'ModeloVistaEjemplo-Modelo'
+	#category : #'SimuladorHormigas-Modelo'
 }
 
 { #category : #'instance creation' }

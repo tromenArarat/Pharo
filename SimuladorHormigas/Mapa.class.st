@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'tablero'
 	],
-	#category : #'ModeloVistaEjemplo-Modelo'
+	#category : #'SimuladorHormigas-Modelo'
 }
 
 { #category : #initialization }

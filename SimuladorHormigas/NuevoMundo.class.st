@@ -6,7 +6,7 @@ Class {
 		'colHormigueros',
 		'colAlimentos'
 	],
-	#category : #'ModeloVistaEjemplo-Modelo'
+	#category : #'SimuladorHormigas-Modelo'
 }
 
 { #category : #constructor }

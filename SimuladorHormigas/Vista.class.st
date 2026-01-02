@@ -10,7 +10,7 @@ Class {
 		'hormigasMorph',
 		'cajaMensaje'
 	],
-	#category : #'ModeloVistaEjemplo-Vista'
+	#category : #'SimuladorHormigas-Vista'
 }
 
 { #category : #updating }
