@@ -273,6 +273,15 @@ Mundo >> colHormigueros: anObject [
 ]
 
 { #category : 'random' }
+Mundo >> color: unColor [
+
+	| colores |
+	colores := #( 'rojo' 'negro' ).
+	(unColor = colores first) ifTrue: [ ^ 'negro' ] ifFalse: [ ^ 'rojo' ]
+
+]
+
+{ #category : 'random' }
 Mundo >> colorAleatorio [
 
 	| colores indice |
@@ -386,39 +395,39 @@ Mundo >> inicializarFuenteAlimentos [
 { #category : 'initalize' }
 Mundo >> inicializarHormigueros [
 
-	| numHormigueros posicionesUsadas m n cantAlimentoPorHormiguero  |
+	| numHormigueros posicionesUsadas m n cantAlimentoPorHormiguero |
 	numHormigueros := 2.
 	posicionesUsadas := self posicionesUsadasConAlimentoHormiguero.
 
 	n := self mapa size.
-	m := (self mapa at: 1) size.
+	m := self mapa first size.
 
 	cantAlimentoPorHormiguero := 50.
 	self colHormigueros: OrderedCollection new.
 
-	numHormigueros timesRepeat: [ 
-		| filaRandom columnaRandom posicion hormiguero color |
-		"Si el bloque es verdadero se ejecuta de vuelta"
-		[ 
-		filaRandom := (1 to: n) atRandom.
-		columnaRandom := (1 to: m) atRandom.
-		posicion := filaRandom @ columnaRandom.
-		posicionesUsadas includes: posicion ] whileTrue.
+	numHormigueros timesRepeat: [
+			| filaRandom columnaRandom posicion hormiguero color |
+			"Si el bloque es verdadero se ejecuta de vuelta"
+			[
+				filaRandom := (1 to: n) atRandom.
+				columnaRandom := (1 to: m) atRandom.
+				posicion := filaRandom @ columnaRandom.
+				posicionesUsadas includes: posicion ] whileTrue.
 
-		posicionesUsadas add: posicion.
+			posicionesUsadas add: posicion.
 
-		color := self colorAleatorio.
+			color := self colorAleatorio .
 
-		hormiguero := Hormiguero new
-			              inicializarColor: color
-			              ubicacion: posicion.
+			hormiguero := Hormiguero new
+				              inicializarColor: color
+				              ubicacion: posicion.
 
 
-		hormiguero alimento: cantAlimentoPorHormiguero.
+			hormiguero alimento: cantAlimentoPorHormiguero.
 
-		self colHormigueros add: hormiguero.
+			self colHormigueros add: hormiguero.
 
-		((mapa at: filaRandom) at: columnaRandom) contenido: 'hormiguero' ]
+			((mapa at: filaRandom) at: columnaRandom) contenido: 'hormiguero' ]
 ]
 
 { #category : 'initalize' }

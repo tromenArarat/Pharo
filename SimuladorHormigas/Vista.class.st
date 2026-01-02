@@ -153,36 +153,36 @@ Vista >> cerrar [
 { #category : 'initialization' }
 Vista >> construirBotoneraEnMundo: unMundo [
 
-	| mensaje data data1 data2 reina |
+	| mensaje data data1 data2  |
 	cajaMensaje := TextMorph new.
-	botonTurno := BotonAccion new.
+	"botonTurno := BotonAccion new."
 	botonCerrar := BotonAccion new.
-	botonMoverExploradora := BotonAccion new.
-	botonMoverObrera := BotonAccion new.
+	"botonMoverExploradora := BotonAccion new.
+	botonMoverObrera := BotonAccion new."
 	botonSimulacion := BotonAccion new.
 	botonFinSimulacion := BotonAccion new.
 
-	self addMorph: botonTurno.
+	"self addMorph: botonTurno."
 	self addMorph: botonCerrar.
 	self addMorph: cajaMensaje.
-	self addMorph: botonMoverExploradora.
-	self addMorph: botonMoverObrera.
+	"self addMorph: botonMoverExploradora.
+	self addMorph: botonMoverObrera."
 	self addMorph: botonSimulacion.
 	self addMorph: botonFinSimulacion.
 
-	botonSimulacion position: 0 @ 550.
+	botonSimulacion position: 300 @ 550.
 	botonSimulacion label: 'Sim'.
-	botonFinSimulacion position: 100 @ 550.
+	botonFinSimulacion position: 400 @ 550.
 	botonFinSimulacion label: 'FinSim'.
-	botonTurno position: 200 @ 550.
-	botonTurno label: 'TURNO'.
+	"botonTurno position: 200 @ 550.
+	botonTurno label: 'TURNO'."
 	botonCerrar position: 500 @ 550.
 	botonCerrar label: 'CERRAR'.
 	cajaMensaje position: 600 @ 0.
-	botonMoverExploradora label: 'MOVER E'.
+	"botonMoverExploradora label: 'MOVER E'.
 	botonMoverExploradora position: 400 @ 550.
 	botonMoverObrera label: 'MOVER O'.
-	botonMoverObrera position: 300 @ 550.
+	botonMoverObrera position: 300 @ 550."
 
 	data := nuevoMundo mapa first first.
 	data1 := nuevoMundo colHormigueros first.
@@ -200,20 +200,20 @@ Vista >> construirBotoneraEnMundo: unMundo [
 		wrap: true.
 
 
-	botonTurno mouseAction: [
+	"botonTurno mouseAction: [
 		reina := data1 reina .
 			(reina colContingencias isEmpty) ifTrue: [ self moverExploradora1  ] ifFalse:[
-			self moverObrera1]].
+			self moverObrera1]]."
 
 	botonCerrar mouseAction: [ self cerrar ].
 
-	botonMoverExploradora mouseAction: [
+	"botonMoverExploradora mouseAction: [
 			self moverExploradoras ] .
 		
 		botonMoverObrera mouseAction: [
 			self moverObreras .
-				 ]			.
-		botonSimulacion mouseAction: [ self startStepping ].
+				 ]			."
+	botonSimulacion mouseAction: [ self startStepping ].
 	botonFinSimulacion mouseAction: [ self stopStepping ].
 ]
 
@@ -418,11 +418,18 @@ usuario la cantidad de turnos que desea ejecutar"
 Vista >> ejecutarUnTurno [
 
 	"Se ejecuta un turno del nuevoMundo"
-| reina |
+| reina obrera reina2 obrera2|
 	reina := nuevoMundo  colHormigueros first reina .
+	obrera := reina colObreras first .
 	
-			(reina colContingencias isEmpty) ifTrue: [ self moverExploradora1  ] ifFalse:[
-			self moverObrera1]
+			((reina colContingencias isEmpty) & (obrera ubicacion = reina ubicacion)) ifTrue: [ self moverExploradora1  ] ifFalse:[
+			self moverObrera1] .
+		
+	reina2 := nuevoMundo  colHormigueros second reina .
+	obrera2 := reina2 colObreras first .
+	
+			((reina2 colContingencias isEmpty) & (obrera2 ubicacion = reina2 ubicacion)) ifTrue: [ self moverExploradora2  ] ifFalse:[
+			self moverObrera2]
 ]
 
 { #category : 'initialization' }
@@ -478,6 +485,21 @@ Vista >> moverExploradora1 [
 ]
 
 { #category : 'methods' }
+Vista >> moverExploradora2 [
+
+| exploradora |
+			exploradora := self nuevoMundo colHormigueros second reina
+				               colExploradoras first.
+			
+
+			nuevoMundo turnoExploradora: exploradora .
+			
+			self construirTableroVisual.
+			self construirHormigasMorph.
+			self construirBotoneraEnMundo: nuevoMundo 
+]
+
+{ #category : 'methods' }
 Vista >> moverExploradoras [
 
 | exploradora exploradora2 |
@@ -504,6 +526,19 @@ Vista >> moverObrera1 [
 				               colObreras first.
 				
 			nuevoMundo turnoObrera: obrera1 .
+			self construirTableroVisual.
+			self construirHormigasMorph.
+			self construirBotoneraEnMundo: nuevoMundo 
+]
+
+{ #category : 'methods' }
+Vista >> moverObrera2 [
+
+| obrera2 |
+	obrera2 := self nuevoMundo colHormigueros second reina
+				               colObreras first.
+				
+			nuevoMundo turnoObrera: obrera2 .
 			self construirTableroVisual.
 			self construirHormigasMorph.
 			self construirBotoneraEnMundo: nuevoMundo 
@@ -537,7 +572,7 @@ Vista >> nuevoMundo: anObject [
 	nuevoMundo := anObject
 ]
 
-{ #category : 'methods' }
+{ #category : 'stepping and presenter' }
 Vista >> step [
 
 self ejecutarUnTurno 
