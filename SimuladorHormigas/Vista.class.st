@@ -61,30 +61,6 @@ Vista >> botonFinSimulacion: anObject [
 ]
 
 { #category : 'accessing' }
-Vista >> botonMoverExploradora [
-
-	^ botonMoverExploradora
-]
-
-{ #category : 'accessing' }
-Vista >> botonMoverExploradora: anObject [
-
-	botonMoverExploradora := anObject
-]
-
-{ #category : 'accessing' }
-Vista >> botonMoverObrera [
-
-	^ botonMoverObrera
-]
-
-{ #category : 'accessing' }
-Vista >> botonMoverObrera: anObject [
-
-	botonMoverObrera := anObject
-]
-
-{ #category : 'accessing' }
 Vista >> botonSimulacion [
 
 	^ botonSimulacion
@@ -94,18 +70,6 @@ Vista >> botonSimulacion [
 Vista >> botonSimulacion: anObject [
 
 	botonSimulacion := anObject
-]
-
-{ #category : 'accessing' }
-Vista >> botonTurno [
-
-	^ botonTurno
-]
-
-{ #category : 'accessing' }
-Vista >> botonTurno: anObject [
-
-	botonTurno := anObject
 ]
 
 { #category : 'accessing' }
