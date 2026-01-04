@@ -9,13 +9,11 @@ Class {
 		'tablero',
 		'casillasVisuales',
 		'botonCerrar',
-		'botonTurno',
 		'hormigasMorph',
 		'cajaMensaje',
-		'botonMoverExploradora',
-		'botonMoverObrera',
 		'botonSimulacion',
-		'botonFinSimulacion'
+		'botonFinSimulacion',
+		'botonVelocidad'
 	],
 	#category : 'SimuladorHormigas-Vista',
 	#package : 'SimuladorHormigas',
@@ -152,67 +150,43 @@ Vista >> cerrar [
 
 { #category : 'initialization' }
 Vista >> construirBotoneraEnMundo: unMundo [
-
-	| mensaje data data1 data2  |
+| mensaje |
+	
 	cajaMensaje := TextMorph new.
-	"botonTurno := BotonAccion new."
 	botonCerrar := BotonAccion new.
-	"botonMoverExploradora := BotonAccion new.
-	botonMoverObrera := BotonAccion new."
 	botonSimulacion := BotonAccion new.
 	botonFinSimulacion := BotonAccion new.
+	botonVelocidad := BotonAccion new.
 
-	"self addMorph: botonTurno."
 	self addMorph: botonCerrar.
 	self addMorph: cajaMensaje.
-	"self addMorph: botonMoverExploradora.
-	self addMorph: botonMoverObrera."
 	self addMorph: botonSimulacion.
 	self addMorph: botonFinSimulacion.
+	self addMorph: botonVelocidad.
+	
+	botonVelocidad position: 200 @ 550.
+	botonVelocidad label: 'x10'.
 
 	botonSimulacion position: 300 @ 550.
 	botonSimulacion label: 'Sim'.
 	botonFinSimulacion position: 400 @ 550.
 	botonFinSimulacion label: 'FinSim'.
-	"botonTurno position: 200 @ 550.
-	botonTurno label: 'TURNO'."
 	botonCerrar position: 500 @ 550.
 	botonCerrar label: 'CERRAR'.
 	cajaMensaje position: 600 @ 0.
-	"botonMoverExploradora label: 'MOVER E'.
-	botonMoverExploradora position: 400 @ 550.
-	botonMoverObrera label: 'MOVER O'.
-	botonMoverObrera position: 300 @ 550."
 
-	data := nuevoMundo mapa first first.
-	data1 := nuevoMundo colHormigueros first.
-	data2 := nuevoMundo colHormigueros at: 2.
-	mensaje := 'Punto inicial: ' , data punto asString , ' Hormig1 '
-	           , data1 ubicacion asString , ' Alime1 '
-	           , data1 alimento asString , ' Hormig2 '
-	           , data2 ubicacion asString , ' Alime2 '
-	           , data2 alimento asString , ' Explo1 '
-	           , data1 reina colExploradoras first ubicacion asString.
+	mensaje:= self construirMensaje .
 	cajaMensaje
 		string: mensaje
 		fontName: 'Arial'
 		size: 12
-		wrap: true.
-
-
-	"botonTurno mouseAction: [
-		reina := data1 reina .
-			(reina colContingencias isEmpty) ifTrue: [ self moverExploradora1  ] ifFalse:[
-			self moverObrera1]]."
+		wrap: true ;
+		textColor: Color black;
+		backgroundColor: Color white.
 
 	botonCerrar mouseAction: [ self cerrar ].
 
-	"botonMoverExploradora mouseAction: [
-			self moverExploradoras ] .
-		
-		botonMoverObrera mouseAction: [
-			self moverObreras .
-				 ]			."
+	botonVelocidad mouseAction: [ self ejecutarTurnos ] .
 	botonSimulacion mouseAction: [ self startStepping ].
 	botonFinSimulacion mouseAction: [ self stopStepping ].
 ]
@@ -258,6 +232,22 @@ self construirExploradorasMorph .
 
 self construirObrerasMorph .
 	
+]
+
+{ #category : 'initialization' }
+Vista >> construirMensaje [
+| mensaje data data1 data2  |
+data := nuevoMundo mapa first first.
+	data1 := nuevoMundo colHormigueros first.
+	data2 := nuevoMundo colHormigueros at: 2.
+	mensaje := 'Punto inicial: ' , data punto asString , ' Hormig1 '
+	           , data1 ubicacion asString , ' Alime1 '
+	           , data1 alimento asString , ' Hormig2 '
+	           , data2 ubicacion asString , ' Alime2 '
+	           , data2 alimento asString , ' Explo1 '
+	           , data1 reina colExploradoras first ubicacion asString.
+	
+^ mensaje
 ]
 
 { #category : 'initialization' }
