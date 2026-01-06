@@ -190,26 +190,73 @@ Vista >> construirExploradorasMorph [
 ]
 
 { #category : 'initialization' }
+Vista >> construirGuardianaMorph [
+
+| guardianasHormigueroUno guardianasHormigueroDos hormiguero1 color1 hormiguero2 color2|
+	hormigasMorph := OrderedCollection new.
+
+	guardianasHormigueroUno := nuevoMundo colHormigueros first reina
+		                             colGuardianas.
+	hormiguero1 := self nuevoMundo encontrarHormigueroEn: nuevoMundo colHormigueros first reina ubicacion.
+	color1:= hormiguero1 color.
+	
+	guardianasHormigueroUno do: [ :hormiga |
+			| hormigaMorph|
+			hormigaMorph := self crearHormigaMorph: hormiga color: color1.
+
+			hormigasMorph add: hormigaMorph.
+
+			self addMorph: hormigaMorph ] .
+		
+	guardianasHormigueroDos := nuevoMundo colHormigueros second reina
+		                             colGuardianas.
+
+	hormiguero2 := self nuevoMundo encontrarHormigueroEn: nuevoMundo colHormigueros second reina ubicacion.
+	color2:= hormiguero2 color.
+	
+	guardianasHormigueroDos do: [ :hormiga |
+			| hormigaMorph |
+			hormigaMorph := self crearHormigaMorph: hormiga color: color2.
+
+			hormigasMorph add: hormigaMorph.
+
+			self addMorph: hormigaMorph ]
+]
+
+{ #category : 'initialization' }
 Vista >> construirHormigasMorph [
 
 self construirExploradorasMorph .
 
 self construirObrerasMorph .
+
+self construirGuardianaMorph .
 	
 ]
 
-{ #category : 'initialization' }
+{ #category : 'debugging' }
 Vista >> construirMensaje [
-| mensaje data data1 data2  |
+| mensaje data data1 data2 data3 conting vecinoResult exploradora |
 data := nuevoMundo mapa first first.
-	data1 := nuevoMundo colHormigueros first.
-	data2 := nuevoMundo colHormigueros at: 2.
-	mensaje := 'Punto inicial: ' , data punto asString , ' Hormig1 '
-	           , data1 ubicacion asString , ' Alime1 '
-	           , data1 alimento asString , ' Hormig2 '
-	           , data2 ubicacion asString , ' Alime2 '
-	           , data2 alimento asString , ' Explo1 '
-	           , data1 reina colExploradoras first ubicacion asString.
+data1 := nuevoMundo colHormigueros first.
+data2 := nuevoMundo colHormigueros second.
+conting := data1 reina colContingencias isEmpty.
+data3 := conting ifTrue: [ ' ' ] ifFalse: [ data1 reina colContingencias first contenido asString ].
+	
+"Get the first explorer safely"
+exploradora := data1 reina colExploradoras ifNotEmpty: [:col | col first] ifEmpty: [nil].
+	
+"Get the first neighbor safely"
+vecinoResult := exploradora ifNil: ['0'] ifNotNil: [:exp |
+    exp colVecinos ifNotEmpty: [:vecinos | vecinos first] ifEmpty: ['0']].
+	
+mensaje := 'Punto inicial: ' , data punto asString , ' Hormig1 '
+           , data1 ubicacion asString , ' Alime1 '
+           , data1 alimento asString , ' Hormig2 '
+           , data2 ubicacion asString , ' Alime2 '
+           , data2 alimento asString , ' Explo1 '
+           , (exploradora ifNil: ['none'] ifNotNil: [:exp | exp ubicacion asString])
+           , ' Contin ' , data3 asString , ' colVec ' , vecinoResult asString.
 	
 ^ mensaje
 ]
@@ -254,19 +301,19 @@ Vista >> construirTableroVisual [
 	self removeAllMorphs.
 	casillasVisuales := Dictionary new.
 
-	1 to: tablero size do: [ :fila | 
-		1 to: (tablero at: 1) size do: [ :columna | 
-			| casilla casillaVisual |
-			casilla := (tablero at: fila) at: columna.
-			casillaVisual := self
-				               crearCasillaMorph: casilla
-				               enFila: fila
-				               columna: columna.
+	1 to: tablero size do: [ :fila |
+			1 to: tablero first size do: [ :columna |
+					| casilla casillaVisual |
+					casilla := (tablero at: fila) at: columna.
+					casillaVisual := self
+						                 crearCasillaMorph: casilla
+						                 enFila: fila
+						                 columna: columna.
 
-			"Almacenar referencia en el diccionario"
-			casillasVisuales at: fila @ columna put: casillaVisual.
+					"Almacenar referencia en el diccionario"
+					casillasVisuales at: fila @ columna put: casillaVisual.
 
-			self addMorph: casillaVisual ] ]
+					self addMorph: casillaVisual ] ]
 ]
 
 { #category : 'initialization' }
@@ -328,29 +375,37 @@ Vista >> crearHormigaMorph: unaHormiga color: unColor [
 	origen := self innerBounds origin.
 
 	fila := unaHormiga ubicacion x.
-	columna:= unaHormiga ubicacion y.
+	columna := unaHormiga ubicacion y.
 
 	colRel := columna - 1 * 50.
 	filRel := fila - 1 * 50.
 
 	hormigaMorph := Morph new
 		                extent: 15 @ 15;
-		                color: Color lightYellow ;
-		                position: origen + (colRel +10@ filRel+10).
-		
+		                color: Color lightYellow;
+		                position: origen + (colRel + 10 @ filRel + 10).
+
 	textoMorph := StringMorph new
 		              contents: 'E';
 		              color: Color black;
-		              position: hormigaMorph bounds origin + (3@1);
+		              position: hormigaMorph bounds origin + (3 @ 1);
 		              yourself.
 
 
-	(self esExploradora:unaHormiga) ifTrue:[ textoMorph contents: 'E' ]ifFalse:[ textoMorph contents: 'O' ] .
-	
+	(self esExploradora: unaHormiga)
+		ifTrue: [ textoMorph contents: 'E' ]
+		ifFalse: [
+				(self esGuardiana: unaHormiga)
+					ifTrue: [textoMorph contents: 'G' ]
+					ifFalse: [ textoMorph contents: 'O'].
+				 ].
+
 	hormigaMorph addMorphBack: textoMorph.
-	
-	unColor = 'rojo' ifTrue:[ hormigaMorph color: Color red ] ifFalse:[ hormigaMorph color: Color lightGray ] .
-	
+
+	unColor = 'rojo'
+		ifTrue: [ hormigaMorph color: Color red ]
+		ifFalse: [ hormigaMorph color: Color lightGray ].
+
 	self addMorph: hormigaMorph.
 
 
@@ -370,26 +425,59 @@ usuario la cantidad de turnos que desea ejecutar"
 
 { #category : 'methods' }
 Vista >> ejecutarUnTurno [
-
-	"Se ejecuta un turno del nuevoMundo"
-| reina obrera reina2 obrera2|
-	reina := nuevoMundo  colHormigueros first reina .
-	obrera := reina colObreras first .
+	| reina obrera reina2 obrera2 mensaje contingencia contingencia2 |
 	
-			((reina colContingencias isEmpty) & (obrera ubicacion = reina ubicacion)) ifTrue: [ self moverExploradora1  ] ifFalse:[
-			self moverObrera1] .
+	"First colony"
+	reina := nuevoMundo colHormigueros first reina.
+	reina colObreras ifEmpty: [ ^ self ]. "No workers, nothing to do"
+	obrera := reina colObreras first.
+	
+	"Check if there are contingencies and worker is at queen's location"
+	((reina colContingencias isEmpty) and: [obrera ubicacion = reina ubicacion]) 
+		ifTrue: [ self moverExploradora1 ] 
+		ifFalse: [ 
+			contingencia := reina colContingencias ifNotEmpty: [:col | col first] ifEmpty: [nil].
+			contingencia ifNil: [ 
+				self moverObrera1 
+			] ifNotNil: [ 
+				mensaje := contingencia contenido.
+				(mensaje = 'alimento') 
+					ifTrue: [ self moverObrera1 ]
+					ifFalse: [ self moverGuardiana1 ]
+			]
+		].
 		
-	reina2 := nuevoMundo  colHormigueros second reina .
-	obrera2 := reina2 colObreras first .
+	"Second colony"
+	reina2 := nuevoMundo colHormigueros second reina.
+	reina2 colObreras ifEmpty: [ ^ self ]. "No workers, nothing to do"
+	obrera2 := reina2 colObreras first.
 	
-			((reina2 colContingencias isEmpty) & (obrera2 ubicacion = reina2 ubicacion)) ifTrue: [ self moverExploradora2  ] ifFalse:[
-			self moverObrera2]
+	"Check if there are contingencies and worker is at queen's location"
+	((reina2 colContingencias isEmpty) and: [obrera2 ubicacion = reina2 ubicacion]) 
+		ifTrue: [ self moverExploradora2 ] 
+		ifFalse: [ 
+			contingencia2 := reina2 colContingencias ifNotEmpty: [:col | col first] ifEmpty: [nil].
+			contingencia2 ifNil: [ 
+				self moverObrera2 
+			] ifNotNil: [ 
+				mensaje := contingencia2 contenido.
+				(mensaje = 'alimento') 
+					ifTrue: [ self moverObrera2 ]
+					ifFalse: [ self moverGuardiana2 ]
+			]
+		].
 ]
 
 { #category : 'initialization' }
 Vista >> esExploradora:unaHormiga [
 
 ^ unaHormiga isKindOf: Exploradora .
+]
+
+{ #category : 'initialization' }
+Vista >> esGuardiana:unaHormiga [
+
+^ unaHormiga isKindOf: Guardiana .
 ]
 
 { #category : 'accessing' }
@@ -407,15 +495,10 @@ Vista >> hormigasMorph: anObject [
 { #category : 'initialization' }
 Vista >> initialize [
 
-	"| mapa |"
 	super initialize.
 	self position: 45 @ 45.
 	self bounds: (self position extent: 10 * 40 @ (10 * 40)).
-	"mapa := Mapa new."
-	"nuevoMundo := NuevoMundo nuevo: mapa."
 	nuevoMundo := Mundo new.
-	"nuevoMundo inicializarHormigueros.
-	nuevoMundo inicializarFuenteAlimentos."
 	tablero := nuevoMundo mapa.
 	tablero addDependent: self.
 	self construirTableroVisual.
@@ -470,6 +553,34 @@ Vista >> moverExploradoras [
 			self construirTableroVisual.
 			self construirHormigasMorph.
 			self construirBotoneraEnMundo: nuevoMundo 
+]
+
+{ #category : 'methods' }
+Vista >> moverGuardiana1 [
+
+| guardiana1 |
+	guardiana1 := self nuevoMundo colHormigueros first reina
+				               colGuardianas first.
+				
+			nuevoMundo turnoGuardiana: guardiana1 .
+			self construirTableroVisual.
+			self construirHormigasMorph.
+			self construirBotoneraEnMundo: nuevoMundo 
+
+]
+
+{ #category : 'methods' }
+Vista >> moverGuardiana2 [
+
+| guardiana2 |
+	guardiana2 := self nuevoMundo colHormigueros second reina
+				               colGuardianas first.
+				
+			nuevoMundo turnoGuardiana: guardiana2 .
+			self construirTableroVisual.
+			self construirHormigasMorph.
+			self construirBotoneraEnMundo: nuevoMundo 
+
 ]
 
 { #category : 'methods' }

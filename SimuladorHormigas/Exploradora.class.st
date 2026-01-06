@@ -13,7 +13,8 @@ Class {
 	#instVars : [
 		'colRecorridas',
 		'colMensajes',
-		'estado'
+		'estado',
+		'colVecinos'
 	],
 	#category : 'SimuladorHormigas-Base',
 	#package : 'SimuladorHormigas',
@@ -24,7 +25,7 @@ Class {
 Exploradora >> actualizarMensajes: unaCelda [
 
 	| validacion |
-	validacion := unaCelda contenido = 'alimento'.
+	validacion := (unaCelda contenido = 'alimento') .
 
 	validacion ifTrue: [ self colMensajes addFirst: unaCelda ]
 ]
@@ -33,6 +34,16 @@ Exploradora >> actualizarMensajes: unaCelda [
 Exploradora >> actualizarRecorridas [
 
 	colRecorridas add: self ubicacion
+]
+
+{ #category : 'updating' }
+Exploradora >> actualizarVecinos: unaCelda [
+
+	| validacion |
+	
+	validacion :=  (unaCelda contenido = 'hormiguero').
+
+	validacion ifTrue: [ self colVecinos addFirst: unaCelda ]
 ]
 
 { #category : 'accessing' }
@@ -57,6 +68,18 @@ Exploradora >> colRecorridas [
 Exploradora >> colRecorridas: anObject [
 
 	colRecorridas := anObject
+]
+
+{ #category : 'accessing' }
+Exploradora >> colVecinos [
+
+	^ colVecinos
+]
+
+{ #category : 'accessing' }
+Exploradora >> colVecinos: anObject [
+
+	colVecinos := anObject
 ]
 
 { #category : 'checking' }

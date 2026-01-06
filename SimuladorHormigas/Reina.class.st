@@ -128,6 +128,7 @@ Reina >> inicializarExploradora [
 	margaretMead := Exploradora new
 		                ubicacion: self ubicacion;
 		                colMensajes: OrderedCollection new;
+							colVecinos: OrderedCollection new;
 		                estado: 'explorando';
 		                yourself.
 	self colExploradoras add: margaretMead.
@@ -141,8 +142,10 @@ Reina >> inicializarExploradora [
 Reina >> inicializarGuardiana [
 
 	| mujerKurda |
-	mujerKurda := Guardiana new ubicacion: self ubicacion.
+	mujerKurda := Guardiana new ubicacion: self ubicacion; estado: 'yendo'.
 	self colGuardianas add: mujerKurda .
+	
+	mujerKurda actualizarRecorridas .
 	
 	^ mujerKurda
 	

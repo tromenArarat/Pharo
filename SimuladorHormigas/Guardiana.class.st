@@ -7,6 +7,8 @@ Las guerreras pueden actuar en modo defensa o modo ataque.
 - El modo defensa es el que ocurre cuando una colonia es atacada. Las hormigas simplemente defienden desde adentro de la colonia.
 - El modo ataque es cuando una hormiga va a otra colonia a atacar para conquistar y pelea para entrar a la colonia.
 
+(La consigna original no dice cuánto se mueve por turno la guardiana, vamos a aceptar que se mueve dos celdas por turno).
+
 En cualquier modo la guerrera gana o muere.
 
 Cada guerrera consume una unidad de comida por día solo cuando está en el hormiguero. Pero cuando está en batalla, sin importar el modo, no come ya que la adrenalina es tal que no le hace falta alimento.
@@ -17,12 +19,31 @@ Class {
 	#name : 'Guardiana',
 	#superclass : 'Hormiga',
 	#instVars : [
-		'estado'
+		'estado',
+		'colRecorridas'
 	],
 	#category : 'SimuladorHormigas-Base',
 	#package : 'SimuladorHormigas',
 	#tag : 'Base'
 }
+
+{ #category : 'updating' }
+Guardiana >> actualizarRecorridas [
+
+	colRecorridas add: self ubicacion
+]
+
+{ #category : 'accessing' }
+Guardiana >> colRecorridas [
+
+	^ colRecorridas
+]
+
+{ #category : 'accessing' }
+Guardiana >> colRecorridas: anObject [
+
+	colRecorridas := anObject
+]
 
 { #category : 'accessing' }
 Guardiana >> estado [
@@ -34,4 +55,9 @@ Guardiana >> estado [
 Guardiana >> estado: anObject [
 
 	estado := anObject
+]
+
+{ #category : 'initialization' }
+Guardiana >> initialize [
+self colRecorridas: OrderedCollection new .
 ]
