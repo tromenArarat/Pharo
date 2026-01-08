@@ -567,10 +567,13 @@ Mundo >> turnoExploradora: unaExploradora [
 
 	unaExploradora ubicacion = ubicacionHormiguero ifFalse: [ ^ self ].
 	unaExploradora estado: 'explorando'.
-	contingencia := [unaExploradora colMensajes first contenido] on: NotFound do: [unaExploradora colVecinos first contenido] .
+	contingencia := (unaExploradora colMensajes isEmpty) ifTrue: [unaExploradora colVecinos first] ifFalse: [unaExploradora colMensajes first] .
 	reina
-		actualizarContingencias: contingencia
-		ubicacion: unaExploradora colMensajes first punto
+		actualizarContingencias: contingencia contenido
+		ubicacion: contingencia punto .
+		
+	unaExploradora colMensajes removeAll.
+	unaExploradora colVecinos removeAll.
 ]
 
 { #category : 'game logic' }
@@ -625,7 +628,7 @@ Mundo >> turnoGuardianaPelea: unaGuardiana [
 	| reina hormiguero destino contador |
 	reina := self encontrarReinaEn: unaGuardiana colRecorridas first.
 	hormiguero := self encontrarHormigueroEn: reina ubicacion.
-	destino := reina colContingencias first punto.
+	destino := ((reina colContingencias select: [:x | x contenido = 'hormiguero']) first) punto.
 	contador := 0.
 	[ contador < 2 & (unaGuardiana ubicacion ~= destino) ] whileTrue: [
 			self class moverObrera: unaGuardiana aUbicacion: destino.

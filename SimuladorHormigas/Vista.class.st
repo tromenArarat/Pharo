@@ -427,12 +427,12 @@ usuario la cantidad de turnos que desea ejecutar"
 Vista >> ejecutarUnTurno [
 	| reina obrera reina2 obrera2 mensaje contingencia contingencia2 |
 	
-	"First colony"
+	"Primera colonia"
 	reina := nuevoMundo colHormigueros first reina.
-	reina colObreras ifEmpty: [ ^ self ]. "No workers, nothing to do"
+	reina colObreras ifEmpty: [ ^ self ]. "validación innecesaria por el momento"
 	obrera := reina colObreras first.
 	
-	"Check if there are contingencies and worker is at queen's location"
+	"Si no hay contingencias y la obrera está en hormiguero se mueve la exploradora"
 	((reina colContingencias isEmpty) and: [obrera ubicacion = reina ubicacion]) 
 		ifTrue: [ self moverExploradora1 ] 
 		ifFalse: [ 
@@ -447,12 +447,11 @@ Vista >> ejecutarUnTurno [
 			]
 		].
 		
-	"Second colony"
+	"Segunda colonia"
 	reina2 := nuevoMundo colHormigueros second reina.
-	reina2 colObreras ifEmpty: [ ^ self ]. "No workers, nothing to do"
+	reina2 colObreras ifEmpty: [ ^ self ]. 
 	obrera2 := reina2 colObreras first.
 	
-	"Check if there are contingencies and worker is at queen's location"
 	((reina2 colContingencias isEmpty) and: [obrera2 ubicacion = reina2 ubicacion]) 
 		ifTrue: [ self moverExploradora2 ] 
 		ifFalse: [ 
