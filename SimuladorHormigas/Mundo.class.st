@@ -148,6 +148,11 @@ Class {
 	#tag : 'Base'
 }
 
+{ #category : 'random' }
+Mundo class >> colorAleatorio [
+(self colorHormiguero ='rojo')ifTrue:[self colorHormiguero: 'negro']ifFalse:[ self colorHormiguero: 'rojo' ]
+]
+
 { #category : 'accessing' }
 Mundo class >> colorHormiguero [
 
