@@ -350,8 +350,15 @@ Vista >> crearCasillaMorph: unaCasilla enFila: fila columna: columna [
 	textoMorph contents = 'hormiguero' ifTrue: [ 
 		| hormiguero |
 		hormiguero := self nuevoMundo encontrarHormigueroEn: unaCasilla punto .
-		hormiguero color = 'rojo' ifTrue: [casillaMorph color: Color red.  ] ifFalse:[ casillaMorph color: Color lightGray ].
+		hormiguero color = 'rojo' ifTrue: [casillaMorph color: Color red.  ] .
+		hormiguero color = 'negro' ifTrue: [casillaMorph color: Color lightGray ].
 		textoMorph contents: 'Horm' ].
+	
+	textoMorph contents = 'hormigueroAtacado' ifTrue: [ 
+		| hormiguero |
+		hormiguero := self nuevoMundo encontrarHormigueroEn: unaCasilla punto .
+		hormiguero color = 'amarillo' ifTrue: [casillaMorph color: Color yellow.  ] ifFalse:[ casillaMorph color: Color lightGray ].
+		textoMorph contents: 'X#!%' ].
 
 	textoMorph contents = 'alimento' ifTrue: [ 
 		| alimento |
@@ -403,8 +410,9 @@ Vista >> crearHormigaMorph: unaHormiga color: unColor [
 	hormigaMorph addMorphBack: textoMorph.
 
 	unColor = 'rojo'
-		ifTrue: [ hormigaMorph color: Color red ]
-		ifFalse: [ hormigaMorph color: Color lightGray ].
+		ifTrue: [ hormigaMorph color: Color red ].
+	unColor = 'negro'
+		ifTrue: [ hormigaMorph color: Color lightGray ].
 
 	self addMorph: hormigaMorph.
 
@@ -442,8 +450,9 @@ Vista >> ejecutarUnTurno [
 			] ifNotNil: [ 
 				mensaje := contingencia contenido.
 				(mensaje = 'alimento') 
-					ifTrue: [ self moverObrera1 ]
-					ifFalse: [ self moverGuardiana1 ]
+					ifTrue: [ self moverObrera1 ] .
+				(mensaje = 'hormiguero') 
+					ifTrue: [ self moverGuardiana1 ]
 			]
 		].
 		

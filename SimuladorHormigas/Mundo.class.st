@@ -140,10 +140,25 @@ Class {
 		'mapa',
 		'colAlimentos'
 	],
+	#classInstVars : [
+		'colorHormiguero'
+	],
 	#category : 'SimuladorHormigas-Base',
 	#package : 'SimuladorHormigas',
 	#tag : 'Base'
 }
+
+{ #category : 'accessing' }
+Mundo class >> colorHormiguero [
+
+	^ colorHormiguero
+]
+
+{ #category : 'accessing' }
+Mundo class >> colorHormiguero: anObject [
+
+	colorHormiguero := anObject
+]
 
 { #category : 'accessing' }
 Mundo class >> moverObrera: unaObrera aUbicacion: unaUbicacion [
@@ -295,6 +310,17 @@ Mundo >> colorAleatorio [
 	"
 ]
 
+{ #category : 'random' }
+Mundo >> colorSecuencial [
+
+	| colores |
+	colores :=  #('rojo' 'negro') readStream .
+
+
+	(colores position <2 ) ifTrue:[^colores next]ifFalse:[colores position:0. colores removeAt:colores position. ^colores next].
+
+]
+
 { #category : 'decoding' }
 Mundo >> decodificarMensaje: unaExploradora [
 
@@ -412,6 +438,7 @@ Mundo >> inicializarHormigueros [
 	cantAlimentoPorHormiguero := 50.
 	self colHormigueros: OrderedCollection new.
 
+
 	numHormigueros timesRepeat: [
 			| filaRandom columnaRandom posicion hormiguero color |
 			"Si el bloque es verdadero se ejecuta de vuelta"
@@ -423,7 +450,7 @@ Mundo >> inicializarHormigueros [
 
 			posicionesUsadas add: posicion.
 
-			color := self colorAleatorio .
+			color := self class colorAleatorio colorHormiguero .
 
 			hormiguero := Hormiguero new
 				              inicializarColor: color
@@ -538,7 +565,7 @@ Mundo >> tieneHormiguero: unPuntoDeUbicacion [
 	fila := unPuntoDeUbicacion x.
 	columna := unPuntoDeUbicacion y.
 	
-	^ ((self mapa at: fila) at: columna ) contenido = 'hormiguero'
+	^ (((self mapa at: fila) at: columna ) contenido = 'hormiguero') or: (((self mapa at: fila) at: columna ) contenido = 'hormigueroAtacado') 
 
 	
 ]
@@ -572,8 +599,8 @@ Mundo >> turnoExploradora: unaExploradora [
 		actualizarContingencias: contingencia contenido
 		ubicacion: contingencia punto .
 		
-	unaExploradora colMensajes removeAll.
-	unaExploradora colVecinos removeAll.
+	"unaExploradora colMensajes removeAll.
+	unaExploradora colVecinos removeAll."
 ]
 
 { #category : 'game logic' }
@@ -586,19 +613,21 @@ Mundo >> turnoExploradoraExplorando: unaExploradora [
 		unaExploradora estado = 'explorando' & (movimientos < 4)
 		& (self tieneVacio: unaExploradora ubicacion) ] whileTrue: [
 			self moverExploradora: unaExploradora contador: 0.
-			movimientos := movimientos + 1 ].
-	((self tieneAlimento: unaExploradora ubicacion) or: (self tieneHormiguero: unaExploradora ubicacion))
-	& ((unaExploradora colMensajes allSatisfy: [ :mensaje |
-			 mensaje punto ~= unaExploradora ubicacion ]) or: (unaExploradora colVecinos allSatisfy: [ :vecino | vecino punto ~= unaExploradora ubicacion ]))ifFalse: [ ^ self ].
-	unaExploradora estado: 'volviendo'.
-	celdaEnMapa := self celdaEnMapa: unaExploradora ubicacion .
+			movimientos := movimientos + 1 .
+			celdaEnMapa := self celdaEnMapa: unaExploradora ubicacion .
 	(celdaEnMapa contenido = 'alimento')ifTrue:[unaExploradora actualizarMensajes:
 celdaEnMapa] .
 	(celdaEnMapa contenido = 'hormiguero')ifTrue:[unaExploradora actualizarVecinos: 
 celdaEnMapa] .
+		"Si hay presencia de otro hormiguero la exploradora vuelve a informar para dar detalles de cómo viene la batalla"
+	((self tieneAlimento: unaExploradora ubicacion) or: (self tieneHormiguero: unaExploradora ubicacion))
+	"& ((unaExploradora colMensajes allSatisfy: [ :mensaje |
+			 mensaje punto ~= unaExploradora ubicacion ]))"ifFalse: [ ^ self ].
+	unaExploradora estado: 'volviendo'.
+	
 	unaExploradora colRecorridas removeAllSuchThat: [ :each |
 		(unaExploradora colRecorridas indexOf: each) > 1 ].
-	movimientos := 4 
+	movimientos := 4 ].
 ]
 
 { #category : 'game logic' }
@@ -628,15 +657,15 @@ Mundo >> turnoGuardianaPelea: unaGuardiana [
 	| reina hormiguero destino contador |
 	reina := self encontrarReinaEn: unaGuardiana colRecorridas first.
 	hormiguero := self encontrarHormigueroEn: reina ubicacion.
-	destino := ((reina colContingencias select: [:x | x contenido = 'hormiguero']) first) punto.
+	destino := (reina colContingencias select: [:x | x contenido = 'hormiguero']) first punto.
 	contador := 0.
 	[ contador < 2 & (unaGuardiana ubicacion ~= destino) ] whileTrue: [
 			self class moverObrera: unaGuardiana aUbicacion: destino.
 			contador := contador + 1 ].
 	unaGuardiana ubicacion = destino ifFalse: [ ^ self ].
-	"Acá habría pelea, faltan esas líneas"
+	(self celdaEnMapa: unaGuardiana ubicacion) contenido: 'hormigueroAtacado'.
 	unaGuardiana estado: 'volviendo'.
-	reina eliminarContingencia
+	"reina eliminarContingencia"
 ]
 
 { #category : 'game logic' }

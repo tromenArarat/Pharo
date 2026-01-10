@@ -39,11 +39,7 @@ Exploradora >> actualizarRecorridas [
 { #category : 'updating' }
 Exploradora >> actualizarVecinos: unaCelda [
 
-	| validacion |
-	
-	validacion :=  (unaCelda contenido = 'hormiguero').
-
-	validacion ifTrue: [ self colVecinos addFirst: unaCelda ]
+	self colVecinos addFirst: unaCelda
 ]
 
 { #category : 'accessing' }
