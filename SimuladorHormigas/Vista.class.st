@@ -470,8 +470,9 @@ Vista >> ejecutarUnTurno [
 			] ifNotNil: [ 
 				mensaje := contingencia2 contenido.
 				(mensaje = 'alimento') 
+					ifTrue: [ self moverObrera2 ].
+				(mensaje = 'hormiguero') 
 					ifTrue: [ self moverObrera2 ]
-					ifFalse: [ self moverGuardiana2 ]
 			]
 		].
 ]

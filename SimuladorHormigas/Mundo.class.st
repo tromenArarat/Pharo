@@ -570,7 +570,7 @@ Mundo >> tieneHormiguero: unPuntoDeUbicacion [
 	fila := unPuntoDeUbicacion x.
 	columna := unPuntoDeUbicacion y.
 	
-	^ (((self mapa at: fila) at: columna ) contenido = 'hormiguero') or: (((self mapa at: fila) at: columna ) contenido = 'hormigueroAtacado') 
+	^ ((self mapa at: fila) at: columna ) contenido = 'hormiguero'
 
 	
 ]
@@ -584,7 +584,7 @@ Mundo >> tieneVacio: unPuntoDeUbicacion [
 
 	celda := (self mapa at: fila) at: columna.
 
-	^ celda contenido = 'vacio' or: (celda contenido = 'hormiguero')
+	^ celda contenido = 'vacio' 
 ]
 
 { #category : 'game logic' }
@@ -599,7 +599,7 @@ Mundo >> turnoExploradora: unaExploradora [
 
 	unaExploradora ubicacion = ubicacionHormiguero ifFalse: [ ^ self ].
 	unaExploradora estado: 'explorando'.
-	contingencia := (unaExploradora colMensajes isEmpty) ifTrue: [unaExploradora colVecinos first] ifFalse: [unaExploradora colMensajes first] .
+	contingencia := (unaExploradora colMensajes isEmpty) ifTrue: [(unaExploradora colVecinos first) ifTrue:[^ self ] ifFalse: [unaExploradora colVecinos first]]ifFalse:[unaExploradora colMensajes first] .
 	reina
 		actualizarContingencias: contingencia contenido
 		ubicacion: contingencia punto .
@@ -616,23 +616,20 @@ Mundo >> turnoExploradoraExplorando: unaExploradora [
 	movimientos := 0.
 	[
 		unaExploradora estado = 'explorando' & (movimientos < 4)
-		& (self tieneVacio: unaExploradora ubicacion) ] whileTrue: [
+		& ((self tieneVacio: unaExploradora ubicacion)or:(self tieneHormiguero: unaExploradora ubicacion)) ] whileTrue: [
 			self moverExploradora: unaExploradora contador: 0.
 			movimientos := movimientos + 1 .
 			celdaEnMapa := self celdaEnMapa: unaExploradora ubicacion .
-	(celdaEnMapa contenido = 'alimento')ifTrue:[unaExploradora actualizarMensajes:
-celdaEnMapa] .
-	(celdaEnMapa contenido = 'hormiguero')ifTrue:[unaExploradora actualizarVecinos: 
-celdaEnMapa] .
-		"Si hay presencia de otro hormiguero la exploradora vuelve a informar para dar detalles de cómo viene la batalla"
-	((self tieneAlimento: unaExploradora ubicacion) or: (self tieneHormiguero: unaExploradora ubicacion))
-	"& ((unaExploradora colMensajes allSatisfy: [ :mensaje |
-			 mensaje punto ~= unaExploradora ubicacion ]))"ifFalse: [ ^ self ].
-	unaExploradora estado: 'volviendo'.
-	
-	unaExploradora colRecorridas removeAllSuchThat: [ :each |
+	(self tieneAlimento: unaExploradora ubicacion)ifTrue:[unaExploradora actualizarMensajes:
+celdaEnMapa. unaExploradora estado: 'volviendo'. unaExploradora colRecorridas removeAllSuchThat: [ :each |
 		(unaExploradora colRecorridas indexOf: each) > 1 ].
-	movimientos := 4 ].
+	movimientos := 4 . ^self ] .
+	(self tieneHormiguero: unaExploradora ubicacion)ifTrue:[unaExploradora actualizarVecinos: 
+celdaEnMapa. unaExploradora estado: 'volviendo'. unaExploradora colRecorridas removeAllSuchThat: [ :each |
+		(unaExploradora colRecorridas indexOf: each) > 1 ].
+	movimientos := 4 . ^self ] .].
+	
+	
 ]
 
 { #category : 'game logic' }
