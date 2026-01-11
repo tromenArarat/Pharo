@@ -13,8 +13,7 @@ Class {
 	#instVars : [
 		'colRecorridas',
 		'colMensajes',
-		'estado',
-		'colVecinos'
+		'estado'
 	],
 	#category : 'SimuladorHormigas-Base',
 	#package : 'SimuladorHormigas',
@@ -24,22 +23,20 @@ Class {
 { #category : 'updating' }
 Exploradora >> actualizarMensajes: unaCelda [
 
-	| validacion |
-	validacion := (unaCelda contenido = 'alimento') .
+	| validacion validacion2 |
+	validacion := (unaCelda contenido = 'alimento') or: (unaCelda contenido = 'hormiguero') .
+	
+	validacion2 := (self colMensajes includes: unaCelda).
+	
+	validacion2 := validacion2 not.
 
-	validacion ifTrue: [ self colMensajes addFirst: unaCelda ]
+	(validacion and: validacion2) ifTrue: [ self colMensajes addFirst: unaCelda ]
 ]
 
 { #category : 'updating' }
 Exploradora >> actualizarRecorridas [
 
 	colRecorridas add: self ubicacion
-]
-
-{ #category : 'updating' }
-Exploradora >> actualizarVecinos: unaCelda [
-
-	self colVecinos addFirst: unaCelda
 ]
 
 { #category : 'accessing' }
@@ -66,18 +63,6 @@ Exploradora >> colRecorridas: anObject [
 	colRecorridas := anObject
 ]
 
-{ #category : 'accessing' }
-Exploradora >> colVecinos [
-
-	^ colVecinos
-]
-
-{ #category : 'accessing' }
-Exploradora >> colVecinos: anObject [
-
-	colVecinos := anObject
-]
-
 { #category : 'checking' }
 Exploradora >> estaEnRecorridas: unaCelda [
 
@@ -100,4 +85,10 @@ Exploradora >> estado: anObject [
 Exploradora >> initialize [
 
 	self colRecorridas: OrderedCollection new 
+]
+
+{ #category : 'delivering' }
+Exploradora >> reportarContingencia [
+
+^self colMensajes first
 ]

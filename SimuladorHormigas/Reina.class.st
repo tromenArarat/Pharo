@@ -128,7 +128,6 @@ Reina >> inicializarExploradora [
 	margaretMead := Exploradora new
 		                ubicacion: self ubicacion;
 		                colMensajes: OrderedCollection new;
-							colVecinos: OrderedCollection new;
 		                estado: 'explorando';
 		                yourself.
 	self colExploradoras add: margaretMead.

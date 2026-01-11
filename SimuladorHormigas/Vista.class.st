@@ -247,8 +247,8 @@ data3 := conting ifTrue: [ ' ' ] ifFalse: [ data1 reina colContingencias first c
 exploradora := data1 reina colExploradoras ifNotEmpty: [:col | col first] ifEmpty: [nil].
 	
 "Get the first neighbor safely"
-vecinoResult := exploradora ifNil: ['0'] ifNotNil: [:exp |
-    exp colVecinos ifNotEmpty: [:vecinos | vecinos first] ifEmpty: ['0']].
+"vecinoResult := exploradora ifNil: ['0'] ifNotNil: [:exp |
+    exp colVecinos ifNotEmpty: [:vecinos | vecinos first] ifEmpty: ['0']]."
 	
 mensaje := 'Punto inicial: ' , data punto asString , ' Hormig1 '
            , data1 ubicacion asString , ' Alime1 '

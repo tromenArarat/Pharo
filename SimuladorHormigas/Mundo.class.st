@@ -599,7 +599,7 @@ Mundo >> turnoExploradora: unaExploradora [
 
 	unaExploradora ubicacion = ubicacionHormiguero ifFalse: [ ^ self ].
 	unaExploradora estado: 'explorando'.
-	contingencia := (unaExploradora colMensajes isEmpty) ifTrue: [(unaExploradora colVecinos first) ifTrue:[^ self ] ifFalse: [unaExploradora colVecinos first]]ifFalse:[unaExploradora colMensajes first] .
+	contingencia := unaExploradora reportarContingencia.
 	reina
 		actualizarContingencias: contingencia contenido
 		ubicacion: contingencia punto .
@@ -620,14 +620,10 @@ Mundo >> turnoExploradoraExplorando: unaExploradora [
 			self moverExploradora: unaExploradora contador: 0.
 			movimientos := movimientos + 1 .
 			celdaEnMapa := self celdaEnMapa: unaExploradora ubicacion .
-	(self tieneAlimento: unaExploradora ubicacion)ifTrue:[unaExploradora actualizarMensajes:
+	((self tieneAlimento: unaExploradora ubicacion) or: (self tieneHormiguero: unaExploradora ubicacion))ifTrue:[unaExploradora actualizarMensajes:
 celdaEnMapa. unaExploradora estado: 'volviendo'. unaExploradora colRecorridas removeAllSuchThat: [ :each |
 		(unaExploradora colRecorridas indexOf: each) > 1 ].
-	movimientos := 4 . ^self ] .
-	(self tieneHormiguero: unaExploradora ubicacion)ifTrue:[unaExploradora actualizarVecinos: 
-celdaEnMapa. unaExploradora estado: 'volviendo'. unaExploradora colRecorridas removeAllSuchThat: [ :each |
-		(unaExploradora colRecorridas indexOf: each) > 1 ].
-	movimientos := 4 . ^self ] .].
+	movimientos := 4 . ^self ] ].
 	
 	
 ]
