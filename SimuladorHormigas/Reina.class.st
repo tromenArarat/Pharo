@@ -110,6 +110,12 @@ Reina >> eliminarContingencia [
 	self colContingencias removeFirst .
 ]
 
+{ #category : 'update' }
+Reina >> eliminarContingencia:unaContingencia [
+
+	self colContingencias select:[:x | x punto = unaContingencia punto]  .
+]
+
 { #category : 'creation' }
 Reina >> engendrar [
 

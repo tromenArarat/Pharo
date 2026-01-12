@@ -338,6 +338,62 @@ Mundo >> decodificarMensaje: unaExploradora [
 	^ ((self mapa at: fila) at: columna) contenido
 ]
 
+{ #category : 'methods' }
+Mundo >> ejecutarUnTurno [
+	| reina obrera reina2 obrera2 guardiana guardiana2 mensaje exploradora exploradora2 contingencia contingencia2 |
+	
+	"Primera colonia"
+	reina := self colHormigueros first reina.
+	reina colObreras ifEmpty: [ ^ self ]. "validación innecesaria por el momento"
+	obrera := reina colObreras first.
+	exploradora := self colHormigueros first reina
+				               colExploradoras first.
+	guardiana := self colHormigueros first reina
+				               colGuardianas first.
+	
+	"Si no hay contingencias y la obrera está en hormiguero se mueve la exploradora"
+	((reina colContingencias isEmpty) and: [obrera ubicacion = reina ubicacion]) 
+		ifTrue: [ self turnoExploradora:exploradora ] 
+		ifFalse: [ 
+			contingencia := reina colContingencias ifNotEmpty: [:col | col first] ifEmpty: [nil].
+			contingencia ifNil: [ 
+				self turnoObrera: obrera. 
+			] ifNotNil: [ 
+				mensaje := contingencia contenido.
+				(mensaje = 'alimento') 
+					ifTrue: [ self turnoObrera: obrera .
+						"reina colContingencias removeAll"] .
+				(mensaje = 'hormiguero') 
+					ifTrue: [ self turnoGuardiana: guardiana .
+						"reina colContingencias removeAll" ]
+			]
+		].
+		
+	"Segunda colonia"
+	reina2 := self colHormigueros second reina.
+	reina2 colObreras ifEmpty: [ ^ self ]. 
+	obrera2 := reina2 colObreras first.
+	exploradora2 := reina2 colExploradoras first.
+	guardiana2 := reina2 colGuardianas first.
+	
+	((reina2 colContingencias isEmpty) and: [obrera2 ubicacion = reina2 ubicacion]) 
+		ifTrue: [ self turnoExploradora:exploradora2  ] 
+		ifFalse: [ 
+			contingencia2 := reina2 colContingencias ifNotEmpty: [:col | col first] ifEmpty: [nil].
+			contingencia2 ifNil: [ 
+				self turnoObrera: obrera2.  
+			] ifNotNil: [ 
+				mensaje := contingencia2 contenido.
+				(mensaje = 'alimento') 
+					ifTrue: [ self turnoObrera: obrera2 .
+						"reina2 colContingencias removeAll"].
+				(mensaje = 'hormiguero') 
+					ifTrue: [ self turnoGuardiana: guardiana2 .
+						"reina2 colContingencias removeAll"]
+			]
+		].
+]
+
 { #category : 'accessing' }
 Mundo >> encontrarAlimentoEn: unaUbicacion [
 
@@ -616,7 +672,7 @@ Mundo >> turnoExploradoraExplorando: unaExploradora [
 	movimientos := 0.
 	[
 		unaExploradora estado = 'explorando' & (movimientos < 4)
-		& ((self tieneVacio: unaExploradora ubicacion)or:(self tieneHormiguero: unaExploradora ubicacion)) ] whileTrue: [
+		& ((self tieneVacio: unaExploradora ubicacion)or:(self tieneHormiguero:unaExploradora ubicacion)) ] whileTrue: [
 			self moverExploradora: unaExploradora contador: 0.
 			movimientos := movimientos + 1 .
 			celdaEnMapa := self celdaEnMapa: unaExploradora ubicacion .
@@ -657,7 +713,7 @@ Mundo >> turnoGuardianaPelea: unaGuardiana [
 	hormiguero := self encontrarHormigueroEn: reina ubicacion.
 	destino := (reina colContingencias select: [:x | x contenido = 'hormiguero']) first punto.
 	contador := 0.
-	[ contador < 2 & (unaGuardiana ubicacion ~= destino) ] whileTrue: [
+	[ (contador < 2) & (unaGuardiana ubicacion ~= destino) ] whileTrue: [
 			self class moverObrera: unaGuardiana aUbicacion: destino.
 			contador := contador + 1 ].
 	unaGuardiana ubicacion = destino ifFalse: [ ^ self ].
@@ -707,7 +763,7 @@ Mundo >> turnoObreraIda: unaObrera [
 	alimento cantidad = 0 ifFalse: [ ^ self ].
 	celdaAlimento := self celdaEnMapa: alimento ubicacion.
 	celdaAlimento contenido: 'vacio'.
-	reina eliminarContingencia
+	reina eliminarContingencia .
 ]
 
 { #category : 'game logic' }

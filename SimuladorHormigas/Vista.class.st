@@ -428,7 +428,7 @@ Vista >> ejecutarTurnos [
 	"Se considera que se ejecutan 10 turnos. Esto deberá flexibilizarse, solicitando al
 usuario la cantidad de turnos que desea ejecutar"
 
-	1 to: 10 do: [ :i | self ejecutarUnTurno ]
+	1 to: 10 do: [ :i | self nuevoMundo ejecutarUnTurno ]
 ]
 
 { #category : 'methods' }
@@ -649,7 +649,10 @@ Vista >> nuevoMundo: anObject [
 { #category : 'stepping and presenter' }
 Vista >> step [
 
-self ejecutarUnTurno 
+self nuevoMundo ejecutarUnTurno .
+self construirTableroVisual.
+			self construirHormigasMorph.
+			self construirBotoneraEnMundo: nuevoMundo 
 ]
 
 { #category : 'accessing' }
