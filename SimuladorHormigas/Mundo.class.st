@@ -463,7 +463,7 @@ Mundo >> inicializarFuenteAlimentos [
 	numAlimentos := 10.
 	posicionesUsadas := Set new.
 	n := self mapa size.
-	m := (self mapa at: 1) size.
+	m := (self mapa first) size.
 
 	self colAlimentos: OrderedCollection new.
 
@@ -525,31 +525,18 @@ Mundo >> inicializarHormigueros [
 			((mapa at: filaRandom) at: columnaRandom) contenido: 'hormiguero' ]
 ]
 
-{ #category : 'initalize' }
-Mundo >> inicializarMundoConFilas: n columnas: m [
+{ #category : 'initialization' }
+Mundo >> initialize [
 
-	| tablero |
+	| tablero m n |
+	super initialize .
+	m:=10.
+	n:=10.
 	tablero := (1 to: n) collect: [ :fila | 
 		           (1 to: m) collect: [ :columna | 
 			           Celda punto: fila @ columna contenido: 'vacio' asString ] ].
 
 	self mapa: tablero .
-	self colHormigueros: OrderedCollection new .
-	self colAlimentos: OrderedCollection new .
-]
-
-{ #category : 'initialization' }
-Mundo >> initialize [
-
-	| m n tablero |
-	m := 10.
-	n := 10.
-
-	tablero := (1 to: n) collect: [ :fila | 
-		           (1 to: m) collect: [ :columna | 
-			           Celda punto: fila @ columna contenido: 'vacio' ] ].
-
-	self mapa: tablero.
 
 	self inicializarFuenteAlimentos.
 
@@ -599,10 +586,9 @@ Mundo >> posicionesUsadasConAlimentoHormiguero [
 	| posicionesUsadas |
 	posicionesUsadas := Set new.
 
-	self mapa do: [ :fila | 
-		fila do: [ :celda | 
-			(celda contenido = 'alimento' or: ( celda contenido = 'hormiguero' )) 
-				ifTrue: [ posicionesUsadas add: celda punto ] ] ].
+	self mapa do: [ :fila |
+			posicionesUsadas addAll: (fila select: [ :celda |
+					 celda contenido = 'alimento' or: celda contenido = 'hormiguero' ]) ].
 
 	^ posicionesUsadas
 ]

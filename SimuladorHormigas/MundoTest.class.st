@@ -1,10 +1,19 @@
 Class {
 	#name : 'MundoTest',
 	#superclass : 'TestCase',
+	#instVars : [
+		'mundo'
+	],
 	#category : 'SimuladorHormigas-Tests',
 	#package : 'SimuladorHormigas',
 	#tag : 'Tests'
 }
+
+{ #category : 'running' }
+MundoTest >> setUp [
+super setUp.
+mundo := Mundo new .
+]
 
 { #category : 'tests' }
 MundoTest >> testHormiguerosCreados [
@@ -24,8 +33,7 @@ MundoTest >> testHormiguerosCreados [
 { #category : 'tests' }
 MundoTest >> testMundoSetAndRead [
 
-	| mundo alimentos |
-	mundo := Mundo new.
+	| alimentos |
 
 	alimentos := (mundo mapa flatCollect: [ :fila | 
 		              fila select: [ :celda | celda contenido = 'alimento' ] ])
@@ -37,8 +45,7 @@ MundoTest >> testMundoSetAndRead [
 { #category : 'tests' }
 MundoTest >> testVaciasIgualTotalMenosAlimentoHormiguero [
 
-	| mundo hormiguerosEnMapa alimentosEnMapa vaciasEnMapa |
-	mundo := Mundo new.
+	| hormiguerosEnMapa alimentosEnMapa vaciasEnMapa |
 
 	hormiguerosEnMapa := (mundo mapa flatCollect: [ :fila | 
 		                      fila select: [ :celda | 

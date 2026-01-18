@@ -1,6 +1,6 @@
 Class {
 	#name : 'ExploradoraTest',
-	#superclass : 'TestCase',
+	#superclass : 'MundoTest',
 	#category : 'SimuladorHormigas-Tests',
 	#package : 'SimuladorHormigas',
 	#tag : 'Tests'
@@ -9,12 +9,11 @@ Class {
 { #category : 'tests' }
 ExploradoraTest >> testIrVolverExploradora [
 
-	| mundo robinson hormiguero |
-	mundo := Mundo new.
+	| robinson hormiguero |
 
-	robinson := (mundo colHormigueros at: 1) reina colExploradoras at: 1.
+	robinson := (mundo colHormigueros first) reina colExploradoras first.
 
-	hormiguero := mundo colHormigueros at: 1.
+	hormiguero := mundo colHormigueros first.
 
 
 	[ hormiguero reina colContingencias isEmpty ] whileTrue: [ 
@@ -23,18 +22,17 @@ ExploradoraTest >> testIrVolverExploradora [
 
 
 	self
-		assert: (hormiguero reina colContingencias at: 1) x
-		equals: (robinson colMensajes at: 1) x
+		assert: (hormiguero reina colContingencias first) x
+		equals: (robinson colMensajes first) x
 ]
 
 { #category : 'tests' }
 ExploradoraTest >> testMoverExploradora [
 
-	| mundo exploradora x y |
-	mundo := Mundo new.
+	| exploradora x y |
 
-	exploradora := (mundo colHormigueros at: 1) reina colExploradoras 
-		               at: 1.
+	exploradora := (mundo colHormigueros first) reina colExploradoras 
+		               first.
 
 	mundo moverExploradora: exploradora contador: 0.
 
@@ -49,14 +47,13 @@ ExploradoraTest >> testMoverExploradora [
 { #category : 'tests' }
 ExploradoraTest >> testMoverExploradoras [
 
-	| mundo exploradora exploradora2 x y x2 y2 cierto cierto2 |
-	mundo := Mundo new.
+	|  exploradora exploradora2 x y x2 y2 cierto cierto2 |
+	
+	exploradora := (mundo colHormigueros first) reina colExploradoras 
+		               first.
 
-	exploradora := (mundo colHormigueros at: 1) reina colExploradoras 
-		               at: 1.
-
-	exploradora2 := (mundo colHormigueros at: 2) reina colExploradoras 
-		                at: 1.
+	exploradora2 := (mundo colHormigueros second) reina colExploradoras 
+		               first.
 
 	mundo moverExploradora: exploradora contador: 0.
 	mundo moverExploradora: exploradora2 contador: 0.
