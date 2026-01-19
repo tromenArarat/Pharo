@@ -165,7 +165,7 @@ Mundo class >> colorHormiguero: anObject [
 	colorHormiguero := anObject
 ]
 
-{ #category : 'accessing' }
+{ #category : 'move' }
 Mundo class >> moverObrera: unaObrera aUbicacion: unaUbicacion [
 
 	| ubicacionObrera candidatas puntoMasCercano distanciaMinima |
@@ -186,7 +186,7 @@ Mundo class >> moverObrera: unaObrera aUbicacion: unaUbicacion [
 		unaObrera ubicacion: puntoMasCercano ]
 ]
 
-{ #category : 'accessing' }
+{ #category : 'move' }
 Mundo class >> posRandom: unaUbicacion enMapa: unMapa [
 
 	| x y ejeRandom movimientoRandom nuevaUbicacion mundo |
@@ -224,7 +224,7 @@ Mundo class >> posRandom: unaUbicacion enMapa: unMapa [
 	^ nuevaUbicacion
 ]
 
-{ #category : 'accessing' }
+{ #category : 'random' }
 Mundo class >> ubicacionAleatoria: unaUbicacion [
 
 	| movPosibles nuevaUbicacion |
@@ -235,7 +235,7 @@ Mundo class >> ubicacionAleatoria: unaUbicacion [
 	^ nuevaUbicacion
 ]
 
-{ #category : 'accessing' }
+{ #category : 'move' }
 Mundo class >> volverExploradora: unaExploradora [
 
 	| ubicacionExploradora ubicacionHormiguero candidatas puntoMasCercano distanciaMinima |
@@ -435,7 +435,7 @@ Mundo >> estaEnMapa: celda [
 	x := celda x.
 	y := celda y.
 	m := mapa size.
-	n := (mapa at: 1) size.
+	n := (mapa first) size.
 
 	^ celda x <= ((mapa at: m) at: n) x
 	  & (celda y <= ((mapa at: m) at: n) y) & (celda x > 0)
@@ -449,7 +449,7 @@ Mundo >> estaUbicacionEnMapa: unaUbicacion [
 	x := unaUbicacion x.
 	y := unaUbicacion y.
 	m := self mapa size.
-	n := (self mapa at: 1) size.
+	n := (self mapa first) size.
 
 	^ unaUbicacion x <= ((self mapa at: m) at: n) x
 	  & (unaUbicacion y <= ((mapa at: m) at: n) y) & (unaUbicacion x > 0)
@@ -498,7 +498,6 @@ Mundo >> inicializarHormigueros [
 
 	cantAlimentoPorHormiguero := 50.
 	self colHormigueros: OrderedCollection new.
-
 
 	numHormigueros timesRepeat: [
 			| filaRandom columnaRandom posicion hormiguero color |

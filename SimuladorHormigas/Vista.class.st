@@ -357,7 +357,8 @@ Vista >> crearCasillaMorph: unaCasilla enFila: fila columna: columna [
 	textoMorph contents = 'hormigueroAtacado' ifTrue: [ 
 		| hormiguero |
 		hormiguero := self nuevoMundo encontrarHormigueroEn: unaCasilla punto .
-		hormiguero color = 'amarillo' ifTrue: [casillaMorph color: Color yellow.  ] ifFalse:[ casillaMorph color: Color lightGray ].
+		hormiguero color = 'amarillo' ifTrue: [casillaMorph color: Color yellow.  ] 
+												ifFalse:[ casillaMorph color: Color lightGray ].
 		textoMorph contents: 'X#!%' ].
 
 	textoMorph contents = 'alimento' ifTrue: [ 
