@@ -17,3 +17,11 @@ LNWorkstation >> accept: aPacket [
 (aPacket addresseeName = self name) ifTrue:[ self name trace. ' accepted packet' trace] ifFalse:[ super accept: aPacket ]. 
 
 ]
+
+{ #category : 'instance creation' }
+LNWorkstation >> emit: aLNPacket [
+"This is how LNPackets get inserted into the network.
+This is a likely method to be rewritten to permit
+LNPackets to be entered in various ways."
+self send: aLNPacket 
+]
