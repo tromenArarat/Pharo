@@ -1,10 +1,6 @@
 Class {
 	#name : 'EMultiplication',
-	#superclass : 'EExpression',
-	#instVars : [
-		'left',
-		'right'
-	],
+	#superclass : 'EBinaryExpression',
 	#category : 'Expressions',
 	#package : 'Expressions'
 }
@@ -36,30 +32,13 @@ EMultiplication >> left [
 	^ left
 ]
 
-{ #category : 'accessing' }
-EMultiplication >> left: anObject [
-
-	left := anObject
-]
-
-{ #category : 'printing' }
-EMultiplication >> printOn: aStream [
-aStream 
-nextPutAll: '( '; 
-nextPutAll: left printString; 
-nextPutAll: ' * ';
-nextPutAll: right printString;
-nextPutAll: ' )'
+{ #category : 'as yet unclassified' }
+EMultiplication >> operatorString [
+^ ' * '
 ]
 
 { #category : 'accessing' }
 EMultiplication >> right [
 
 	^ right
-]
-
-{ #category : 'accessing' }
-EMultiplication >> right: anObject [
-
-	right := anObject
 ]

@@ -19,10 +19,11 @@ equals: -5
 
 { #category : 'tests' }
 ENegationTest >> testNegatedStructureIsCorrect [
-| exp |
-exp := EConstant value: 11.
-self assert: exp negated class = ENegation.
-self assert: exp negated negated equals: exp.
+
+	| exp |
+	exp := EConstant value: 11.
+	self assert: exp negated class equals: ENegation.
+	self assert: exp negated negated equals: exp
 ]
 
 { #category : 'tests' }

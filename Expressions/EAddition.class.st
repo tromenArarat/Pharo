@@ -1,10 +1,6 @@
 Class {
 	#name : 'EAddition',
-	#superclass : 'EExpression',
-	#instVars : [
-		'left',
-		'right'
-	],
+	#superclass : 'EBinaryExpression',
 	#category : 'Expressions',
 	#package : 'Expressions'
 }
@@ -25,8 +21,13 @@ EAddition class >> left: anInteger right: anInteger2 [
 
 { #category : 'public access' }
 EAddition >> evaluate [
-^ left evaluate + right evaluate
+    ^ self evaluateWith: Dictionary new
 
+]
+
+{ #category : 'accessing' }
+EAddition >> evaluateWith: aDictionary [
+    ^ (self left evaluateWith: aDictionary) + (self right evaluateWith: aDictionary)
 ]
 
 { #category : 'accessing' }
@@ -35,31 +36,13 @@ EAddition >> left [
 	^ left
 ]
 
-{ #category : 'accessing' }
-EAddition >> left: anObject [
-
-	left := anObject
-]
-
-{ #category : 'printing' }
-EAddition >> printOn: aStream [
-
-aStream 
-nextPutAll: '( '; 
-nextPutAll: left printString; 
-nextPutAll: ' + ';
-nextPutAll: right printString;
-nextPutAll: ' )'
+{ #category : 'as yet unclassified' }
+EAddition >> operatorString [
+^ ' + '
 ]
 
 { #category : 'accessing' }
 EAddition >> right [
 
 	^ right
-]
-
-{ #category : 'accessing' }
-EAddition >> right: anObject [
-
-	right := anObject
 ]

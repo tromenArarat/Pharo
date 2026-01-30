@@ -27,8 +27,12 @@ EConstant class >> value: anInteger [
 
 { #category : 'accessing' }
 EConstant >> evaluate [
+    ^ self evaluateWith: Dictionary new
+]
 
-	^ value
+{ #category : 'accessing' }
+EConstant >> evaluateWith: aDictionary [
+    ^ self value
 ]
 
 { #category : 'printing' }
